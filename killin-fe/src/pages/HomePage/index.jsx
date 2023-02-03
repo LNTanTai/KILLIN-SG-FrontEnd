@@ -1,12 +1,18 @@
 import React from 'react'
+import { Navbar, ProductList, SizeBar } from '../../services/constants/componentConstants'
+import { Box } from '@mui/system'
+import { CssBaseline } from '@mui/material'
 
-const index = () => {
+const HomePage = () => {
   return (
-    <div>
-      <h1>Home Page</h1>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Navbar/>
+      <SizeBar/>
+      <ProductList/>
+    </Box>
   )
 }
 
-export default index
+export default HomePage
 
