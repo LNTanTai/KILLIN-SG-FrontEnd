@@ -17,8 +17,11 @@ import React from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link } from "react-router-dom";
-import { CART_PATH } from "../../services/constants/pathConstants";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  CART_PATH,
+  HOMEPAGE_PATH,
+} from "../../services/constants/pathConstants";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,8 +65,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const Navbar = () => {
+const Index = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+
+  const toHomePage = () => {
+    navigate(HOMEPAGE_PATH);
+  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -75,9 +83,17 @@ const Navbar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Toolbar>
-          <StorefrontIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <IconButton
+            sx={{ color: "white", display: { xs: "none", md: "flex" }, mr: 1 }}
+            href={HOMEPAGE_PATH}
+          >
+            <StorefrontIcon />
+          </IconButton>
           <Typography variant="h6" component="div">
             KILLIN SG
           </Typography>
@@ -134,4 +150,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Index;
