@@ -17,11 +17,9 @@ import React from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  CART_PATH,
-  HOMEPAGE_PATH,
-} from "../../services/constants/pathConstants";
+import { Link } from "react-router-dom";
+import { CART_PATH, HOMEPAGE_PATH } from "../../services/constants/pathConstants";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -65,13 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const Index = () => {
+const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navigate = useNavigate();
-
-  const toHomePage = () => {
-    navigate(HOMEPAGE_PATH);
-  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -83,20 +76,14 @@ const Index = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <IconButton
-            sx={{ color: "white", display: { xs: "none", md: "flex" }, mr: 1 }}
-            href={HOMEPAGE_PATH}
-          >
-            <StorefrontIcon />
-          </IconButton>
-          <Typography variant="h6" component="div">
-            KILLIN SG
-          </Typography>
+          <Link to={HOMEPAGE_PATH}>
+            <StorefrontIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          </Link>
+           <Typography variant="h6" component="div">
+              KILLIN SG
+            </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -150,4 +137,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Navbar;

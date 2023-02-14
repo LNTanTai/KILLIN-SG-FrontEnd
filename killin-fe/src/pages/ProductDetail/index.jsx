@@ -1,10 +1,16 @@
 import React from 'react'
+import { Navbar } from '../../services/constants/componentConstants'
+import { Box } from '@mui/system'
+import { CssBaseline } from '@mui/material'
+import DetailProduct from './components/DetailProduct'
 
 const ProductDetail = () => {
   return (
-    <div>
-      <h1>Product Detail</h1>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <Navbar />
+      <DetailProduct/>
+    </Box>
   )
 }
 
