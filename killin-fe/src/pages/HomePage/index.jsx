@@ -1,7 +1,8 @@
 import React from 'react'
-import { Navbar, ProductList, SizeBar } from '../../services/constants/componentConstants'
+import { Navbar, SizeBar } from '../../services/constants/componentConstants'
 import { Box } from '@mui/system'
 import { CssBaseline } from '@mui/material'
+import ProductList from './components/ProductList'
 
 const HomePage = () => {
   return (

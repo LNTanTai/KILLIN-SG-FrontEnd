@@ -10,12 +10,22 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { Link } from "react-router-dom";
+import { HOMEPAGE_PATH, PRODUCT_LIST } from "../../services/constants/pathConstants";
 
 const drawerWidth = 190;
+const CategoryArray = ["Tất cả", "Áo", "Quần", "Giày"];
+
 const SideBar = () => {
+  const [chooseCate, setchooseCate] = useState();
+  const chooseCategory = (ctg) => {
+    setchooseCate(ctg);
+    console.log(chooseCate);
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
@@ -35,7 +45,7 @@ const SideBar = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          sx={{mt: 2, mb: 1}}
+          sx={{ mt: 2, mb: 1 }}
         >
           <Typography variant="h5" component="div">
             Category
@@ -43,15 +53,17 @@ const SideBar = () => {
         </Box>
         <Divider />
         <List>
-          {["Tất cả", "Áo", "Quần", "Giày"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
+          {CategoryArray.map((text, index) => (
+            <Link to={`${HOMEPAGE_PATH}/${index}`}>
+              <ListItem key={text} disablePadding>
+                <ListItemButton onClick={() => chooseCategory(index)}>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>
