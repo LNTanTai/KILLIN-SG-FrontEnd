@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { PRODUCT_DETAIL_PATH } from "../../../services/constants/pathConstants";
 
 const ProductList = () => {
+  // let id = useParams(0);
   const [productData, setProductData] = useState([]);
 
   useEffect(() => {

@@ -10,12 +10,19 @@ import {
   HOMEPAGE_PATH,
   PRODUCT_DETAIL_PATH,
 } from "../services/constants/pathConstants";
+import ProductList from "../pages/HomePage/components/ProductList";
 
 export default function Routes() {
   return useRoutes([
     {
       path: HOMEPAGE_PATH,
       element: <HomePage />,
+      children: [
+        {
+          path: "product-list/:id",
+          element: <ProductList />,
+        },
+      ],
     },
     {
       path: PRODUCT_DETAIL_PATH,

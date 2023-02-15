@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { HOMEPAGE_PATH, PRODUCT_LIST } from "../../services/constants/pathConstants";
 
 const drawerWidth = 190;
@@ -54,7 +54,7 @@ const SideBar = () => {
         <Divider />
         <List>
           {CategoryArray.map((text, index) => (
-            <Link to={`${HOMEPAGE_PATH}/${index}`}>
+            <Link to={`${HOMEPAGE_PATH}product-list/${index}`}>
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
