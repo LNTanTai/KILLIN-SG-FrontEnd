@@ -11,20 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CheckroomIcon from '@mui/icons-material/Checkroom';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CheckroomIcon from "@mui/icons-material/Checkroom";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { Link, useParams } from "react-router-dom";
-import { HOMEPAGE_PATH, PRODUCT_LIST } from "../../services/constants/pathConstants";
+import {
+  HOMEPAGE_PATH,
+  PRODUCT_LIST,
+} from "../../services/constants/pathConstants";
 
 const drawerWidth = 190;
-const CategoryArray = ["Tất cả", "Áo", "Quần", "Giày"];
+const CategoryArray = ["Tất cả", "Áo", "Áo hoodie", "Áo polo", "Quần", "Nón"];
 
 const SideBar = () => {
   const [chooseCate, setchooseCate] = useState();
   const chooseCategory = (ctg) => {
     setchooseCate(ctg);
-    console.log(chooseCate);
-  }
+    // console.log(chooseCate);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
