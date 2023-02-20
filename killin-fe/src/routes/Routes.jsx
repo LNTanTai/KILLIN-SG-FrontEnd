@@ -3,11 +3,13 @@ import { useRoutes } from "react-router-dom";
 import {
   CartPage,
   HomePage,
+  LoginPage,
   ProductDetailPage,
 } from "../services/constants/pageConstants";
 import {
   CART_PATH,
   HOMEPAGE_PATH,
+  LOGIN_PATH,
   PRODUCT_DETAIL_PATH,
 } from "../services/constants/pathConstants";
 import ProductList from "../pages/HomePage/components/ProductList";
@@ -34,6 +36,7 @@ export default function Routes() {
         },
       ],
     },
-    { path: CART_PATH, elemegitnt: <CartPage /> },
+    { path: CART_PATH, element: <CartPage /> },
+    { path: LOGIN_PATH, element: <LoginPage /> },
   ]);
 }

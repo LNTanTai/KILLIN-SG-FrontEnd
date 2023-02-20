@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
 import { Link } from "react-router-dom";
-import { PRODUCT_DETAIL_PATH } from "../../../services/constants/pathConstants";
+import { HOMEPAGE_PATH, PRODUCT_DETAIL_PATH } from "../../../services/constants/pathConstants";
 
 const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
@@ -69,7 +69,7 @@ const ProductList = (props) => {
           productData.map((product) => (
             <Grid item xs={3} key={product.id}>
               <Card>
-                <Link to={`${PRODUCT_DETAIL_PATH}/${product.id}`}>
+                <Link to={`${HOMEPAGE_PATH}product-detail/${product.id}`}>
                   <CardMedia
                     component="img"
                     alt={product.productName}
