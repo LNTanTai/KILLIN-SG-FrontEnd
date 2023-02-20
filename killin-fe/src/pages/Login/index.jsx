@@ -14,7 +14,6 @@ import {
   createTheme,
 } from "@mui/material";
 import React from "react";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Navbar from "../../components/Navbar";
 import LoginForm from "./components/LoginForm";
 
