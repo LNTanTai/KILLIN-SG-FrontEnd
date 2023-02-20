@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  GET_PRODUCTS_ID,
-} from "../../../services/constants/apiConstants";
+import { GET_PRODUCTS_ID } from "../../../services/constants/apiConstants";
 import { axiosUrl } from "../../../services/api/axios";
 import {
   Box,

@@ -17,13 +17,14 @@ import React, { useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   CART_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
+import jwtDecode from "jwt-decode";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -71,6 +72,12 @@ const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const navigate = useNavigate();
+  const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  const location = useLocation();
+  let token;
+  if (loginInfo !== null) {
+    token = jwtDecode(loginInfo);
+  }
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -120,18 +127,18 @@ const Navbar = () => {
             </Search>
 
             <Box sx={{ flexGrow: 1 }} />
-            {localStorage.getItem("loginInfo") === "Logged In" ? (
+            {loginInfo !== null && token.role === "3" ? (
               <IconButton
                 sx={{ flexGrow: 0, color: "white", mr: 1 }}
                 aria-label="add to shopping cart"
-                href={`/${CART_PATH}`}
+                href={`/user/${CART_PATH}`}
               >
                 <AddShoppingCartIcon />
               </IconButton>
             ) : (
-              <div />
+              <></>
             )}
-            {localStorage.getItem("loginInfo") === "Logged In" ? (
+            {loginInfo !== null ? (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -154,11 +161,6 @@ const Navbar = () => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {/* {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))} */}
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
@@ -167,7 +169,7 @@ const Navbar = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            ) : (
+            ) : location.pathname !== '/login'?(
               <Box sx={{ flexGrow: 0 }}>
                 <Link style={{ textDecoration: "none" }} to={LOGIN_PATH}>
                   <Typography
@@ -179,7 +181,9 @@ const Navbar = () => {
                   </Typography>
                 </Link>
               </Box>
-            )}
+            ):
+            <></>
+          }
           </Toolbar>
         </AppBar>
       </Box>

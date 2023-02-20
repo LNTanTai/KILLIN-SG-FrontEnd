@@ -10,6 +10,7 @@ import {
   Link,
   TextField,
   ThemeProvider,
+  Toolbar,
   Typography,
   createTheme,
 } from "@mui/material";
@@ -18,8 +19,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { axiosUrl } from "../../../services/api/axios";
 import { POST_LOGIN } from "../../../services/constants/apiConstants";
 import { useNavigate } from "react-router-dom";
-import { HOMEPAGE_PATH } from "../../../services/constants/pathConstants";
+import {
+  ADMIN_PATH,
+  HOMEPAGE_PATH,
+  OWNER_PATH,
+  STAFF_PATH,
+  USER_PATH,
+} from "../../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../../services/constants/componentConstants";
+import jwtDecode from "jwt-decode";
 
 const theme = createTheme();
 
@@ -55,21 +63,32 @@ const LoginForm = () => {
       setOpenBackdrop(true);
       const response = await axiosUrl.post(POST_LOGIN, params);
       const data = { ...response.data };
+      const token = jwtDecode(data.token);
       setOpenBackdrop(false);
       if (data.message === "Logged In") {
-        localStorage.setItem("loginInfo", data.message);
-        navigate(HOMEPAGE_PATH, { replace: true });
+        localStorage.setItem("loginInfo", JSON.stringify(data.token));
+        if (token.role === "1") {
+          navigate(OWNER_PATH, { replace: true });
+        } else if (token.role === "2") {
+          navigate(STAFF_PATH, { replace: true });
+        } else if (token.role === "3") {
+          navigate(USER_PATH, { replace: true });
+        } else if (token.role === "4") {
+          navigate(ADMIN_PATH, { replace: true });
+        }
       }
     } catch (e) {
       console.error(`Error at handleLogin: ${e}`);
+      setOpenBackdrop(false);
     }
   };
 
   return (
     <>
       <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }}>
+        <Toolbar />
         <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
+          <Container maxWidth="xs">
             <CssBaseline />
             <Box
               sx={{

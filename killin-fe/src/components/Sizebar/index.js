@@ -23,6 +23,7 @@ const CategoryArray = ["Tất cả", "Áo", "Áo hoodie", "Áo polo", "Quần", 
 
 const SideBar = () => {
   const [chooseCate, setchooseCate] = useState();
+  const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const chooseCategory = (ctg) => {
     setchooseCate(ctg);
     // console.log(chooseCate);
@@ -57,7 +58,7 @@ const SideBar = () => {
 
         {CategoryArray.map((text, index) => (
           <List key={index}>
-            <Link style={{textDecoration: 'none'}} to={`${HOMEPAGE_PATH}product-list/${index}`}>
+            {loginInfo!==null?(<Link style={{textDecoration: 'none'}} to={`/user/homepage/product-list/${index}`}>
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
@@ -66,7 +67,17 @@ const SideBar = () => {
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
-            </Link>
+            </Link>):(<Link style={{textDecoration: 'none'}} to={`/product-list/${index}`}>
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => chooseCategory(index)}>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            </Link>)}
+            
           </List>
         ))}
       </Drawer>
