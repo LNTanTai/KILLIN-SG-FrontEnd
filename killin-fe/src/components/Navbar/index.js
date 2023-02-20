@@ -13,13 +13,17 @@ import {
   alpha,
   styled,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link } from "react-router-dom";
-import { CART_PATH, HOMEPAGE_PATH } from "../../services/constants/pathConstants";
-
+import { Link, useNavigate } from "react-router-dom";
+import {
+  CART_PATH,
+  HOMEPAGE_PATH,
+  LOGIN_PATH,
+} from "../../services/constants/pathConstants";
+import { LoadingBackdrop } from "../../services/constants/componentConstants";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,10 +65,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -74,66 +80,111 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
-  return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Link to={HOMEPAGE_PATH}>
-            <StorefrontIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          </Link>
-           <Typography variant="h6" component="div">
-              KILLIN SG
-            </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+  const handleLogout = async () => {
+    setOpenBackdrop(true);
+    localStorage.clear();
+    setOpenBackdrop(false);
+    navigate(HOMEPAGE_PATH);
+  };
 
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            sx={{ flexGrow: 0, color: "white", mr: 1 }}
-            aria-label="add to shopping cart"
-            href={CART_PATH}
-          >
-            <AddShoppingCartIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" />
+  return (
+    <>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar
+          position="fixed"
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        >
+          <Toolbar>
+            <Link to={HOMEPAGE_PATH}>
+              <StorefrontIcon
+                sx={{
+                  color: "white",
+                  display: { xs: "none", md: "flex" },
+                  mr: 1,
+                }}
+              />
+            </Link>
+            <Link style={{ textDecoration: "none" }} to={HOMEPAGE_PATH}>
+              <Typography sx={{ color: "white" }} variant="h6" component="div">
+                KILLIN SG
+              </Typography>
+            </Link>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+
+            <Box sx={{ flexGrow: 1 }} />
+            {localStorage.getItem("loginInfo") === "Logged In" ? (
+              <IconButton
+                sx={{ flexGrow: 0, color: "white", mr: 1 }}
+                aria-label="add to shopping cart"
+                href={`/${CART_PATH}`}
+              >
+                <AddShoppingCartIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+            ) : (
+              <div />
+            )}
+            {localStorage.getItem("loginInfo") === "Logged In" ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {/* {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))} */}
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : (
+              <Box sx={{ flexGrow: 0 }}>
+                <Link style={{ textDecoration: "none" }} to={LOGIN_PATH}>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ color: "white" }}
+                  >
+                    Login
+                  </Typography>
+                </Link>
+              </Box>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <LoadingBackdrop open={openBackdrop} />
+    </>
   );
 };
 

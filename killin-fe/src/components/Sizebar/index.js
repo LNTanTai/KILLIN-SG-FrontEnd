@@ -10,13 +10,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   HOMEPAGE_PATH,
-  PRODUCT_LIST,
 } from "../../services/constants/pathConstants";
 
 const drawerWidth = 190;
@@ -55,10 +54,11 @@ const SideBar = () => {
           </Typography>
         </Box>
         <Divider />
-        <List>
-          {CategoryArray.map((text, index) => (
-            <Link to={`${HOMEPAGE_PATH}product-list/${index}`}>
-              <ListItem key={text} disablePadding>
+
+        {CategoryArray.map((text, index) => (
+          <List key={index}>
+            <Link style={{textDecoration: 'none'}} to={`${HOMEPAGE_PATH}product-list/${index}`}>
+              <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
@@ -67,8 +67,8 @@ const SideBar = () => {
                 </ListItemButton>
               </ListItem>
             </Link>
-          ))}
-        </List>
+          </List>
+        ))}
       </Drawer>
     </Box>
   );
