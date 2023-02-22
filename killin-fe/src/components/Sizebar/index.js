@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Drawer,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -13,7 +14,6 @@ import {
 import React, { useState } from "react";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import { Link } from "react-router-dom";
 import {
   HOMEPAGE_PATH,
 } from "../../services/constants/pathConstants";
@@ -58,7 +58,7 @@ const SideBar = () => {
 
         {CategoryArray.map((text, index) => (
           <List key={index}>
-            {loginInfo!==null?(<Link style={{textDecoration: 'none'}} to={`/user/homepage/product-list/${index}`}>
+            {loginInfo!==null?(<Link href={`/user/shop/product-list/${index}`} underline="none">
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
@@ -67,7 +67,7 @@ const SideBar = () => {
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
-            </Link>):(<Link style={{textDecoration: 'none'}} to={`/product-list/${index}`}>
+            </Link>):(<Link href={`/shop/product-list/${index}`} underline="none">
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>

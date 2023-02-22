@@ -5,6 +5,7 @@ import {
   Button,
   IconButton,
   InputBase,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -17,7 +18,7 @@ import React, { useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   CART_PATH,
   HOMEPAGE_PATH,
@@ -103,7 +104,7 @@ const Navbar = () => {
           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
           <Toolbar>
-            <Link to={HOMEPAGE_PATH}>
+            <Link href={HOMEPAGE_PATH}>
               <StorefrontIcon
                 sx={{
                   color: "white",
@@ -112,7 +113,7 @@ const Navbar = () => {
                 }}
               />
             </Link>
-            <Link style={{ textDecoration: "none" }} to={HOMEPAGE_PATH}>
+            <Link href={HOMEPAGE_PATH} underline="none">
               <Typography sx={{ color: "white" }} variant="h6" component="div">
                 KILLIN SG
               </Typography>
@@ -133,7 +134,7 @@ const Navbar = () => {
               
             </Box> */}
             <Box sx={{ flexGrow: 1 }} />
-            <Link style={{ textDecoration: "none" }} to={HOMEPAGE_PATH}>
+            <Link href={HOMEPAGE_PATH} underline="none">
               <Typography
                 sx={{ color: "white", pr: 2 }}
                 variant="h6"
@@ -144,8 +145,7 @@ const Navbar = () => {
             </Link>
             {loginInfo !== null && token.role === "3" ? (
               <Link
-                style={{ textDecoration: "none" }}
-                to={`/user/${SHOP_PATH}`}
+              href={`/user/${SHOP_PATH}`} underline="none"
               >
                 <Typography
                   sx={{ color: "white", pr: 2 }}
@@ -156,7 +156,7 @@ const Navbar = () => {
                 </Typography>
               </Link>
             ) : (
-              <Link style={{ textDecoration: "none" }} to={SHOP_PATH}>
+              <Link href={`/${SHOP_PATH}`} underline="none">
                 <Typography
                   sx={{ color: "white", pr: 2 }}
                   variant="h6"
@@ -211,7 +211,7 @@ const Navbar = () => {
               </Box>
             ) : location.pathname !== "/login" ? (
               <Box sx={{ flexGrow: 0 }}>
-                <Link style={{ textDecoration: "none" }} to={LOGIN_PATH}>
+                <Link href={`/${LOGIN_PATH}`} underline="none" >
                   <Typography
                     variant="h6"
                     component="div"
