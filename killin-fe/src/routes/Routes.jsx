@@ -7,6 +7,7 @@ import {
   LoginPage,
   OwnerPage,
   ProductDetailPage,
+  ShopPage,
   StaffPage,
 } from "../services/constants/pageConstants";
 import {
@@ -15,13 +16,13 @@ import {
   HOMEPAGE_PATH,
   LOGIN_PATH,
   OWNER_PATH,
-  PRODUCT_DETAIL_PATH,
+  SHOP_PATH,
   STAFF_PATH,
   USER_PATH,
 } from "../services/constants/pathConstants";
-import ProductList from "../pages/HomePage/components/ProductList";
 import jwtDecode from "jwt-decode";
 import RequireAuth from "../services/auth/RequireAuth";
+import ProductList from "../pages/ShopPage/components/ProductList";
 
 export default function Routes() {
   let START_PATH = HOMEPAGE_PATH;
@@ -56,6 +57,10 @@ export default function Routes() {
         {
           path: "homepage",
           element: <HomePage />,
+        },
+        {
+          path: SHOP_PATH,
+          element: <ShopPage />,
           children: [
             {
               path: "product-list/:id",
@@ -85,7 +90,7 @@ export default function Routes() {
           path: "homepage",
           element: <AdminPage />,
         },
-      ]
+      ],
     },
 
     //Role Staff
@@ -97,7 +102,7 @@ export default function Routes() {
           path: "homepage",
           element: <StaffPage />,
         },
-      ]
+      ],
     },
 
     //Role Owner
@@ -109,7 +114,7 @@ export default function Routes() {
           path: "homepage",
           element: <OwnerPage />,
         },
-      ]
+      ],
     },
 
     //Role Guest
@@ -119,23 +124,47 @@ export default function Routes() {
         {
           path: HOMEPAGE_PATH,
           element:
-            START_PATH === HOMEPAGE_PATH ? (<HomePage />) : (<Navigate to={START_PATH} />),
+            START_PATH === HOMEPAGE_PATH ? (
+              <HomePage />
+            ) : (
+              <Navigate to={START_PATH} />
+            ),
+        },
+        {
+          element:
+            START_PATH === HOMEPAGE_PATH ? (
+              <ProductDetailPage />
+            ) : (
+              <Navigate to={START_PATH} />
+            ),
           children: [
             {
-              path: "product-list/:id",
+              path: "/product-detail/:id",
               element:
-                START_PATH === HOMEPAGE_PATH ? (<ProductList />) : (<Navigate to={START_PATH} />
+                START_PATH === HOMEPAGE_PATH ? (
+                  <ProductDetailPage />
+                ) : (
+                  <Navigate to={START_PATH} />
                 ),
             },
           ],
         },
         {
-          element: <ProductDetailPage />,
+          path: SHOP_PATH,
+          element:
+            START_PATH === HOMEPAGE_PATH ? (
+              <ShopPage />
+            ) : (
+              <Navigate to={START_PATH} />
+            ),
           children: [
             {
-              path: "/product-detail/:id",
+              path: "product-list/:id",
               element:
-                START_PATH === HOMEPAGE_PATH ? (<ProductDetailPage />) : (<Navigate to={START_PATH} />
+                START_PATH === HOMEPAGE_PATH ? (
+                  <ProductList />
+                ) : (
+                  <Navigate to={START_PATH} />
                 ),
             },
           ],
@@ -143,7 +172,11 @@ export default function Routes() {
         {
           path: LOGIN_PATH,
           element:
-            START_PATH === HOMEPAGE_PATH ? (<LoginPage />) : (<Navigate to={START_PATH} />),
+            START_PATH === HOMEPAGE_PATH ? (
+              <LoginPage />
+            ) : (
+              <Navigate to={START_PATH} />
+            ),
         },
       ],
     },

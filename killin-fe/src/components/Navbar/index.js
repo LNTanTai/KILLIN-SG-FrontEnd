@@ -5,6 +5,7 @@ import {
   Button,
   IconButton,
   InputBase,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -17,11 +18,12 @@ import React, { useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   CART_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
+  SHOP_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
@@ -102,7 +104,7 @@ const Navbar = () => {
           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
           <Toolbar>
-            <Link to={HOMEPAGE_PATH}>
+            <Link href={HOMEPAGE_PATH}>
               <StorefrontIcon
                 sx={{
                   color: "white",
@@ -111,7 +113,7 @@ const Navbar = () => {
                 }}
               />
             </Link>
-            <Link style={{ textDecoration: "none" }} to={HOMEPAGE_PATH}>
+            <Link href={HOMEPAGE_PATH} underline="none">
               <Typography sx={{ color: "white" }} variant="h6" component="div">
                 KILLIN SG
               </Typography>
@@ -125,8 +127,46 @@ const Navbar = () => {
                 inputProps={{ "aria-label": "search" }}
               />
             </Search>
-
+            {/* <Box sx={{ flexGrow: 1, textAlign: "right", pr: 5 }}>
+              
+            </Box>
+            <Box sx={{ flexGrow: 1, textAlign: "left", pl:5 }}>
+              
+            </Box> */}
             <Box sx={{ flexGrow: 1 }} />
+            <Link href={HOMEPAGE_PATH} underline="none">
+              <Typography
+                sx={{ color: "white", pr: 2 }}
+                variant="h6"
+                component="div"
+              >
+                Home
+              </Typography>
+            </Link>
+            {loginInfo !== null && token.role === "3" ? (
+              <Link
+              href={`/user/${SHOP_PATH}`} underline="none"
+              >
+                <Typography
+                  sx={{ color: "white", pr: 2 }}
+                  variant="h6"
+                  component="div"
+                >
+                  Shop
+                </Typography>
+              </Link>
+            ) : (
+              <Link href={`/${SHOP_PATH}`} underline="none">
+                <Typography
+                  sx={{ color: "white", pr: 2 }}
+                  variant="h6"
+                  component="div"
+                >
+                  Shop
+                </Typography>
+              </Link>
+            )}
+
             {loginInfo !== null && token.role === "3" ? (
               <IconButton
                 sx={{ flexGrow: 0, color: "white", mr: 1 }}
@@ -169,9 +209,9 @@ const Navbar = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            ) : location.pathname !== '/login'?(
+            ) : location.pathname !== "/login" ? (
               <Box sx={{ flexGrow: 0 }}>
-                <Link style={{ textDecoration: "none" }} to={LOGIN_PATH}>
+                <Link href={`/${LOGIN_PATH}`} underline="none" >
                   <Typography
                     variant="h6"
                     component="div"
@@ -181,9 +221,9 @@ const Navbar = () => {
                   </Typography>
                 </Link>
               </Box>
-            ):
-            <></>
-          }
+            ) : (
+              <></>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

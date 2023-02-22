@@ -64,6 +64,7 @@ const ProductList = (props) => {
   };
 
   return (
+    <>
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       <Grid container spacing={3}>
@@ -122,7 +123,8 @@ const ProductList = (props) => {
         )}
       </Grid>
     </Box>
+    </>
   );
 };
-
+//
 export default ProductList;
