@@ -22,6 +22,7 @@ import {
   CART_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
+  SHOP_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
@@ -125,8 +126,47 @@ const Navbar = () => {
                 inputProps={{ "aria-label": "search" }}
               />
             </Search>
-
+            {/* <Box sx={{ flexGrow: 1, textAlign: "right", pr: 5 }}>
+              
+            </Box>
+            <Box sx={{ flexGrow: 1, textAlign: "left", pl:5 }}>
+              
+            </Box> */}
             <Box sx={{ flexGrow: 1 }} />
+            <Link style={{ textDecoration: "none" }} to={HOMEPAGE_PATH}>
+              <Typography
+                sx={{ color: "white", pr: 2 }}
+                variant="h6"
+                component="div"
+              >
+                Home
+              </Typography>
+            </Link>
+            {loginInfo !== null && token.role === "3" ? (
+              <Link
+                style={{ textDecoration: "none" }}
+                to={`/user/${SHOP_PATH}`}
+              >
+                <Typography
+                  sx={{ color: "white", pr: 2 }}
+                  variant="h6"
+                  component="div"
+                >
+                  Shop
+                </Typography>
+              </Link>
+            ) : (
+              <Link style={{ textDecoration: "none" }} to={SHOP_PATH}>
+                <Typography
+                  sx={{ color: "white", pr: 2 }}
+                  variant="h6"
+                  component="div"
+                >
+                  Shop
+                </Typography>
+              </Link>
+            )}
+
             {loginInfo !== null && token.role === "3" ? (
               <IconButton
                 sx={{ flexGrow: 0, color: "white", mr: 1 }}
@@ -169,7 +209,7 @@ const Navbar = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-            ) : location.pathname !== '/login'?(
+            ) : location.pathname !== "/login" ? (
               <Box sx={{ flexGrow: 0 }}>
                 <Link style={{ textDecoration: "none" }} to={LOGIN_PATH}>
                   <Typography
@@ -181,9 +221,9 @@ const Navbar = () => {
                   </Typography>
                 </Link>
               </Box>
-            ):
-            <></>
-          }
+            ) : (
+              <></>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

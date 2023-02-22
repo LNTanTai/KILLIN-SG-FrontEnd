@@ -1,18 +1,17 @@
 import React from "react";
 import { Navbar, SizeBar } from "../../services/constants/componentConstants";
 import { Box } from "@mui/system";
-import { CssBaseline } from "@mui/material";
-import ProductList from "./components/ProductList";
-import { useParams } from "react-router-dom";
+import { CssBaseline, Toolbar } from "@mui/material";
 
 const HomePage = () => {
-  const { id: categoryId } = useParams(0);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Navbar />
-      <SizeBar />
-      <ProductList categoryId={categoryId} />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Toolbar />
+      <h1>ok</h1>
+      </Box>
     </Box>
   );
 };
