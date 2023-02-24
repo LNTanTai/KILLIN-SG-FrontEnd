@@ -12,12 +12,7 @@ import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
 import { Link } from "react-router-dom";
-import {
-  HOMEPAGE_PATH,
-  PRODUCT_DETAIL_PATH,
-} from "../../../services/constants/pathConstants";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Footer } from "../../../services/constants/componentConstants";
 
 const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
