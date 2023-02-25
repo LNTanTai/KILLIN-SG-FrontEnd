@@ -21,7 +21,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
-
+// 
 const product = [];
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
