@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GET_PRODUCTS_ID } from "../../../services/constants/apiConstants";
 import { axiosUrl } from "../../../services/api/axios";
 import {
@@ -12,10 +12,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 
 const DetailProduct = () => {
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = useState({});
+  const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -30,6 +33,12 @@ const DetailProduct = () => {
       console.error(`Error at DetailProduct: ${error}`);
     }
   };
+
+  const handleAddToCart = () => {
+    if(loginInfo ===null){
+      navigate(`/${LOGIN_PATH}`);
+    }
+  }
 
   return (
     <div className="container">
@@ -62,6 +71,7 @@ const DetailProduct = () => {
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 25 }}
+                  onClick={()=>handleAddToCart()}
                 >
                   Add to Cart
                 </Button>
