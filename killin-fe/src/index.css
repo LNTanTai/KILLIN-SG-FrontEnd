@@ -1,31 +1,37 @@
-body {
+/* body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif; */
-  -webkit-font-smoothing: antialiased;
+  /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
 
-code {
+/* code {
   /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace; */
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-
-
+    /*
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+} */
 .container {
   padding: 10px 100px 0 100px;
 }
+
 .cart-container {
   background-color: #E0E0E0;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  margin-top: 62px;
+  flex-direction: column;
 }
+
 /* alo alo*/
 .cart {
   display: flex;
   width: 900px;
-  padding: 40px;
-  
+  padding: 20px 0px 40px 100px ;
+
 }
 
 .cart-1 {
@@ -38,8 +44,9 @@ code {
 }
 
 .cart-1-button {
-  margin-top: 50px;
+  margin-top: 30px;
 }
+
 /* .cart-table {
   padding-bottom: 50px;
 } */

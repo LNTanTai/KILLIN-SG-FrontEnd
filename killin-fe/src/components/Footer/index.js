@@ -3,11 +3,11 @@ import React from "react";
 
 const index = () => {
   return (
-    <Box sx={{ marginTop: "calc(5% + 60px)", width: "100%", bottom: 0 }}>
+    <Box sx={{ marginTop: "calc(2% + 60px)", width: "100%", bottom: 0 }}>
       <Toolbar />
       <Paper
         sx={{
-          marginTop: "calc(10% + 60px)",
+          marginTop: "calc(2% + 60px)",
           width: "100%",
           bottom: 0,
         }}

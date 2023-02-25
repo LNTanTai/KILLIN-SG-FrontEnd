@@ -24,9 +24,11 @@ import {
   HOMEPAGE_PATH,
   LOGIN_PATH,
   SHOP_PATH,
+  USER_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
+import ProductList from "../../pages/ShopPage/components/ProductList";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -73,6 +75,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const location = useLocation();
@@ -95,6 +98,12 @@ const Navbar = () => {
     setOpenBackdrop(false);
     navigate(HOMEPAGE_PATH);
   };
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    // console.log(searchValue);
+    navigate('/user/shop', { state: {search : searchValue} });
+  }
 
   return (
     <>
@@ -125,6 +134,7 @@ const Navbar = () => {
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
+                onChange = {(e) => searchItems(e.target.value)}
               />
             </Search>
             {/* <Box sx={{ flexGrow: 1, textAlign: "right", pr: 5 }}>

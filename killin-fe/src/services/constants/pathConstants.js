@@ -11,3 +11,5 @@ export const ADMIN_PATH = "/admin/homepage";
 export const OWNER_PATH = "/owner/homepage";
 
 export const STAFF_PATH = "/staff/homepage";
+
+export const SEARCH_PATH = "search";

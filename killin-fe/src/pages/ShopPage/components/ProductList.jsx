@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
 import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import {
   HOMEPAGE_PATH,
   PRODUCT_DETAIL_PATH,
@@ -23,57 +24,105 @@ const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
   const [loadingCircular, setLoadingCircular] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  // const [searchInput, setSearchInput] = useState('');
+  // const [filteredResults, setFilteredResults] = useState([]);
+  const location = useLocation('');
+  const search = location?.state?.search;
 
   useEffect(() => {
     fetchData(props.categoryId);
-  }, [props.categoryId]);
-
+  }, [props.categoryId, search]);
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
+  // const fetchData = async (categoryId) => {
+  //   const params = {};
+  //   try {
+  //     setLoadingCircular(true);
+  //     const response = await axiosUrl.get(GET_PRODUCTS, params);
+  //     const data = [...response.data];
+  //     if (categoryId === "1") {
+  //       const filter = data.filter((product) => {
+  //         return product.productCategory.name === "áo";
+  //       });
+  //       setProductData(filter);
+  //       setLoadingCircular(false);
+  //     } else if (categoryId === "2") {
+  //       const filter = data.filter((product) => {
+  //         return product.productCategory.name === "áo hoodie";
+  //       });
+  //       setProductData(filter);
+  //       setLoadingCircular(false);
+  //     } else if (categoryId === "3") {
+  //       const filter = data.filter((product) => {
+  //         return product.productCategory.name === "áo polo";
+  //       });
+  //       setProductData(filter);
+  //       setLoadingCircular(false);
+  //     } else if (categoryId === "4") {
+  //       const filter = data.filter((product) => {
+  //         return product.productCategory.name === "quần ";
+  //       });
+  //       setProductData(filter);
+  //       setLoadingCircular(false);
+  //     } else if (categoryId === "5") {
+  //       const filter = data.filter((product) => {
+  //         return product.productCategory.name === "nón";
+  //       });
+  //       setProductData(filter);
+  //       setLoadingCircular(false);
+  //     } else {
+  //       setProductData(data);
+  //       setLoadingCircular(false);
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error at ProductList: ${error}`);
+  //     setLoadingCircular(false);
+  //   }
+  // };
   const fetchData = async (categoryId) => {
     const params = {};
     try {
       setLoadingCircular(true);
       const response = await axiosUrl.get(GET_PRODUCTS, params);
       const data = [...response.data];
+      let filter = [];
       if (categoryId === "1") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "2") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo hoodie";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "3") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo polo";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "4") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "quần ";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "5") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "nón";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else {
-        setProductData(data);
-        setLoadingCircular(false);
+        filter = data;
       }
+      if (search) {
+        filter = filter.filter((product) =>
+          product.productName.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+      setProductData(filter);
+      setLoadingCircular(false);
     } catch (error) {
       console.error(`Error at ProductList: ${error}`);
       setLoadingCircular(false);
     }
   };
-
+  
   return (
     <>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
