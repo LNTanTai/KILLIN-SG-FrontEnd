@@ -11,13 +11,15 @@ import {
 import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 
 const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
   const [loadingCircular, setLoadingCircular] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData(props.categoryId);
@@ -69,6 +71,12 @@ const ProductList = (props) => {
     }
   };
 
+  const handleAddToCart = () => {
+    if(loginInfo ===null){
+      navigate(`/${LOGIN_PATH}`);
+    }
+  }
+
   return (
     <>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -119,7 +127,7 @@ const ProductList = (props) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={()=>{handleAddToCart()}}>
                           Add to Cart
                         </Button>
                       </Grid>

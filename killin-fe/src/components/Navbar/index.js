@@ -143,18 +143,20 @@ const Navbar = () => {
                 Home
               </Typography>
             </Link>
-            {loginInfo !== null && token.role === "3" ? (
-              <Link
-              href={`/user/${SHOP_PATH}`} underline="none"
-              >
-                <Typography
-                  sx={{ color: "white", pr: 2 }}
-                  variant="h6"
-                  component="div"
-                >
-                  Shop
-                </Typography>
-              </Link>
+            {loginInfo !== null ? (
+              token.role === "3" ? (
+                <Link href={`/user/${SHOP_PATH}`} underline="none">
+                  <Typography
+                    sx={{ color: "white", pr: 2 }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Shop
+                  </Typography>
+                </Link>
+              ) : (
+                <></>
+              )
             ) : (
               <Link href={`/${SHOP_PATH}`} underline="none">
                 <Typography
@@ -211,7 +213,7 @@ const Navbar = () => {
               </Box>
             ) : location.pathname !== "/login" ? (
               <Box sx={{ flexGrow: 0 }}>
-                <Link href={`/${LOGIN_PATH}`} underline="none" >
+                <Link href={`/${LOGIN_PATH}`} underline="none">
                   <Typography
                     variant="h6"
                     component="div"

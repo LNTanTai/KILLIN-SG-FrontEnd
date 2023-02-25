@@ -30,9 +30,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
     fontSize: 16,
   },
-  [`&.${tableCellClasses.body}`]:
-  
-   {
+  [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
@@ -92,7 +90,7 @@ const OwnerDashboard = () => {
                 fontWeight: 600,
                 flexGrow: 1,
                 textAlign: "center",
-                mt:2,
+                mt: 2,
               }}
               variant="h4"
               component="div"
@@ -102,22 +100,22 @@ const OwnerDashboard = () => {
           </Grid>
           <Grid item xs={7}>
             <TextField
-              sx={{ width: "100%",}}
+              sx={{ width: "100%" }}
               id="filled-basic"
               label="Tìm Kiếm"
               variant="outlined"
-              // onChange={(e) => setSearchedVal(e.target.value)}
+              onChange={(e) => setSearchedVal(e.target.value)}
             />
           </Grid>
           <Grid item xs={3}>
             <Button
               variant="contained"
-              sx={{ width: "100%", height: "35px", ml: 4 }}
+              sx={{ width: "200px", height: "35px", ml: 4 }}
               onClick={() => {
                 // handleDateSearch();
               }}
             >
-              Tìm Kiếm Sản Phẩm
+              Tạo Sản Phẩm Mới
             </Button>
           </Grid>
           <Grid item xs={12} />
@@ -140,6 +138,8 @@ const OwnerDashboard = () => {
                   <StyledTableCell align="left">Mô Tả</StyledTableCell>
                   <StyledTableCell align="left">Số Lượng</StyledTableCell>
                   <StyledTableCell align="left">Giá</StyledTableCell>
+                  <StyledTableCell align="left"></StyledTableCell>
+                  <StyledTableCell align="left"></StyledTableCell>
                 </TableRow>
               )}
             </TableHead>
@@ -167,24 +167,54 @@ const OwnerDashboard = () => {
                   .filter(
                     (row) =>
                       !searchedVal.length ||
-                      `${row.productName} ${row.phoneNumber} ${row.address}`
+                      `${row.productName} ${row.productBrand} ${row.productCategory.name}`
                         .toString()
                         .toLowerCase()
                         .includes(searchedVal.toString().toLowerCase())
                   )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <TableRow key={row}>
+                    <TableRow key={row.id}>
                       <StyledTableCell align="center">
                         {productData.indexOf(row) + 1}
                       </StyledTableCell>
-                      <StyledTableCell align="left">{row.productImages[0].url}</StyledTableCell>
-                      <StyledTableCell align="left">{row.productName}</StyledTableCell>
-                      <StyledTableCell align="left">{row.productBrand}</StyledTableCell>
-                      <StyledTableCell align="left">{row.productCategory.name}</StyledTableCell>
-                      <StyledTableCell align="left">{row.description}</StyledTableCell>
-                      <StyledTableCell align="left">{row.productQuantity}</StyledTableCell>
-                      <StyledTableCell align="left">{row.productPrice}</StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productImages[0].url}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productName}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productBrand}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productCategory.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.description}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productQuantity}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.productPrice}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          variant="contained"
+                          sx={{ width: "130px", height: "35px" }}
+                        >
+                          Cập nhật
+                        </Button>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          variant="contained"
+                          sx={{ width: "100%", height: "35px" }}
+                        >
+                          Xóa
+                        </Button>
+                      </StyledTableCell>
                     </TableRow>
                   ))
               )}
