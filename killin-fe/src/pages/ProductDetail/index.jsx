@@ -8,7 +8,7 @@ const ProductDetail = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Navbar />
+      {/* <Navbar /> */}
       <DetailProduct/>
     </Box>
   )

@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: 'column' }}>
       <CssBaseline />
-      <Navbar />
+      {/* <Navbar /> */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <h1>ok</h1>

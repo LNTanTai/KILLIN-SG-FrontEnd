@@ -8,7 +8,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
 import { Link, useNavigate } from "react-router-dom";
@@ -72,10 +72,10 @@ const ProductList = (props) => {
   };
 
   const handleAddToCart = () => {
-    if(loginInfo ===null){
+    if (loginInfo === null) {
       navigate(`/${LOGIN_PATH}`);
     }
-  }
+  };
 
   return (
     <>
@@ -85,7 +85,17 @@ const ProductList = (props) => {
           {loadingCircular === true ? (
             <CircularProgress size={120} sx={{ mt: 30 }} />
           ) : productData.length === 0 ? (
-            <h1>Không còn hàng</h1>
+            <Typography
+              sx={{
+                flexGrow: 1,
+                justifyContent: "center",
+                display: "flex",
+              }}
+              variant="h3"
+              component="div"
+            >
+              Không còn hàng
+            </Typography>
           ) : (
             productData.map((product) => (
               <Grid item xs={3} key={product.id}>
@@ -127,7 +137,13 @@ const ProductList = (props) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Button variant="contained" color="primary" onClick={()=>{handleAddToCart()}}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            handleAddToCart();
+                          }}
+                        >
                           Add to Cart
                         </Button>
                       </Grid>
