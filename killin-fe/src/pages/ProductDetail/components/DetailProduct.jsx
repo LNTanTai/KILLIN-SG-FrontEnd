@@ -16,13 +16,13 @@ import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 
 const DetailProduct = () => {
   const { id } = useParams();
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState({});
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedProduct]);
 
   const fetchData = async () => {
     try {
@@ -30,6 +30,8 @@ const DetailProduct = () => {
       const data = { ...response.data };
       setSelectedProduct(data);
       console.log(data);
+      // console.log(data.productImages[0].url);
+      // console.log(data.productImages[0]);
     } catch (error) {
       console.error(`Error at DetailProduct: ${error}`);
     }
@@ -48,12 +50,13 @@ const DetailProduct = () => {
         <Grid container spacing={3}>
           <Grid item xs={8}>
             <CardMedia
-              component="img"
               alt={selectedProduct.productName}
               height="300"
-              image={`${selectedProduct.productImages[1].url}`}
+              img={selectedProduct.productImages[0].url}
+              // image={selectedProduct.productImages[0].url}
               title={selectedProduct.productName}
-            />
+            >
+            </CardMedia>
           </Grid>
           <Grid item xs={4}>
             <Card>

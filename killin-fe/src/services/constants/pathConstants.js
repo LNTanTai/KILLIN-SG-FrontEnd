@@ -3,6 +3,7 @@ export const HOMEPAGE_PATH = "/";
 export const CART_PATH = "cart";
 export const LOGIN_PATH = "login";
 export const SHOP_PATH = "shop";
+export const SIGN_UP_PATH = "signup";
 
 export const USER_PATH = "/user/homepage";
 

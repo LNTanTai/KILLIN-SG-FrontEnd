@@ -18,11 +18,7 @@ import {
   styled,
   tableCellClasses,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { axiosUrl } from "../../../services/api/axios";
-import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
-// 
-const product = [];
+import React from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,42 +31,16 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const OwnerDashboard = () => {
-  const [isloading, setIsLoading] = useState(false);
-  const [productData, setProductData] = useState(product);
-  const [searchedVal, setSearchedVal] = useState("");
-  const pages = [10, 25, 100];
-  const [page, setPage] = useState(0);
-  const [pageSave, setPageSave] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async (categoryId) => {
-    const params = {};
-    try {
-      const response = await axiosUrl.get(GET_PRODUCTS, params);
-      const data = [...response.data];
-      console.log(data);
-      setProductData(data);
-    } catch (error) {
-      console.error(`Error at OwnerDashboard: ${error}`);
-    }
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    setPageSave(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-    setPageSave(0);
-  };
-
+const OwnerDashboard = ({
+  setSearchedVal,
+  isloading,
+  productData,
+  searchedVal,
+  page,
+  rowsPerPage,
+  handleChangePage,
+  handleChangeRowsPerPage,
+}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -112,7 +82,6 @@ const OwnerDashboard = () => {
               variant="contained"
               sx={{ width: "200px", height: "35px", ml: 4 }}
               onClick={() => {
-                // handleDateSearch();
               }}
             >
               Tạo Sản Phẩm Mới

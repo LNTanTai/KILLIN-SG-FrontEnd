@@ -10,7 +10,6 @@ const Shoppage = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Navbar />
       <SizeBar />
       <ProductList categoryId={categoryId} />
     </Box>

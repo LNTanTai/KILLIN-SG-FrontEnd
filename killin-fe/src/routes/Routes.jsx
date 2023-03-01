@@ -8,6 +8,7 @@ import {
   OwnerPage,
   ProductDetailPage,
   ShopPage,
+  SignUpPage,
   StaffPage,
 } from "../services/constants/pageConstants";
 import {
@@ -18,6 +19,7 @@ import {
   OWNER_PATH,
   SEARCH_PATH,
   SHOP_PATH,
+  SIGN_UP_PATH,
   STAFF_PATH,
   USER_PATH,
 } from "../services/constants/pathConstants";
@@ -175,6 +177,15 @@ export default function Routes() {
           element:
             START_PATH === HOMEPAGE_PATH ? (
               <LoginPage />
+            ) : (
+              <Navigate to={START_PATH} />
+            ),
+        },
+        {
+          path: SIGN_UP_PATH,
+          element:
+            START_PATH === HOMEPAGE_PATH ? (
+              <SignUpPage />
             ) : (
               <Navigate to={START_PATH} />
             ),

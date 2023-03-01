@@ -2,7 +2,6 @@ import {
   Box,
   Divider,
   Drawer,
-  Link,
   List,
   ListItem,
   ListItemButton,
@@ -17,6 +16,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import {
   HOMEPAGE_PATH,
 } from "../../services/constants/pathConstants";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 190;
 const CategoryArray = ["Tất cả", "Áo", "Áo hoodie", "Áo polo", "Quần", "Nón"];
@@ -58,7 +58,7 @@ const SideBar = () => {
 
         {CategoryArray.map((text, index) => (
           <List key={index}>
-            {loginInfo!==null?(<Link href={`/user/shop/product-list/${index}`} underline="none">
+            {loginInfo!==null?(<Link to={`/user/shop/product-list/${index}`}  style={{textDecoration: 'none' }}>
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
@@ -67,7 +67,7 @@ const SideBar = () => {
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
-            </Link>):(<Link href={`/shop/product-list/${index}`} underline="none">
+            </Link>):(<Link to={`/shop/product-list/${index}`} style={{textDecoration: 'none' }}>
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
