@@ -30,21 +30,16 @@ const Index = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setvalues({
-      ...values,
-      dob: dayjs(dayjs(selectDob, "DD/MM/YYYY")).format("YYYY-MM-DD"),
-    });
-
-    createUser(values);
+    createUser(values, selectDob);
   };
 
-  const createUser = async (newValues) => {
+  const createUser = async (newValues, dob) => {
     // setIsLoading(true);
     const params = {
       fullName: newValues.fullName,
       userName: newValues.userName,
       password: newValues.password,
-      dob: newValues.dob,
+      dob: dayjs(dayjs(dob, "DD/MM/YYYY")).format("YYYY-MM-DD"),
       address: newValues.address,
       email: newValues.email,
     };
