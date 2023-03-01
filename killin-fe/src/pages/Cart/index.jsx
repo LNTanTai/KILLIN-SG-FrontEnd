@@ -7,7 +7,7 @@ const index = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: 'column' }}>
       <CssBaseline />
-      <Navbar />
+      {/* <Navbar /> */}
       <CartList/>
     </Box>
   )

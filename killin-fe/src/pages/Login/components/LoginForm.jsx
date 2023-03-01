@@ -2,92 +2,29 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   Container,
   CssBaseline,
-  FormControlLabel,
   Grid,
-  Link,
   TextField,
-  ThemeProvider,
   Toolbar,
   Typography,
-  createTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { axiosUrl } from "../../../services/api/axios";
-import { POST_LOGIN } from "../../../services/constants/apiConstants";
-import { useNavigate } from "react-router-dom";
-import {
-  ADMIN_PATH,
-  HOMEPAGE_PATH,
-  OWNER_PATH,
-  STAFF_PATH,
-  USER_PATH,
-} from "../../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../../services/constants/componentConstants";
-import jwtDecode from "jwt-decode";
+import { SIGN_UP_PATH } from "../../../services/constants/pathConstants";
+import { Link } from "react-router-dom";
 
-const theme = createTheme();
-
-const user = [];
-
-const initialValues = {
-  phoneNumber: "",
-  password: "",
-};
-
-const LoginForm = () => {
-  const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [userLogin, setUserLogin] = useState(user);
-  const [values, setvalues] = useState(initialValues);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setvalues({ ...values, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleLogin(values);
-  };
-
-  const handleLogin = async (value) => {
-    const params = {
-      username: value.phoneNumber,
-      password: value.password,
-    };
-    try {
-      setOpenBackdrop(true);
-      const response = await axiosUrl.post(POST_LOGIN, params);
-      const data = { ...response.data };
-      const token = jwtDecode(data.token);
-      setOpenBackdrop(false);
-      if (data.message === "Logged In") {
-        localStorage.setItem("loginInfo", JSON.stringify(data.token));
-        if (token.role === "1") {
-          navigate(OWNER_PATH, { replace: true });
-        } else if (token.role === "2") {
-          navigate(STAFF_PATH, { replace: true });
-        } else if (token.role === "3") {
-          navigate(USER_PATH, { replace: true });
-        } else if (token.role === "4") {
-          navigate(ADMIN_PATH, { replace: true });
-        }
-      }
-    } catch (e) {
-      console.error(`Error at handleLogin: ${e}`);
-      setOpenBackdrop(false);
-    }
-  };
-
+const LoginForm = ({
+  handleSubmit,
+  values,
+  handleChange,
+  openBackdrop,
+}) => {
   return (
     <>
       <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }}>
         <Toolbar />
-        <ThemeProvider theme={theme}>
           <Container maxWidth="xs">
             <CssBaseline />
             <Box
@@ -148,12 +85,12 @@ const LoginForm = () => {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    {/* <Link href="#" variant="body2"> */}
                       Forgot password?
-                    </Link>
+                    {/* </Link> */}
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link to={`/${SIGN_UP_PATH}`} style={{ textDecoration: "none" }}>
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
@@ -161,7 +98,6 @@ const LoginForm = () => {
               </Box>
             </Box>
           </Container>
-        </ThemeProvider>
       </Box>
       <LoadingBackdrop open={openBackdrop} />
     </>

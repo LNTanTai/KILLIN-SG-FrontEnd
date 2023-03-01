@@ -37,7 +37,7 @@ const index = () => {
               mb: 2,
             }}
           >
-            <Typography variant="caption" color="initial">
+            <Typography variant="caption">
               Copyright ©2022. [] Limited
             </Typography>
           </Box>
