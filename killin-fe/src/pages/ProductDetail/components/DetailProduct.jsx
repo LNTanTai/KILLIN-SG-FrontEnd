@@ -22,37 +22,41 @@ const DetailProduct = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedProduct]);
 
   const fetchData = async () => {
     try {
       const response = await axiosUrl.get(GET_PRODUCTS_ID(id));
       const data = { ...response.data };
       setSelectedProduct(data);
+      console.log(data);
+      // console.log(data.productImages[0].url);
+      // console.log(data.productImages[0]);
     } catch (error) {
       console.error(`Error at DetailProduct: ${error}`);
     }
   };
 
   const handleAddToCart = () => {
-    if(loginInfo ===null){
+    if (loginInfo === null) {
       navigate(`/${LOGIN_PATH}`);
     }
   }
 
   return (
     <div className="container">
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: 'lightgray' }}>
         <Toolbar />
         <Grid container spacing={3}>
           <Grid item xs={8}>
             <CardMedia
-              component="img"
               alt={selectedProduct.productName}
               height="300"
+              img={selectedProduct.productImages[0].url}
               // image={selectedProduct.productImages[0].url}
               title={selectedProduct.productName}
-            />
+            >
+            </CardMedia>
           </Grid>
           <Grid item xs={4}>
             <Card>
@@ -71,7 +75,7 @@ const DetailProduct = () => {
                   variant="contained"
                   color="primary"
                   style={{ marginTop: 25 }}
-                  onClick={()=>handleAddToCart()}
+                  onClick={() => handleAddToCart()}
                 >
                   Add to Cart
                 </Button>
@@ -79,10 +83,10 @@ const DetailProduct = () => {
             </Card>
           </Grid>
         </Grid>
+        <Typography variant="body2" color="textSecondary">
+          Description: {selectedProduct.description}
+        </Typography>
       </Box>
-      <Typography variant="body2" color="textSecondary">
-        Description: {selectedProduct.description}
-      </Typography>
     </div>
   );
 };

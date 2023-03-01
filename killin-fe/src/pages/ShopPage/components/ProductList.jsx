@@ -11,6 +11,11 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
+import { useLocation } from 'react-router-dom';
+import {
+  HOMEPAGE_PATH,
+  PRODUCT_DETAIL_PATH,
+} from "../../../services/constants/pathConstants";
 import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
@@ -19,52 +24,48 @@ const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
   const [loadingCircular, setLoadingCircular] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  const location = useLocation('');
+  const search = location?.state?.search;
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData(props.categoryId);
-  }, [props.categoryId]);
-
+  }, [props.categoryId, search]);
+  useEffect(() => {
+    console.log(search);
+  }, [search]);
   const fetchData = async (categoryId) => {
     const params = {};
     try {
       setLoadingCircular(true);
       const response = await axiosUrl.get(GET_PRODUCTS, params);
       const data = [...response.data];
+      let filter = [];
       if (categoryId === "1") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "2") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo hoodie";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "3") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "áo polo";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "4") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "quần ";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else if (categoryId === "5") {
-        const filter = data.filter((product) => {
+        filter = data.filter((product) => {
           return product.productCategory.name === "nón";
         });
-        setProductData(filter);
-        setLoadingCircular(false);
       } else {
-        setProductData(data);
-        setLoadingCircular(false);
+        filter = data;
       }
+      setProductData(filter);
+      setLoadingCircular(false);
     } catch (error) {
       console.error(`Error at ProductList: ${error}`);
       setLoadingCircular(false);
@@ -97,7 +98,11 @@ const ProductList = (props) => {
               Không còn hàng
             </Typography>
           ) : (
-            productData.map((product) => (
+                productData
+                  .filter((product) =>
+                    search ? product.productName.toLowerCase().includes(search.toLowerCase()) : true
+                  )
+            .map((product) => (
               <Grid item xs={3} key={product.id}>
                 <Card>
                   {loginInfo !== null ? (

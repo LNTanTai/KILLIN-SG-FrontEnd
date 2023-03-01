@@ -26,9 +26,11 @@ import {
   HOMEPAGE_PATH,
   LOGIN_PATH,
   SHOP_PATH,
+  USER_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
+import ProductList from "../../pages/ShopPage/components/ProductList";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -122,6 +124,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const Navbar = ({ isDarkTheme, changeTheme }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const location = useLocation();
@@ -144,6 +147,12 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
     setOpenBackdrop(false);
     navigate(HOMEPAGE_PATH);
   };
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    // console.log(searchValue);
+    navigate('../shop', { state: {search : searchValue} });
+  }
 
   return (
     <>
@@ -174,6 +183,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
+                onChange = {(e) => searchItems(e.target.value)}
               />
             </Search>
             <Box sx={{ flexGrow: 1 }} />
