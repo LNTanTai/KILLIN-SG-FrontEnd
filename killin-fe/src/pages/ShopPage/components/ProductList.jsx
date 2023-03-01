@@ -11,23 +11,22 @@ import {
 import React, { useEffect, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
-import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import {
   HOMEPAGE_PATH,
   PRODUCT_DETAIL_PATH,
 } from "../../../services/constants/pathConstants";
+import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Footer } from "../../../services/constants/componentConstants";
+import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 
 const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
   const [loadingCircular, setLoadingCircular] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
-  // const [searchInput, setSearchInput] = useState('');
-  // const [filteredResults, setFilteredResults] = useState([]);
   const location = useLocation('');
   const search = location?.state?.search;
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData(props.categoryId);
@@ -35,51 +34,6 @@ const ProductList = (props) => {
   useEffect(() => {
     console.log(search);
   }, [search]);
-  // const fetchData = async (categoryId) => {
-  //   const params = {};
-  //   try {
-  //     setLoadingCircular(true);
-  //     const response = await axiosUrl.get(GET_PRODUCTS, params);
-  //     const data = [...response.data];
-  //     if (categoryId === "1") {
-  //       const filter = data.filter((product) => {
-  //         return product.productCategory.name === "áo";
-  //       });
-  //       setProductData(filter);
-  //       setLoadingCircular(false);
-  //     } else if (categoryId === "2") {
-  //       const filter = data.filter((product) => {
-  //         return product.productCategory.name === "áo hoodie";
-  //       });
-  //       setProductData(filter);
-  //       setLoadingCircular(false);
-  //     } else if (categoryId === "3") {
-  //       const filter = data.filter((product) => {
-  //         return product.productCategory.name === "áo polo";
-  //       });
-  //       setProductData(filter);
-  //       setLoadingCircular(false);
-  //     } else if (categoryId === "4") {
-  //       const filter = data.filter((product) => {
-  //         return product.productCategory.name === "quần ";
-  //       });
-  //       setProductData(filter);
-  //       setLoadingCircular(false);
-  //     } else if (categoryId === "5") {
-  //       const filter = data.filter((product) => {
-  //         return product.productCategory.name === "nón";
-  //       });
-  //       setProductData(filter);
-  //       setLoadingCircular(false);
-  //     } else {
-  //       setProductData(data);
-  //       setLoadingCircular(false);
-  //     }
-  //   } catch (error) {
-  //     console.error(`Error at ProductList: ${error}`);
-  //     setLoadingCircular(false);
-  //   }
-  // };
   const fetchData = async (categoryId) => {
     const params = {};
     try {
@@ -110,11 +64,6 @@ const ProductList = (props) => {
       } else {
         filter = data;
       }
-      if (search) {
-        filter = filter.filter((product) =>
-          product.productName.toLowerCase().includes(search.toLowerCase())
-        );
-      }
       setProductData(filter);
       setLoadingCircular(false);
     } catch (error) {
@@ -122,7 +71,12 @@ const ProductList = (props) => {
       setLoadingCircular(false);
     }
   };
-  
+
+  const handleAddToCart = () => {
+    if(loginInfo ===null){
+      navigate(`/${LOGIN_PATH}`);
+    }
+  }
   return (
     <>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -133,7 +87,11 @@ const ProductList = (props) => {
           ) : productData.length === 0 ? (
             <h1>Không còn hàng</h1>
           ) : (
-            productData.map((product) => (
+                productData
+                  .filter((product) =>
+                    search ? product.productName.toLowerCase().includes(search.toLowerCase()) : true
+                  )
+            .map((product) => (
               <Grid item xs={3} key={product.id}>
                 <Card>
                   {loginInfo !== null ? (
@@ -173,7 +131,7 @@ const ProductList = (props) => {
                         </Typography>
                       </Grid>
                       <Grid item xs={7}>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={()=>{handleAddToCart()}}>
                           Add to Cart
                         </Button>
                       </Grid>

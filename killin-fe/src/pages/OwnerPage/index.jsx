@@ -5,7 +5,7 @@ import OwnerDashboard from './components/OwnerDashboard'
 
 const index = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", flexDirection: 'column' }}>
       <CssBaseline />
       <Navbar />
       <OwnerDashboard/>
