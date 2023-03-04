@@ -69,7 +69,6 @@ const Index = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <Navbar /> */}
       <LoginForm
         handleChange={handleChange}
         openBackdrop={openBackdrop}

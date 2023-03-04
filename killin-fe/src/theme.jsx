@@ -3,6 +3,8 @@ import App from "./app/App";
 import Navbar from "./components/Navbar";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { dark, light } from "./services/utils";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const Theme = () => {
   if (localStorage.getItem("check") === null) {
@@ -27,7 +29,9 @@ const Theme = () => {
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
       <Navbar isDarkTheme={isDarkTheme} changeTheme={changeTheme} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <App />
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };
