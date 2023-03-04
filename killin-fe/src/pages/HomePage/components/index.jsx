@@ -61,7 +61,7 @@ const Banner = () => {
         fetchBestSeller();
     }, []);
     const Image = styled('img')({
-        height: 500,
+        height: 700,
         width: "100%",
         objectFit: "cover",
     });
@@ -73,7 +73,7 @@ const Banner = () => {
         overflow: "hidden",
         textAlign: 'center',
         justifyContent: 'center',
-        
+        height: 500,
     }));
     const PaperStyled = styled(Paper)(({ theme }) => ({
         padding: 0,
@@ -81,6 +81,7 @@ const Banner = () => {
         color: theme.palette.text.secondary,
         width: "100%",
         border: '1px solid',
+        height: 500,
     }));
 
 

@@ -5,8 +5,7 @@ const PaymentList = ({payment}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <>PaymentList</>
-      <Button onClick={()=>payment()}>ok</Button>
+      <PaymentList></PaymentList>
     </Box>
   )
 }
