@@ -1,5 +1,7 @@
 import { Box, Container, Paper, Toolbar, Typography, Table, Grid, Image } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
+import PaymentMethod from "../../pages/PayPage";
 
 const index = () => {
   return (
