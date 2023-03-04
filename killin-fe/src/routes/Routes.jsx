@@ -3,9 +3,11 @@ import { Navigate, useRoutes } from "react-router-dom";
 import {
   AdminPage,
   CartPage,
+  CheckOutPage,
   HomePage,
   LoginPage,
   OwnerPage,
+  PaymentPage,
   ProductDetailPage,
   ShopPage,
   SignUpPage,
@@ -14,9 +16,11 @@ import {
 import {
   ADMIN_PATH,
   CART_PATH,
+  CHECKOUT_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
   OWNER_PATH,
+  PAYMENT_PATH,
   SEARCH_PATH,
   SHOP_PATH,
   SIGN_UP_PATH,
@@ -81,6 +85,8 @@ export default function Routes() {
           ],
         },
         { path: CART_PATH, element: <CartPage /> },
+        { path: PAYMENT_PATH, element: <PaymentPage /> },
+        { path: CHECKOUT_PATH, element: <CheckOutPage /> },
       ],
     },
 
