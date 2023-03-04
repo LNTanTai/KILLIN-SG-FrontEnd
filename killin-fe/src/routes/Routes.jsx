@@ -9,6 +9,7 @@ import {
   OwnerPage,
   PaymentPage,
   ProductDetailPage,
+  ProfilePage,
   ShopPage,
   SignUpPage,
   StaffPage,
@@ -21,6 +22,7 @@ import {
   LOGIN_PATH,
   OWNER_PATH,
   PAYMENT_PATH,
+  PROFILE_PATH,
   SEARCH_PATH,
   SHOP_PATH,
   SIGN_UP_PATH,
@@ -87,6 +89,7 @@ export default function Routes() {
         { path: CART_PATH, element: <CartPage /> },
         { path: PAYMENT_PATH, element: <PaymentPage /> },
         { path: CHECKOUT_PATH, element: <CheckOutPage /> },
+        { path: PROFILE_PATH, element: <ProfilePage /> },
       ],
     },
 

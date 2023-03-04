@@ -16,7 +16,7 @@ import "./CartList.css";
 import moment from "moment/moment";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment }) => {
+const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, handleDelete }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -65,7 +65,8 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment }
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {list.itemList.map((row) => (
+                    {list.itemList.map((row) =>
+                    (
                       <TableRow key={row.id}>
                         <TableCell>
                           <CardMedia
@@ -93,10 +94,9 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment }
                           <IconButton
                             size="large"
                             color="error"
-                            // onClick={() => {
-                            //   setRowSelectDelete({ ...row, serviceId: row.id });
-                            //   handleClickOpenDialog();
-                            // }}
+                            onClick={() => {
+                              handleDelete(row.id, list.orderId, index)
+                            }}
                           >
                             <DeleteOutlinedIcon />
                           </IconButton>

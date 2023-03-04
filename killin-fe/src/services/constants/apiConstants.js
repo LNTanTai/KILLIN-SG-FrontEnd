@@ -10,3 +10,4 @@ export const POST_ORDER = '/api/orders';
 export const POST_ORDER_USER = '/api/orders/user';
 export const POST_GET_USER_BY_PHONENUMBER = '/api/users/getUserByPhoneNumber';
 export const POST_CREATE_BILL = '/api/bill/createBill';
+export const POST_DELETE_CART = '/api/orders/delete';
