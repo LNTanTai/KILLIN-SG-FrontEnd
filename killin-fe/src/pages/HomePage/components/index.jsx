@@ -67,7 +67,7 @@ const Banner = () => {
     });
     const Root = styled('div')(({ theme }) => ({
         flexGrow: 1,
-        padding: 0,
+        paddingTop: 65,
         width: "100%",
         maxWidth: "100%",
         overflow: "hidden",
@@ -85,6 +85,8 @@ const Banner = () => {
 
 
     const settings = {
+        paddingTop: "100px",
+        height: "500px",
         dots: true,
         infinite: true,
         speed: 4000,

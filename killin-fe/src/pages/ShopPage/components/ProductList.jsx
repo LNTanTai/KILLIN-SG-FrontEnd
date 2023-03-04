@@ -55,7 +55,7 @@ const ProductList = (props) => {
         });
       } else if (categoryId === "4") {
         filter = data.filter((product) => {
-          return product.productCategory.name === "quần ";
+          return product.productCategory.name === "quần";
         });
       } else if (categoryId === "5") {
         filter = data.filter((product) => {
