@@ -185,16 +185,6 @@ const DetailProduct = () => {
                   ).toLocaleString("en-US")}{" "}
                   VNĐ
                 </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  style={{ marginTop: 25 }}
-                >
-                  Quantity:
-                  <Button>-</Button>
-                  {selectedProduct.productQuantity}
-                  <Button>+</Button>
-                </Typography>
                 <Button
                   variant="contained"
                   color="primary"
