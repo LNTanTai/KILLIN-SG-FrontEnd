@@ -1,34 +1,69 @@
 .cart-container {
-    background-color: #E0E0E0;
-  }
+  background-color: #E0E0E0;
+}
 
-  /* alo alo*/
+/* alo alo*/
 .cart {
-    display: block;
-    padding: 40px;
-  }
-  
-  .cart-1 {
-    flex-basis: 70%;
-    height: fit-content;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    padding: 12px;
-    background-color: white;
-    margin-top: 15px;
-  }
-  
-  .cart-1-button {
-    margin-top: 50px;
-  }
-  
-  .cart-2 {
-    margin-top: 5%;
-    margin-left: 50%;
-    padding: 12px;
-    flex-basis: 30;
-    height: fit-content;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: white;
-  }
+  display: block;
+  padding: 40px;
+}
+
+.cart-1 {
+  flex-basis: 70%;
+  height: fit-content;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  background-color: white;
+  margin-top: 15px;
+}
+
+.cart-1-button {
+  margin-top: 50px;
+}
+
+.cart-2 {
+  margin-top: 5%;
+  margin-left: 50%;
+  padding: 12px;
+  flex-basis: 30;
+  height: fit-content;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.cart-2-pay {
+  margin-top: 5%;
+  margin-left: 1%;
+  padding: 12px;
+  flex-basis: 30;
+  width: 50%;
+  height: 250px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  display: flex;
+  /* căn giữa theo chiều ngang */
+  align-items: center;
+  /* căn giữa theo chiều dọc */
+  flex-direction: column;
+}
+
+.cart-3-pay {
+  margin-top: 5%;
+  margin-left: 0%;
+  padding: 12px;
+  width: 50%;
+  flex-basis: 30;
+  height: 250px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  justify-items: center;
+  display: flex;
+  justify-content: center;
+  /* căn giữa theo chiều ngang */
+  align-items: center;
+  /* căn giữa theo chiều dọc */
+}

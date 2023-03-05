@@ -8,7 +8,7 @@ const index = () => {
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <Navbar />
+            {/* <Navbar /> */}
             < ProfilePage />
         </Box>
     )

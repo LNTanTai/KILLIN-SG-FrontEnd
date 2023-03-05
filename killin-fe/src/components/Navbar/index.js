@@ -22,6 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
+  BILL_PATH,
   CART_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
@@ -153,6 +154,10 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
     navigate(`/user/${PROFILE_PATH}`);
   };
 
+  const handleBillHistory = async () => {
+    navigate(`/user/${BILL_PATH}`);
+  };
+
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
     navigate('../shop', { state: {search : searchValue} });
@@ -280,6 +285,9 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleBillHistory}>
+                    <Typography textAlign="center">Bill history</Typography>
                   </MenuItem>
                 </Menu>
               </Box>

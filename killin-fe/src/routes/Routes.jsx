@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import {
   AdminPage,
+  BillHistory,
   CartPage,
   CheckOutPage,
   HomePage,
@@ -16,6 +17,7 @@ import {
 } from "../services/constants/pageConstants";
 import {
   ADMIN_PATH,
+  BILL_PATH,
   CART_PATH,
   CHECKOUT_PATH,
   HOMEPAGE_PATH,
@@ -90,9 +92,10 @@ export default function Routes() {
         { path: PAYMENT_PATH, element: <PaymentPage /> },
         { path: CHECKOUT_PATH, element: <CheckOutPage /> },
         { path: PROFILE_PATH, element: <ProfilePage /> },
+        { path: BILL_PATH, element: <BillHistory /> }
       ],
     },
-
+//alo
     //Role Admin
     {
       path: "/admin",
