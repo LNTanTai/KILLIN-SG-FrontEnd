@@ -126,7 +126,7 @@ const CheckOutList = () => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>PAYMENT</h1>
+      <h1 style={{ paddingLeft: "40px" }}>CHECKOUT</h1>
       <div className="cart-container">
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div className="cart-3-pay">
@@ -141,32 +141,9 @@ const CheckOutList = () => {
           </div>
           <div className="cart-2-pay">
             <div className="cart-table">
-              <h2>Choose method payment: </h2>
-              <form>
-                <FormControl margin="normal" required>
-                  <Select
-                    value={paymentMethod}
-                    onChange={handlePaymentMethodChange}
-                    displayEmpty
-                  >
-                    <MenuItem value="" disabled>
-                      Select payment method
-                    </MenuItem>
-                    <MenuItem value="creditCard">Delivery</MenuItem>
-                    <MenuItem value="paypal">ZaloPay</MenuItem>
-                  </Select>
-                </FormControl>
-              </form>
-            </div>
-            <div
-              style={{
-                paddingRight: "125px",
-                marginTop: 15,
-              }}
-            >
-              <Button onClick={() => handlePayment()} variant="contained" style={{ width: "170px" }}>
-                Pay
-              </Button>
+              <h2>Tình trạng đơn hàng: </h2>
+              <p>Tình trạng đơn hàng : Cửa hàng đã xử lý đơn hàng</p>
+              <p>Ngày tạo : 11/11/2002</p>
             </div>
           </div>
         </div>

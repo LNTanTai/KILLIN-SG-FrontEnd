@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, Button, Link } from "@mui/material";
+import { Paper, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { POST_BANNER, POST_BESTSELLER } from "../../../services/constants/apiConstants";
@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { width } from "@mui/system";
 import { SHOP_PATH } from "../../../services/constants/pathConstants";
+import { Typography, Box } from '@mui/material';
 
 
 const Image = styled('img')({
@@ -28,9 +29,6 @@ const PaperStyled = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const Box = styled('div')(({ theme }) => ({ 
-    padding: theme.spacing(10)
-}));
 
 const Banner = () => {
     const [images, setImages] = useState([]);
@@ -61,27 +59,25 @@ const Banner = () => {
         fetchBestSeller();
     }, []);
     const Image = styled('img')({
-        height: 700,
         width: "100%",
         objectFit: "cover",
     });
     const Root = styled('div')(({ theme }) => ({
         flexGrow: 1,
-        paddingTop: 65,
+        paddingTop: 100,
         width: "100%",
         maxWidth: "100%",
         overflow: "hidden",
         textAlign: 'center',
         justifyContent: 'center',
-        height: 500,
+        height: 1200,
     }));
     const PaperStyled = styled(Paper)(({ theme }) => ({
-        padding: 0,
+        paddingTop: 0,
         textAlign: "center",
         color: theme.palette.text.secondary,
         width: "100%",
         border: '1px solid',
-        height: 500,
     }));
 
 
@@ -161,29 +157,48 @@ const Banner = () => {
 
 
     return (
-        <Root>
-            <Slider {...settings}>
-                {images.slice(0, 3).map((image) => (
-                    <div key={image.id} >
-                        <PaperStyled>
-                            <Image src={image.banner_url} />
-                        </PaperStyled>
-                    </div>
-                ))}
-            </Slider>
-            <h1>
-                BEST SELLER
-            </h1>
+        <div>
+            <Root>
+                <Slider {...settings}>
+                    {images.slice(0, 3).map((image) => (
+                        <div key={image.id} >
+                            <PaperStyled>
+                                <Image src={image.banner_url} />
+                            </PaperStyled>
+                        </div>
+                    ))}
+                </Slider>
+                <h1>
+                    BEST SELLER
+                </h1>
                 <Slider {...settingSeller}>
                     {bestSeller.slice(0, 7).map((product) => (
                         <div key={product.id}>
                             <p>{product.productName}</p>
-                            <Image src={product.productImages[0].url} style={{ height: '200px', objectFit: 'cover' }} />
+                            <Image src={product.productImages[0].url} style={{ height: '400px', objectFit: 'cover' }} />
                         </div>
                     ))}
                 </Slider>
-            <Button href={`../${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
-        </Root>
+                <Button href={`../${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
+                <div style={{paddingTop:'100px'}}>
+                    <Box sx={{
+                        textAlign: 'center',
+                        paddingTop: '50px',
+                        minHeight: '100vh',
+                        backgroundColor: '#f2f2f2'
+                    }}>
+                        <Typography variant="h2" gutterBottom sx={{ fontFamily: 'Helvetica' }}>
+                            Giới thiệu
+                        </Typography>
+                        <Typography variant="body1" sx={{ width: '50%', margin: '0 auto', fontFamily: 'Montserrat' }}>
+                            Killin là một thương hiệu thời trang nổi tiếng với chất lượng sản phẩm đồng đều và giá cả phải chăng. Với sứ mệnh đem đến cho người tiêu dùng những sản phẩm thời trang chất lượng cao với giá thành hợp lý, Killin đã trở thành lựa chọn ưa thích của nhiều khách hàng trên thị trường. Từ áo sơ mi đến quần jean, từ giày sneaker đến phụ kiện thời trang, Killin mang đến cho bạn những sản phẩm tốt nhất với giá cả phải chăng. Với một tiêu chí chất lượng nghiêm ngặt, Killin cam kết sẽ mang đến cho bạn trải nghiệm mua sắm thời trang tuyệt vời.
+                        </Typography>
+                    </Box>
+                </div>
+
+
+            </Root>
+        </div>
     );
 };
 

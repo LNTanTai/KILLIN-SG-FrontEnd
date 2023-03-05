@@ -111,7 +111,7 @@ const DetailProduct = () => {
     if (loginInfo === null) {
       navigate(`/${LOGIN_PATH}`);
     }
-    else{
+    else {
       addToCart();
     }
   };
@@ -122,15 +122,16 @@ const DetailProduct = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!requireLogin()) {
+    if (loginInfo == null) {
+      alert("Bạn phải đăng nhập để có thể sử dụng tính năng này!");
       return;
     }
     try {
       const response = await axiosUrl.post(POST_COMMENT, {
         comment: newComment,
-        id: "ad491d57-a4b2-4462-a209-c83f4f701d18", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
-        productId: "c3b6366d-e772-451e-96ec-192338bbfe92", // ID của sản phẩm được xem
-        userId: "239fa0a7-c1a8-4449-853e-2b21488bbb67" // ID người dùng đăng nhập
+        id: "", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
+        productId: selectedProduct.id, // ID của sản phẩm được xem
+        userId: token.userId // ID người dùng đăng nhập
       });
       setNewComment("");
       commentAPI(); // Reload comments
@@ -163,17 +164,6 @@ const DetailProduct = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   {selectedProduct.productName}
                 </Typography>
-                <Box sx={{ flex: 12, display: "inline-block" }}>
-                  <Button onClick={() => onAdd()}>+</Button>
-                  <Typography
-                    variant="div"
-                    color="textSecondary"
-                    width={5}
-                  >
-                    {quantity}
-                  </Typography>
-                  <Button onClick={() => onMinus()}>-</Button>
-                </Box>
                 <Typography
                   variant="body2"
                   color="textSecondary"

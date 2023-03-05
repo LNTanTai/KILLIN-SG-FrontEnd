@@ -61,6 +61,7 @@ const Index = () => {
           navigate(ADMIN_PATH, { replace: true });
         }
       }
+      console.log(token);
     } catch (e) {
       console.error(`Error at handleLogin: ${e}`);
       setOpenBackdrop(false);
