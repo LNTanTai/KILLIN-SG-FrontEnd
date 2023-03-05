@@ -150,7 +150,6 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
 
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
-    // console.log(searchValue);
     navigate('../shop', { state: {search : searchValue} });
   }
 

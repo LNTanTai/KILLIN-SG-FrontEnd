@@ -4,3 +4,7 @@ export const POST_LOGIN = '/authentication/login';
 export const POST_REGISTER = '/authentication/register';
 export const POST_BANNER = '/api/banners';
 export const POST_BESTSELLER = '/api/products/bestseller';
+export const POST_ORDER = '/api/orders';
+export const POST_ORDER_USER = '/api/orders/user';
+export const POST_GET_USER_BY_PHONENUMBER = '/api/users/getUserByPhoneNumber';
+export const POST_CREATE_BILL = '/api/bill/createBill';

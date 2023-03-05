@@ -46,7 +46,7 @@ const Index = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline />
-      {/* <Navbar /> */}
+      <Navbar />
       <OwnerDashboard
         setSearchedVal={setSearchedVal}
         isloading={isloading}

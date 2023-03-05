@@ -6,7 +6,7 @@ const index = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <Navbar /> */}
+      <Navbar />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <h1>Staff Page</h1>
       </Box>
