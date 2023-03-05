@@ -25,6 +25,7 @@ import {
   CART_PATH,
   HOMEPAGE_PATH,
   LOGIN_PATH,
+  PROFILE_PATH,
   SHOP_PATH,
   USER_PATH,
 } from "../../services/constants/pathConstants";
@@ -146,6 +147,10 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
     localStorage.clear();
     setOpenBackdrop(false);
     navigate(HOMEPAGE_PATH);
+  };
+
+  const handleProfile = async () => {
+    navigate(`/user/${PROFILE_PATH}`);
   };
 
   const searchItems = (searchValue) => {
@@ -270,7 +275,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={handleProfile}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>

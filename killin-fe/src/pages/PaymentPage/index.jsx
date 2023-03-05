@@ -24,7 +24,7 @@ const Index = () => {
     cartList.forEach((element1) => {
       element1.itemList.forEach((element) => {
         data.push({
-          orderDetailId: element1.orderId,
+          orderDetailId: element.id,
           quantity: element.quantity,
         },);
       });
@@ -33,6 +33,7 @@ const Index = () => {
       userId: token.userId,
       orderDetailList: data,
     };
+    console.log(params);
     try {
       const response = await axiosUrl.post(POST_CREATE_BILL, params);
       // const data = [...response.data];

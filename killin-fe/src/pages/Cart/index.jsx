@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import CartList from "./components/CartList";
 import { axiosUrl } from "../../services/api/axios";
-import { POST_ORDER_USER } from "../../services/constants/apiConstants";
+import { POST_DELETE_CART, POST_ORDER_USER } from "../../services/constants/apiConstants";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { PAYMENT_PATH } from "../../services/constants/pathConstants";
@@ -23,6 +23,26 @@ const Index = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleDelete = async (orderDetailId,orderIdd, index) => {
+    console.log(`${orderDetailId} + ${orderIdd}`)
+    const params = {
+      orderDetailId: orderDetailId,
+      orderId: orderIdd,
+    };
+    console.log(params);
+    try {
+      const response = await axiosUrl.post(POST_DELETE_CART, params);
+      // const data = [...response.data];
+      // setCartList(data);
+      // localStorage.setItem("ok", JSON.stringify(data));
+      console.log(response);
+      fetchData()
+      
+    } catch (error) {
+      console.error(`Error at fetchData: ${error}`);
+    }
+  };
 
   const fetchData = async () => {
     const params = {
@@ -74,6 +94,7 @@ const Index = () => {
         totalPrice={totalPrice}
         totalQuantity={totalQuantity}
         handlePayment={handlePayment}
+        handleDelete={handleDelete}
       />
     </Box>
   );
