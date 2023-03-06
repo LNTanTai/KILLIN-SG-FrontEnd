@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GET_PRODUCTS_ID, GET_PRODUCT_COMMENT_BY_ID, POST_COMMENT, POST_GET_USER_BY_PHONENUMBER, POST_ORDER } from "../../../services/constants/apiConstants";
+import {
+  GET_PRODUCTS_ID,
+  GET_PRODUCT_COMMENT_BY_ID,
+  POST_COMMENT,
+  POST_GET_USER_BY_PHONENUMBER,
+  POST_ORDER,
+} from "../../../services/constants/apiConstants";
 import { axiosUrl } from "../../../services/api/axios";
 import {
   Box,
@@ -12,7 +18,7 @@ import {
   TextField,
   Toolbar,
   Typography,
-  Avatar
+  Avatar,
 } from "@mui/material";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
@@ -105,13 +111,12 @@ const DetailProduct = () => {
     // }
 
     return true;
-  }
+  };
 
   const handleAddToCart = () => {
     if (loginInfo === null) {
       navigate(`/${LOGIN_PATH}`);
-    }
-    else {
+    } else {
       addToCart();
     }
   };
@@ -131,7 +136,7 @@ const DetailProduct = () => {
         comment: newComment,
         id: "", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
         productId: selectedProduct.id, // ID của sản phẩm được xem
-        userId: token.userId // ID người dùng đăng nhập
+        userId: token.userId, // ID người dùng đăng nhập
       });
       setNewComment("");
       commentAPI(); // Reload comments
@@ -164,61 +169,97 @@ const DetailProduct = () => {
                 <Typography gutterBottom variant="h5" component="h2">
                   {selectedProduct.productName}
                 </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  style={{ marginTop: 25 }}
-                >
-                  Price:{" "}
-                  {parseFloat(
-                    quantity * selectedProduct.productPrice
-                  ).toLocaleString("en-US")}{" "}
-                  VNĐ
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: 25 }}
-                  onClick={() => handleAddToCart()}
-                >
-                  Add to Cart
-                </Button>
+                {quantity === 0 ? (
+                  <></>
+                ) : (
+                  <Box sx={{ flex: 12, display: "inline-block" }}>
+                    <Button onClick={() => onAdd()}>+</Button>
+                    <Typography variant="div" color="textSecondary" width={5}>
+                      {quantity}
+                    </Typography>
+                    <Button onClick={() => onMinus()}>-</Button>
+                  </Box>
+                )}
+                {quantity === 0 ? (
+                  <></>
+                ) : (
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ marginTop: 25 }}
+                  >
+                    Price:{" "}
+                    {parseFloat(
+                      quantity * selectedProduct.productPrice
+                    ).toLocaleString("en-US")}{" "}
+                    VNĐ
+                  </Typography>
+                )}
+                {quantity === 0 ? (
+                  <h2>Hết sản phẩm</h2>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: 25 }}
+                    onClick={() => handleAddToCart()}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </Grid>
         </Grid>
-        <div style={{
-          width: '66.2%',
-          backgroundColor: 'lightgray',
-          marginTop: '10px',
-        }}>
-          <div style={{
-            padding: '10px 30px 30px 30px',
-          }}>
+        <div
+          style={{
+            width: "66.2%",
+            backgroundColor: "lightgray",
+            marginTop: "10px",
+          }}
+        >
+          <div
+            style={{
+              padding: "10px 30px 30px 30px",
+            }}
+          >
             <Typography variant="body2" color="black">
               <h1>Mô tả sản phẩm:</h1>
               {selectedProduct.description}
             </Typography>
           </div>
         </div>
-        <div style={{
-          width: '66.2%',
-          backgroundColor: 'lightgray',
-          marginTop: '10px',
-        }}>
-          <div style={{
-            padding: '10px 30px 30px 30px',
-          }}>
+        <div
+          style={{
+            width: "66.2%",
+            backgroundColor: "lightgray",
+            marginTop: "10px",
+          }}
+        >
+          <div
+            style={{
+              padding: "10px 30px 30px 30px",
+            }}
+          >
             <h1>Bình luận: </h1>
             {comment.length === 0 && <p>Không có bình luận</p>}
             {comment.map((data) => (
-              <div key={data.id} style={{ border: 'solid 1px' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', padding: '10px' }}>
+              <div key={data.id} style={{ border: "solid 1px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "10px",
+                  }}
+                >
                   <Avatar></Avatar>
-                  <div style={{ paddingTop: '8px', paddingLeft: '10px' }}>{data.comment}</div>
+                  <div style={{ paddingTop: "8px", paddingLeft: "10px" }}>
+                    {data.comment}
+                  </div>
                 </div>
               </div>
-            ))}<br></br>
+            ))}
+            <br></br>
             <form onSubmit={handleSubmit}>
               <TextField
                 id="new-comment"
@@ -228,11 +269,12 @@ const DetailProduct = () => {
                 rows={4}
                 value={newComment}
                 onChange={handleCommentChange}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
-              <Button variant="contained" color="primary" type="submit">Thêm bình luận </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Thêm bình luận{" "}
+              </Button>
             </form>
-
           </div>
         </div>
       </Box>

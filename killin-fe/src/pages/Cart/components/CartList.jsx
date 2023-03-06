@@ -16,7 +16,16 @@ import "./CartList.css";
 import moment from "moment/moment";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, handleDelete }) => {
+const CartList = ({
+  cartList,
+  totals,
+  totalPrice,
+  totalQuantity,
+  handlePayment,
+  handleDelete,
+  onAdd,
+  onMinus,
+}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -65,8 +74,7 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, 
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {list.itemList.map((row) =>
-                    (
+                    {list.itemList.map((row, index2) => (
                       <TableRow key={row.id}>
                         <TableCell>
                           <CardMedia
@@ -83,7 +91,11 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, 
                         <TableCell>
                           {parseFloat(row.price).toLocaleString("en-US")} VND
                         </TableCell>
-                        <TableCell>{row.quantity}</TableCell>
+                        <TableCell>
+                          <Button onClick={() => onAdd(row, index2, list )}>+</Button>
+                          {row.quantity}
+                          <Button onClick={() => onMinus()}>-</Button>
+                        </TableCell>
                         <TableCell>
                           {parseFloat(row.quantity * row.price).toLocaleString(
                             "en-US"
@@ -95,7 +107,7 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, 
                             size="large"
                             color="error"
                             onClick={() => {
-                              handleDelete(row.id, list.orderId, index)
+                              handleDelete(row.id, list.orderId);
                             }}
                           >
                             <DeleteOutlinedIcon />
@@ -140,9 +152,18 @@ const CartList = ({ cartList, totals, totalPrice, totalQuantity, handlePayment, 
                 marginTop: 12,
               }}
             >
-              <Button onClick={()=>handlePayment()} variant="contained" style={{ width: "170px" }}>
-                Check out
-              </Button>
+              {/* {console.log(cartList.length)} */}
+              {cartList.length === 0 ? (
+                <></>
+              ) : (
+                <Button
+                  onClick={() => handlePayment()}
+                  variant="contained"
+                  style={{ width: "170px" }}
+                >
+                  Check out
+                </Button>
+              )}
             </div>
           </div>
         </div>
