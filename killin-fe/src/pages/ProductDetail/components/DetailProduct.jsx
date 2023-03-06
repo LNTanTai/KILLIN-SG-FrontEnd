@@ -80,7 +80,7 @@ const DetailProduct = () => {
         const element = data.productImages[index];
         setUrl(element.url);
       }
-      // console.log(data);
+      console.log(data);
     } catch (error) {
       console.error(`Error at DetailProduct: ${error}`);
     }
@@ -97,15 +97,6 @@ const DetailProduct = () => {
     }
   };
 
-  const requireLogin = () => {
-    // if (loginInfo === null) {
-    //   alert('Bạn cần đăng nhập để sử dụng tính năng này!');
-    //   navigate(`/${LOGIN_PATH}`);
-    //   return false;
-    // }
-
-    return true;
-  }
 
   const handleAddToCart = () => {
     if (loginInfo === null) {
@@ -126,18 +117,20 @@ const DetailProduct = () => {
       alert("Bạn phải đăng nhập để có thể sử dụng tính năng này!");
       return;
     }
+    const params = {
+      comment: newComment,
+      id: "", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
+      productId: selectedProduct.id, // ID của sản phẩm được xem
+      userId: token.userId // ID người dùng đăng nhập
+    };
     try {
-      const response = await axiosUrl.post(POST_COMMENT, {
-        comment: newComment,
-        id: "", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
-        productId: selectedProduct.id, // ID của sản phẩm được xem
-        userId: token.userId // ID người dùng đăng nhập
-      });
+      const response = await axiosUrl.post(POST_COMMENT, params);
       setNewComment("");
       commentAPI(); // Reload comments
       // Thực hiện các thao tác cần thiết khi lưu bình luận thành công, ví dụ: đặt lại giá trị newComment, tải lại danh sách bình luận, vv.
     } catch (error) {
-      console.error(`Error at saveComment: ${error}`);
+      console.log(params);
+      console.error(`Error at saveComment: ${error.response}`);
     }
   };
 
@@ -212,10 +205,12 @@ const DetailProduct = () => {
             <h1>Bình luận: </h1>
             {comment.length === 0 && <p>Không có bình luận</p>}
             {comment.map((data) => (
-              <div key={data.id} style={{ border: 'solid 1px' }}>
+              <div key={data.id} style={{ border: 'solid 1px', margin: '10px 10px 10px 0', borderRadius:'10px' }}>
                 <div style={{ display: 'flex', flexDirection: 'row', padding: '10px' }}>
                   <Avatar></Avatar>
-                  <div style={{ paddingTop: '8px', paddingLeft: '10px' }}>{data.comment}</div>
+                  <div style={{ paddingTop: '8px', paddingLeft: '10px' }}>
+                    {data.comment}
+                    </div>
                 </div>
               </div>
             ))}<br></br>
@@ -228,7 +223,8 @@ const DetailProduct = () => {
                 rows={4}
                 value={newComment}
                 onChange={handleCommentChange}
-                style={{ width: '100%' }}
+                style={{ width: '100%',
+                paddingBottom: '10px' }}
               />
               <Button variant="contained" color="primary" type="submit">Thêm bình luận </Button>
             </form>

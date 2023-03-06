@@ -5,7 +5,13 @@ import PaymentMethod from "../../pages/PayPage";
 
 const index = () => {
   return (
-    <Box sx={{ marginTop: "60px", width: "100%", bottom: 0, backgroundColor: 'black', color: 'white' }}>
+    <Box sx={{ marginTop: "60px", 
+    width: "100%", bottom: 0, 
+    backgroundColor: 'black', 
+    color: 'white',
+    position: 'relative',
+    bottom: 0,
+     }}>
       <Toolbar />
       <Paper
         sx={{
