@@ -1,128 +1,8 @@
-import { Box, CssBaseline, Toolbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import jwtDecode from "jwt-decode";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  CardMedia,
-  Grid,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import moment from "moment/moment";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { axiosUrl } from "../../../services/api/axios";
-import { POST_CREATE_BILL, POST_GET_USER_BY_PHONENUMBER, POST_ORDER_USER } from "../../../services/constants/apiConstants";
-import { PAYMENT_PATH } from "../../../services/constants/pathConstants";
+import { Box, Toolbar } from "@mui/material";
+import moment from "moment";
+import React from "react";
 
-const CheckOutList = () => {
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [userData, setUserData] = useState([]);
-  // const cartList = location.state;
-  const [cartList, setCartList] = useState([]);
-  const [totals, setTotals] = useState([]);
-  const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
-  let token;
-  if (loginInfo !== null) {
-    token = jwtDecode(loginInfo);
-  }
-  const navigate = useNavigate();
-  useEffect(() => {
-    fetchData();
-    console.log("user phonenumber: " + token.phoneNumber);
-  }, []);
-
-  useEffect(() => {
-    fetchUserByPhoneNumber();
-  }, []);
-  const fetchUserByPhoneNumber = async () => {
-    const params = {
-      phoneNumber: token.phoneNumber,
-    };
-    try {
-      const response = await axiosUrl.post(POST_GET_USER_BY_PHONENUMBER, params);
-      const data = { ...response.data };
-      setUserData(data);
-      console.log("get API: " + response);
-    } catch (error) {
-      console.error(`Error at fetchUserByPhoneNumber: ${error}`);
-    }
-  }
-
-  const fetchData = async () => {
-    const params = {
-      userId: token.userId,
-    };
-    try {
-      const response = await axiosUrl.post(POST_ORDER_USER, params);
-      const data = [...response.data];
-      setCartList(data);
-      data.forEach((element) => {
-        const total = element.itemList.reduce(
-          (previousScore, currentScore, index) =>
-            previousScore +
-            parseFloat(currentScore.quantity * currentScore.price),
-          0
-        );
-        setTotals((totals) => [...totals, total]);
-      });
-    } catch (error) {
-      console.error(`Error at fetchData: ${error}`);
-    }
-  };
-
-  const totalPrice = totals.reduce(
-    (previousScore, currentScore, index) => previousScore + currentScore,
-    0
-  );
-
-  const totalQuantity = cartList.reduce(
-    (previousScore, currentScore, index) =>
-      previousScore + parseInt(currentScore.totalQuantity),
-    0
-  );
-
-  const handlePayment = () => {
-    navigate(`/user/${PAYMENT_PATH}`, { state: cartList });
-  }
-
-  const payment = async () => {
-    let data = [];
-    cartList.forEach((element1) => {
-      element1.itemList.forEach((element) => {
-        data.push({
-          orderDetailId: element1.orderId,
-          quantity: element.quantity,
-        },);
-      });
-    });
-    const params = {
-      userId: token.userId,
-      orderDetailList: data,
-    };
-    try {
-      const response = await axiosUrl.post(POST_CREATE_BILL, params);
-      // const data = [...response.data];
-      console.log(response.data);
-      // console.log(data);
-      localStorage.setItem("ko", response.data);
-    } catch (error) {
-      console.error(`Error at fetchData: ${error}`);
-    }
-  };
-  const handlePaymentMethodChange = (event) => {
-    setPaymentMethod(event.target.value);
-  };
-
+const CheckOutList = ({userData,checkOutList}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -132,7 +12,7 @@ const CheckOutList = () => {
           <div className="cart-3-pay">
             <div className="cart-table">
               <h1>Thông tin người nhận: </h1>
-              {console.log(userData)}
+              {/* {console.log(userData)} */}
               <p>Tên người dùng : {userData.fullName}</p>
               <p>Ngày sinh: {userData.dob}</p>
               <p>Số điện thoại: {userData.phoneNumber}</p>
@@ -141,14 +21,15 @@ const CheckOutList = () => {
           </div>
           <div className="cart-2-pay">
             <div className="cart-table">
-              <h2>Tình trạng đơn hàng: </h2>
-              <p>Tình trạng đơn hàng : Cửa hàng đã xử lý đơn hàng</p>
-              <p>Ngày tạo : 11/11/2002</p>
+              <h2>Mã đơn hàng: {checkOutList.billId}</h2>
+              <p>Thời gian tạo: {moment(checkOutList.timeCreate).format("DD/MM/YYYY hh:mm A")}</p>
+              <p>Tổng thanh toán: {parseFloat(checkOutList.totalPrice).toLocaleString("en-US")} VND</p>
+              <p>Phương thức thanh toán: {checkOutList.paymentStatus === "Unpaid"? "Thanh toán khi giao hàng": "Đã thanh toán bằng ZaloPay"}</p>
             </div>
           </div>
         </div>
         <div className="cart">
-          {cartList.map((list, index) => (
+          {/* {cartList.map((list, index) => (
             <div key={list.orderId} className="cart-1">
               <div>
                 <Grid
@@ -219,8 +100,7 @@ const CheckOutList = () => {
                 </Table>
               </div>
             </div>
-          ))}
-
+          ))} */}
         </div>
       </div>
     </Box>

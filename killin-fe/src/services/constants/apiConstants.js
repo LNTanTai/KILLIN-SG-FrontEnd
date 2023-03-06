@@ -12,3 +12,5 @@ export const POST_GET_USER_BY_PHONENUMBER = '/api/users/getUserByPhoneNumber';
 export const POST_CREATE_BILL = '/api/bill/createBill';
 export const POST_DELETE_CART = '/api/orders/delete';
 export const POST_BILL_BY_USERID = '/api/bill/getListBillByUserId';
+export const POST_GET_LIST_BILL_BY_DATE = '/api/bill/getListBillByDate';
+export const POST_UPDATE_BILL_STATUS = '/api/bill/updateBillStatus';
