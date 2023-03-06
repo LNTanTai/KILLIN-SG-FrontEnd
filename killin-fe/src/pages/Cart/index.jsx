@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import CartList from "./components/CartList";
 import { axiosUrl } from "../../services/api/axios";
-import { POST_DELETE_CART, POST_ORDER_USER } from "../../services/constants/apiConstants";
+import {
+  POST_DELETE_CART,
+  POST_ORDER_USER,
+} from "../../services/constants/apiConstants";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { PAYMENT_PATH } from "../../services/constants/pathConstants";
@@ -11,6 +14,7 @@ import { PAYMENT_PATH } from "../../services/constants/pathConstants";
 const Index = () => {
   const [cartList, setCartList] = useState([]);
   const [totals, setTotals] = useState([]);
+
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   let token;
   if (loginInfo !== null) {
@@ -24,8 +28,35 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async (orderDetailId,orderIdd, index) => {
-    console.log(`${orderDetailId} + ${orderIdd}`)
+  const onAdd = async (data, index2, list) => {
+    const exist = cartList.find(
+      (x) => x.itemList[index2].id === list.itemList[index2].id
+    );
+
+    if (exist) {
+      setCartList(
+        cartList.map((child) => {
+          return child.itemList[index2].id === list.itemList[index2].id
+            ? {
+                ...exist,
+                itemList: child.itemList.map((children) =>
+                  children.id === data.id
+                    ? {
+                        ...children,
+                        quantity: `${parseInt(data.quantity) + 1}`,
+                      }
+                    : children
+                ),
+              }
+            : child;
+        })
+      );
+    }
+  };
+
+  const onMinus = () => {};
+
+  const handleDelete = async (orderDetailId, orderIdd) => {
     const params = {
       orderDetailId: orderDetailId,
       orderId: orderIdd,
@@ -37,8 +68,8 @@ const Index = () => {
       // setCartList(data);
       // localStorage.setItem("ok", JSON.stringify(data));
       console.log(response);
-      fetchData()
-      
+
+      fetchData();
     } catch (error) {
       console.error(`Error at fetchData: ${error}`);
     }
@@ -54,6 +85,7 @@ const Index = () => {
       setCartList(data);
       // localStorage.setItem("ok", JSON.stringify(data));
       // console.log(cartStorage)
+      setTotals([]);
       data.forEach((element) => {
         const total = element.itemList.reduce(
           (previousScore, currentScore, index) =>
@@ -80,13 +112,12 @@ const Index = () => {
   );
 
   const handlePayment = () => {
-    navigate(`/user/${PAYMENT_PATH}`,{state: cartList});
-  }
+    navigate(`/user/${PAYMENT_PATH}`, { state: cartList });
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline />
-      {console.log(totalQuantity)}
       {/* {console.log(cartList)} */}
       <CartList
         cartList={cartList}
@@ -95,6 +126,8 @@ const Index = () => {
         totalQuantity={totalQuantity}
         handlePayment={handlePayment}
         handleDelete={handleDelete}
+        onAdd={onAdd}
+        onMinus={onMinus}
       />
     </Box>
   );

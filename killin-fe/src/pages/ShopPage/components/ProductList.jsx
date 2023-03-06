@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
-import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
+import { GET_PRODUCTS, POST_ORDER } from "../../../services/constants/apiConstants";
 import { useLocation } from 'react-router-dom';
 import {
   HOMEPAGE_PATH,
@@ -19,6 +19,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
+import jwtDecode from "jwt-decode";
 
 const ProductList = (props) => {
   const [productData, setProductData] = useState([]);
@@ -27,6 +28,10 @@ const ProductList = (props) => {
   const location = useLocation('');
   const search = location?.state?.search;
   const navigate = useNavigate();
+  let token;
+  if (loginInfo !== null) {
+    token = jwtDecode(loginInfo);
+  }
 
   useEffect(() => {
     fetchData(props.categoryId);
@@ -34,6 +39,7 @@ const ProductList = (props) => {
   useEffect(() => {
     console.log(search);
   }, [search]);
+
   const fetchData = async (categoryId) => {
     const params = {};
     try {
@@ -72,9 +78,34 @@ const ProductList = (props) => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (product) => {
     if (loginInfo === null) {
       navigate(`/${LOGIN_PATH}`);
+    }
+    else{
+      // console.log(productData);
+      addToCart(product);
+    }
+  };
+
+  const addToCart = async (product) => {
+    const params = {
+      itemList: [
+        {
+          productId: product.id,
+          image: product.productImages[0].url,
+          price: parseFloat(product.productPrice),
+          quantity: "1",
+        },
+      ],
+      totalPrice: `${parseFloat(product.productPrice)}`,
+      userId: token.userId,
+    };
+    try {
+      const response = await axiosUrl.post(POST_ORDER, params);
+      console.log(response);
+    } catch (error) {
+      console.error(`Error at addToCart: ${error}`);
     }
   };
 
@@ -83,6 +114,7 @@ const ProductList = (props) => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Grid container spacing={3}>
+          {console.log(productData)}
           {loadingCircular === true ? (
             <CircularProgress size={120} sx={{ mt: 30 }} />
           ) : productData.length === 0 ? (
@@ -146,7 +178,7 @@ const ProductList = (props) => {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            handleAddToCart();
+                            handleAddToCart(product);
                           }}
                         >
                           Add to Cart

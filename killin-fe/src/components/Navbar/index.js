@@ -283,11 +283,15 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   <MenuItem onClick={handleProfile}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
+                  {token.role === "3"? (
+                    <MenuItem onClick={handleBillHistory}>
+                    <Typography textAlign="center">Bill history</Typography>
+                  </MenuItem>
+                  ) : (
+                    <></>
+                  )}
                   <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleBillHistory}>
-                    <Typography textAlign="center">Bill history</Typography>
                   </MenuItem>
                 </Menu>
               </Box>
