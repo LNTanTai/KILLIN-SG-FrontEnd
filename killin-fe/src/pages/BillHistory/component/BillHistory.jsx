@@ -1,4 +1,4 @@
-import { CssBaseline, Typography } from '@mui/material'
+import { CssBaseline, TableContainer, Typography } from '@mui/material'
 import {
   CardMedia,
   Grid,
@@ -52,23 +52,39 @@ const BillHistory = () => {
         </Typography>
       ) : (
         orders.map((bill) => (
-          <Box sx={{ border: 'solid 1px', margin: ' 0 auto', borderRadius: '10px', width: '90%' }}>
-            <div key={bill.timeCreate} style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
-              <h1 style={{paddingLeft:'10px'}}>{moment(bill.timeCreate).format("DD-MM-YYYY")}</h1>
-              <Table>
-                <TableHead>
-                  <TableCell>Product</TableCell>
-                  <TableCell>Payment Status</TableCell>
-                  <TableCell>Process Status</TableCell>
-                  <TableCell>Total Price</TableCell>
-                </TableHead>
-                <TableBody>
-                  <TableCell>Product</TableCell>
-                  <TableCell>{bill.paymentStatus}</TableCell>
-                  <TableCell>{bill.processStatus}</TableCell>
-                  <TableCell>{bill.totalPrice}</TableCell>
-                </TableBody>
-              </Table>
+          <Box sx={{ border: 'solid 1px', margin: ' 10px auto 20px auto', borderRadius: '10px', width: '90%', paddingBottom: '10px' }}>
+            <div key={bill.billId} style={{ display: 'flex', flexDirection: 'column', padding: '15px' }}>
+              <h1 style={{ paddingLeft: '10px' }}>{moment(bill.timeCreate).format("DD-MM-YYYY")}</h1>
+              <TableContainer>
+
+
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Product</TableCell>
+                      <TableCell>Payment Status</TableCell>
+                      <TableCell>Process Status</TableCell>
+                      <TableCell>Total Price</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableCell>
+                      {bill.itemList.map((item) => (
+                        <img src={item.productImages[0]}
+                          style={{
+                            height: 100,
+                            width: 80,
+                            marginRight:10
+                          }}
+                        ></img>
+                      ))}
+                    </TableCell>
+                    <TableCell>{bill.paymentStatus}</TableCell>
+                    <TableCell>{bill.processStatus}</TableCell>
+                    <TableCell>{bill.totalPrice}</TableCell>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </Box>
         ))
