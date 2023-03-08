@@ -2,8 +2,10 @@ import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import {
   AdminPage,
+  BannerPage,
   BillHistory,
   CartPage,
+  CategoryPage,
   CheckOutPage,
   HomePage,
   LoginPage,
@@ -127,6 +129,14 @@ export default function Routes() {
         {
           path: "homepage",
           element: <OwnerPage />,
+        },
+        {
+          path: "banner",
+          element: <BannerPage />,
+        },
+        {
+          path: "category",
+          element: <CategoryPage />,
         },
       ],
     },

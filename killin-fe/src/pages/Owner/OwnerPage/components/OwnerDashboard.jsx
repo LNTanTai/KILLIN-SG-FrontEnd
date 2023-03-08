@@ -1,8 +1,10 @@
 import {
   Box,
   Button,
+  CardMedia,
   CircularProgress,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -19,6 +21,8 @@ import {
   tableCellClasses,
 } from "@mui/material";
 import React from "react";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -81,8 +85,7 @@ const OwnerDashboard = ({
             <Button
               variant="contained"
               sx={{ width: "200px", height: "35px", ml: 4 }}
-              onClick={() => {
-              }}
+              onClick={() => {}}
             >
               Tạo Sản Phẩm Mới
             </Button>
@@ -148,7 +151,13 @@ const OwnerDashboard = ({
                         {productData.indexOf(row) + 1}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {row.productImages[0].url}
+                        <CardMedia
+                          component="img"
+                          alt="productImages"
+                          image={row.productImages[0].url}
+                          title="productImages"
+                          sx={{ width: "50px" }}
+                        ></CardMedia>
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         {row.productName}
@@ -169,20 +178,26 @@ const OwnerDashboard = ({
                         {row.productPrice}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <Button
-                          variant="contained"
-                          sx={{ width: "130px", height: "35px" }}
-                        >
-                          Cập nhật
-                        </Button>
+                      <IconButton
+                            size="large"
+                            color="info"
+                            onClick={() => {
+                              // handleDelete(row.id, list.orderId);
+                            }}
+                          >
+                            <EditRoundedIcon />
+                          </IconButton>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        <Button
-                          variant="contained"
-                          sx={{ width: "100%", height: "35px" }}
-                        >
-                          Xóa
-                        </Button>
+                      <IconButton
+                            size="large"
+                            color="error"
+                            onClick={() => {
+                              // handleDelete(row.id, list.orderId);
+                            }}
+                          >
+                            <DeleteOutlinedIcon />
+                          </IconButton>
                       </StyledTableCell>
                     </TableRow>
                   ))

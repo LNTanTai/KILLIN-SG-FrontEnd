@@ -56,7 +56,7 @@ const PaymentList = ({
                         marginRight: 20,
                       }}
                     >
-                      {/* Total Price: {totals[index]} VND */}
+                      Total Price: {parseFloat(totals[index]).toLocaleString("en-US")} VND
                     </h2>
                   </Grid>
                 </Grid>

@@ -17,16 +17,35 @@ import {
   HOMEPAGE_PATH,
 } from "../../services/constants/pathConstants";
 import { Link } from "react-router-dom";
+import { axiosUrl } from "../../services/api/axios";
+import { GET_CATEGORY_NAME } from "../../services/constants/apiConstants";
+import { useEffect } from "react";
 
 const drawerWidth = 190;
-const CategoryArray = ["Tất cả", "Áo", "Áo hoodie", "Áo polo", "Quần", "Nón"];
+// const CategoryArray = ["Tất cả", "Áo", "Áo hoodie", "Áo polo", "Quần", "Nón"];
 
 const SideBar = () => {
   const [chooseCate, setchooseCate] = useState();
+  const [categoryArray, setCategoryArray] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+
   const chooseCategory = (ctg) => {
     setchooseCate(ctg);
-    // console.log(chooseCate);
+  };
+
+  useEffect(()=>{
+    fetchData();
+  }, [])
+
+  const fetchData = async () => {
+    const params = {};
+    try {
+      const response = await axiosUrl.get(GET_CATEGORY_NAME, params);
+      const data = [ { id:"", name: "tất cả"}, ...response.data];
+      setCategoryArray(data);
+    } catch (error) {
+      console.error(`Error at fetchData: ${error}`);
+    }
   };
 
   return (
@@ -56,7 +75,7 @@ const SideBar = () => {
         </Box>
         <Divider />
 
-        {CategoryArray.map((text, index) => (
+        {categoryArray.map((text, index) => (
           <List key={index}>
             {loginInfo!==null?(<Link to={`/user/shop/product-list/${index}`}  style={{textDecoration: 'none' }}>
               <ListItem disablePadding>
@@ -64,7 +83,7 @@ const SideBar = () => {
                   <ListItemIcon>
                     {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text.name} />
                 </ListItemButton>
               </ListItem>
             </Link>):(<Link to={`/shop/product-list/${index}`} style={{textDecoration: 'none' }}>
@@ -73,7 +92,7 @@ const SideBar = () => {
                   <ListItemIcon>
                     {index % 2 === 0 ? <CheckroomIcon /> : <AutoAwesomeIcon />}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text.name} />
                 </ListItemButton>
               </ListItem>
             </Link>)}

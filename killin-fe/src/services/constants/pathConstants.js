@@ -13,6 +13,8 @@ export const USER_PATH = "/user/homepage";
 export const ADMIN_PATH = "/admin/homepage";
 
 export const OWNER_PATH = "/owner/homepage";
+export const CATEGORY_PATH = "/owner/category";
+export const BANNER_PATH = "/owner/banner";
 
 export const STAFF_PATH = "/staff/homepage";
 
