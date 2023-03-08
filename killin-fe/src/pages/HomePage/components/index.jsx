@@ -12,22 +12,22 @@ import { SHOP_PATH } from "../../../services/constants/pathConstants";
 import { Typography, Box } from '@mui/material';
 
 
-const Image = styled('img')({
-    height: 200,
-    width: "100%",
-    objectFit: "cover",
-});
+// const Image = styled('img')({
+//     height: 200,
+//     width: "100%",
+//     objectFit: "cover",
+// });
 
-const Root = styled('div')(({ theme }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(2),
-}));
+// const Root = styled('div')(({ theme }) => ({
+//     flexGrow: 1,
+//     padding: theme.spacing(2),
+// }));
 
-const PaperStyled = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-}));
+// const PaperStyled = styled(Paper)(({ theme }) => ({
+//     padding: theme.spacing(2),
+//     textAlign: "center",
+//     color: theme.palette.text.secondary,
+// }));
 
 
 const Banner = () => {
@@ -60,6 +60,7 @@ const Banner = () => {
     }, []);
     const Image = styled('img')({
         width: "100%",
+        height: "500px",
         objectFit: "cover",
     });
     const Root = styled('div')(({ theme }) => ({
@@ -70,7 +71,7 @@ const Banner = () => {
         overflow: "hidden",
         textAlign: 'center',
         justifyContent: 'center',
-        height: 1200,
+        height: 1700,
     }));
     const PaperStyled = styled(Paper)(({ theme }) => ({
         paddingTop: 0,
@@ -83,7 +84,7 @@ const Banner = () => {
 
     const settings = {
         paddingTop: "100px",
-        height: "500px",
+        height: "300px",
         dots: true,
         infinite: true,
         speed: 4000,
@@ -160,7 +161,7 @@ const Banner = () => {
         <div>
             <Root>
                 <Slider {...settings}>
-                    {images.slice(0, 3).map((image) => (
+                    {images.slice(0, 4).map((image) => (
                         <div key={image.id} >
                             <PaperStyled>
                                 <Image src={image.banner_url} />

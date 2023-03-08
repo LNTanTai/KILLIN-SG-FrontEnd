@@ -63,7 +63,7 @@ const Index = () => {
       }
       console.log(token);
     } catch (e) {
-      console.error(`Error at handleLogin: ${e}`);
+      console.error(`Error at handleLogin: ${e.response}`);
       setOpenBackdrop(false);
     }
   };
