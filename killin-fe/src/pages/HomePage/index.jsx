@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: 'column' }}>
       <CssBaseline />
-      <Navbar/>
+      {/* <Navbar/> */}
       <Banner />
       <Footer />
     </Box>
