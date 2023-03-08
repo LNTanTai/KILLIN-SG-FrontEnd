@@ -17,7 +17,7 @@ const Index = () => {
   }
 
   useEffect(() => {
-    console.log(checkOutList);
+    console.log(checkOutList.itemList);
     fetchUserByPhoneNumber();
   }, []);
 

@@ -92,9 +92,13 @@ const CartList = ({
                           {parseFloat(row.price).toLocaleString("en-US")} VND
                         </TableCell>
                         <TableCell>
-                          <Button onClick={() => onAdd(row, index2, list )}>+</Button>
+                          <Button onClick={() => onAdd(row, index2, list)}>
+                            +
+                          </Button>
                           {row.quantity}
-                          <Button onClick={() => onMinus()}>-</Button>
+                          <Button onClick={() => onMinus(row, index2, list)}>
+                            -
+                          </Button>
                         </TableCell>
                         <TableCell>
                           {parseFloat(row.quantity * row.price).toLocaleString(

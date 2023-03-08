@@ -141,7 +141,7 @@ const DetailProduct = () => {
   };
 
   const handleCommentChange = (event) => {
-    setEditedComment(event.target.value);
+    setNewComment(event.target.value);
   };
   const handleCommentChange1 = (event) => {
     setNewComment(event.target.value);
@@ -333,6 +333,7 @@ const DetailProduct = () => {
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                           <MenuItem onClick={() => {}}>
                             <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
+                            
                           </MenuItem>
                           <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
                         </Menu>
@@ -345,7 +346,8 @@ const DetailProduct = () => {
             <br></br>
             <form onSubmit={handleSubmit}>
               <TextField
-                id="new-comment"
+                id="newComment"
+                name="newComment"
                 label="Add a comment"
                 variant="outlined"
                 multiline

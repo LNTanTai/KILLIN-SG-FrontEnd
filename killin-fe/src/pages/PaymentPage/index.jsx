@@ -11,7 +11,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   CHECKOUT_PATH,
 } from "../../services/constants/pathConstants";
-import { POST_ORDER_USER } from "../../services/constants/apiConstants";
 import Navbar from "../../components/Navbar";
 import PaymentList from "./components/PaymentList";
 
@@ -34,6 +33,7 @@ const Index = () => {
   // }, []);
 
   useEffect(() => {
+    setTotals([]);
     cartList.forEach((element) => {
       const total = element.itemList.reduce(
         (previousScore, currentScore, index) =>

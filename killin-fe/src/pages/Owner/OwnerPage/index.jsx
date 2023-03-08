@@ -1,9 +1,10 @@
 import { Box, CssBaseline } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/Navbar";
 import OwnerDashboard from "./components/OwnerDashboard";
-import { axiosUrl } from "../../services/api/axios";
-import { GET_PRODUCTS } from "../../services/constants/apiConstants";
+import { axiosUrl } from "../../../services/api/axios";
+import { GET_PRODUCTS } from "../../../services/constants/apiConstants";
+import { OwnerSidebar } from "../../../services/constants/componentConstants";
 
 const product = [];
 
@@ -44,9 +45,10 @@ const Index = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Navbar />
+      {/* <Navbar /> */}
+      <OwnerSidebar />
       <OwnerDashboard
         setSearchedVal={setSearchedVal}
         isloading={isloading}

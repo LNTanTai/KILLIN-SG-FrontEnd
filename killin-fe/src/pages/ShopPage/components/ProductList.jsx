@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { axiosUrl } from "../../../services/api/axios";
-import { GET_PRODUCTS, POST_ORDER } from "../../../services/constants/apiConstants";
+import { GET_CATEGORY_NAME, GET_PRODUCTS, POST_ORDER } from "../../../services/constants/apiConstants";
 import { useLocation } from 'react-router-dom';
 import {
   HOMEPAGE_PATH,
@@ -46,30 +46,18 @@ const ProductList = (props) => {
       setLoadingCircular(true);
       const response = await axiosUrl.get(GET_PRODUCTS, params);
       const data = [...response.data];
+
+      const response2 = await axiosUrl.get(GET_CATEGORY_NAME, params);
+      const data2 = [ { id:"", name: "tất cả"}, ...response2.data];
+      
       let filter = [];
-      if (categoryId === "1") {
-        filter = data.filter((product) => {
-          return product.productCategory.name === "áo";
-        });
-      } else if (categoryId === "2") {
-        filter = data.filter((product) => {
-          return product.productCategory.name === "áo hoodie";
-        });
-      } else if (categoryId === "3") {
-        filter = data.filter((product) => {
-          return product.productCategory.name === "áo polo";
-        });
-      } else if (categoryId === "4") {
-        filter = data.filter((product) => {
-          return product.productCategory.name === "quần";
-        });
-      } else if (categoryId === "5") {
-        filter = data.filter((product) => {
-          return product.productCategory.name === "nón";
-        });
-      } else {
+      if (categoryId === "0" || categoryId === undefined) {
         filter = data;
-      }
+      } else {
+        filter = data.filter((product) => {
+          return product.productCategory.name === data2[parseInt(categoryId)].name;
+        });
+      } 
       setProductData(filter);
       setLoadingCircular(false);
     } catch (error) {
@@ -114,7 +102,7 @@ const ProductList = (props) => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Grid container spacing={3}>
-          {console.log(productData)}
+          {/* {console.log(productData)} */}
           {loadingCircular === true ? (
             <CircularProgress size={120} sx={{ mt: 30 }} />
           ) : productData.length === 0 ? (
