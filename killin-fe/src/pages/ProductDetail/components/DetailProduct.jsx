@@ -30,6 +30,7 @@ const DetailProduct = () => {
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = useState({});
   const [comment, setComment] = useState([]);
+  const [selectIdComment, setSelectIdComment] = useState("");
   const [likeProduct, setLikeProduct] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [editedComment, setEditedComment] = useState(comment.comment);
@@ -42,12 +43,6 @@ const DetailProduct = () => {
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
-  const isCurrentUserComment = () => {
-    if (comment && token) {
-      return comment.userId == token.userId;
-    }
-    return false;
-  };
   useEffect(() => {
     commentAPI();
   }, [id]);
@@ -146,6 +141,9 @@ const DetailProduct = () => {
   };
 
   const handleCommentChange = (event) => {
+    setEditedComment(event.target.value);
+  };
+  const handleCommentChange1 = (event) => {
     setNewComment(event.target.value);
   };
 
@@ -171,8 +169,9 @@ const DetailProduct = () => {
       console.error(`Error at saveComment: ${error.response}`);
     }
   };
-  const handleClick = (event) => {
+  const handleClickComment = (event, id) => {
     setAnchorEl(event.currentTarget);
+    setSelectIdComment(id);
   };
 
   const handleClose = () => {
@@ -180,12 +179,14 @@ const DetailProduct = () => {
   };
 
   const handleSaveComment = async () => {
+    const params = {
+      comment: editedComment,
+      id: selectIdComment,
+      productId: selectedProduct.id,
+      userId: token.userId,
+    };
     try {
-      const response = await axiosUrl.put(POST_COMMENT, {
-        comment: editedComment,
-        productId: selectedProduct.id,
-        userId: token.userId,
-      });
+      const response = await axiosUrl.put(POST_COMMENT, params);
       handleClose();
       setEditedComment("");
       commentAPI(); // Reload comments
@@ -209,7 +210,8 @@ const DetailProduct = () => {
             <CardMedia
               component="img"
               alt={selectedProduct.productName}
-              height="400"
+              height="500"
+              width='300'
               image={url}
               title={selectedProduct.productName}
             ></CardMedia>
@@ -319,16 +321,20 @@ const DetailProduct = () => {
                   <Avatar></Avatar>
                   <div style={{ paddingTop: '8px', paddingLeft: '10px', display: 'flex', flexDirection: 'row' }}>
                     {data.comment}
-                    {console.log(token)}
-                    {isCurrentUserComment == true && (
-                      <div>
-                        <Button variant="text" onClick={handleClick}>
+
+                    {data.userId === token.userId && (
+                      <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
+                        <Button
+                          variant="text"
+                          onClick={(event) => handleClickComment(event, data.id)}
+                        >
                           Update
                         </Button>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                          <MenuItem onClick={handleClose}>
-                            <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange} onBlur={handleSaveComment} />
+                          <MenuItem onClick={() => {}}>
+                            <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
                           </MenuItem>
+                          <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
                         </Menu>
                       </div>
                     )}
