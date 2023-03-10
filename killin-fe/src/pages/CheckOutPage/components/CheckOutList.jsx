@@ -69,7 +69,7 @@ const CheckOutList = ({ userData, checkOutList }) => {
                       <CardMedia
                         component="img"
                         alt="ok"
-                        image={row.productImages}
+                        image={row.productImages[0]}
                         title="ok"
                         sx={{ width: "200px" }}
                       ></CardMedia>

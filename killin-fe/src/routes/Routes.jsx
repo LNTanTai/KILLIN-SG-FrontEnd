@@ -106,6 +106,7 @@ export default function Routes() {
           path: "homepage",
           element: <AdminPage />,
         },
+        { path: PROFILE_PATH, element: <ProfilePage /> },
       ],
     },
 
@@ -118,6 +119,7 @@ export default function Routes() {
           path: "homepage",
           element: <StaffPage />,
         },
+        { path: PROFILE_PATH, element: <ProfilePage /> },
       ],
     },
 
@@ -138,6 +140,7 @@ export default function Routes() {
           path: "category",
           element: <CategoryPage />,
         },
+        { path: PROFILE_PATH, element: <ProfilePage /> },
       ],
     },
 

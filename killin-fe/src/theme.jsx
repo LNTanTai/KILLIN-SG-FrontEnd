@@ -28,7 +28,7 @@ const Theme = () => {
   return (
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
-      <Navbar isDarkTheme={isDarkTheme} changeTheme={changeTheme} />
+      <Navbar isDarkTheme={isDarkTheme} changeTheme={changeTheme} ></Navbar>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
       <App />
       </LocalizationProvider>

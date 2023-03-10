@@ -42,6 +42,7 @@ const Index = () => {
       dob: dayjs(dayjs(dob, "DD/MM/YYYY")).format("YYYY-MM-DD"),
       address: newValues.address,
       email: newValues.email,
+      role: "3",
     };
     try {
       await axiosUrl.post(POST_REGISTER, params);
