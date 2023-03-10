@@ -16,7 +16,7 @@ import {
   alpha,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -33,6 +33,7 @@ import {
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
 import ProductList from "../../pages/ShopPage/components/ProductList";
+import CloseIcon from "@mui/icons-material/Close";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -124,9 +125,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = ({ isDarkTheme, changeTheme }) => {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isClose, setIsClose] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const location = useLocation();
@@ -134,6 +136,18 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
+
+  useEffect(() => {
+    if (location.pathname === "/user/shop" || location.pathname === "/shop") {
+      if (searchInput === "") {
+        if (loginInfo === null) {
+          navigate("/shop", { state: { search: "" } });
+        } else {
+          navigate("/user/shop", { state: { search: "" } });
+        }
+      }
+    }
+  }, [searchInput]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -151,7 +165,16 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
   };
 
   const handleProfile = async () => {
-    navigate(`/user/${PROFILE_PATH}`);
+    console.log(token.role);
+    if (token.role === "3") {
+      navigate(`/user/${PROFILE_PATH}`);
+    } else if (token.role === "1") {
+      navigate(`/owner/${PROFILE_PATH}`);
+    } else if (token.role === "2") {
+      navigate(`/staff/${PROFILE_PATH}`);
+    } else if (token.role === "4") {
+      navigate(`/admin/${PROFILE_PATH}`);
+    }
   };
 
   const handleBillHistory = async () => {
@@ -159,9 +182,32 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
   };
 
   const searchItems = (searchValue) => {
+    if (searchValue === "") {
+      setIsClose(false);
+    } else {
+      setIsClose(true);
+    }
     setSearchInput(searchValue);
-    navigate('../shop', { state: {search : searchValue} });
-  }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (loginInfo === null) {
+      navigate("/shop", { state: { search: searchInput } });
+    } else {
+      navigate("/user/shop", { state: { search: searchInput } });
+    }
+  };
+
+  const handleCancel = () => {
+    setIsClose(false);
+    setSearchInput("");
+    if (loginInfo === null) {
+      navigate("/shop", { state: { search: "" } });
+    } else {
+      navigate("/user/shop", { state: { search: "" } });
+    }
+  };
 
   return (
     <>
@@ -185,16 +231,64 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                 KILLIN SG
               </Typography>
             </Link>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                onChange = {(e) => searchItems(e.target.value)}
-              />
-            </Search>
+            {loginInfo !== null ? (
+              token.role === "3" ? (
+                <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              // sx={{ mt: 1 }}
+            >
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  value={searchInput}
+                  onChange={(e) => searchItems(e.target.value)}
+                />
+              </Search>
+            </Box>
+              ) : (
+                <></>
+              )
+            ) : (
+              <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              // sx={{ mt: 1 }}
+            >
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                  value={searchInput}
+                  onChange={(e) => searchItems(e.target.value)}
+                />
+              </Search>
+            </Box>
+            )}
+            {isClose === false ? <></> : "Nhấn Enter để tìm kiếm"}
+            {isClose === false ? (
+              <></>
+            ) : (
+              <IconButton
+                size="large"
+                sx={{ color: "white" }}
+                onClick={() => {
+                  handleCancel();
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
+
             <Box sx={{ flexGrow: 1 }} />
             <Link to={HOMEPAGE_PATH} style={{ textDecoration: "none" }}>
               <Typography
@@ -238,7 +332,9 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
               <IconButton
                 sx={{ flexGrow: 0, color: "white", mr: 1 }}
                 aria-label="add to shopping cart"
-                onClick={()=> {navigate(`/user/${CART_PATH}`)}}
+                onClick={() => {
+                  navigate(`/user/${CART_PATH}`);
+                }}
                 // href={`/user/${CART_PATH}`}
               >
                 <AddShoppingCartIcon />
@@ -283,10 +379,10 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   <MenuItem onClick={handleProfile}>
                     <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
-                  {token.role === "3"? (
+                  {token.role === "3" ? (
                     <MenuItem onClick={handleBillHistory}>
-                    <Typography textAlign="center">Bill history</Typography>
-                  </MenuItem>
+                      <Typography textAlign="center">Bill history</Typography>
+                    </MenuItem>
                   ) : (
                     <></>
                   )}

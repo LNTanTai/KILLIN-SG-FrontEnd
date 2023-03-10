@@ -33,7 +33,7 @@ const SideBar = () => {
     setchooseCate(ctg);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
   }, [])
 
@@ -41,7 +41,7 @@ const SideBar = () => {
     const params = {};
     try {
       const response = await axiosUrl.get(GET_CATEGORY_NAME, params);
-      const data = [ { id:"", name: "tất cả"}, ...response.data];
+      const data = [{ id: "", name: "tất cả" }, ...response.data];
       setCategoryArray(data);
     } catch (error) {
       console.error(`Error at fetchData: ${error}`);
@@ -63,12 +63,14 @@ const SideBar = () => {
         anchor="left"
       >
         <Toolbar />
+        <Typography>aloalo</Typography>
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           sx={{ mt: 2, mb: 1 }}
         >
+
           <Typography variant="h5" component="div">
             Category
           </Typography>
@@ -77,7 +79,7 @@ const SideBar = () => {
 
         {categoryArray.map((text, index) => (
           <List key={index}>
-            {loginInfo!==null?(<Link to={`/user/shop/product-list/${index}`}  style={{textDecoration: 'none' }}>
+            {loginInfo !== null ? (<Link to={`/user/shop/product-list/${index}`} style={{ textDecoration: 'none' }}>
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
@@ -86,7 +88,7 @@ const SideBar = () => {
                   <ListItemText primary={text.name} />
                 </ListItemButton>
               </ListItem>
-            </Link>):(<Link to={`/shop/product-list/${index}`} style={{textDecoration: 'none' }}>
+            </Link>) : (<Link to={`/shop/product-list/${index}`} style={{ textDecoration: 'none' }}>
               <ListItem disablePadding>
                 <ListItemButton onClick={() => chooseCategory(index)}>
                   <ListItemIcon>
@@ -96,7 +98,7 @@ const SideBar = () => {
                 </ListItemButton>
               </ListItem>
             </Link>)}
-            
+
           </List>
         ))}
       </Drawer>

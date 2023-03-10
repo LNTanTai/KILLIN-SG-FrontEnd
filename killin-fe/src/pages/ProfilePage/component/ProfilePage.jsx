@@ -48,7 +48,7 @@ const ProfilePage = () => {
         };
         try {
             console.log(updatedUser);
-            const response = await axiosUrl.put(POST_UPDATE_USER, updatedUser);
+            const response = await axiosUrl.post(POST_UPDATE_USER, updatedUser);
             const data = { ...response.data };
             setUser(data);
             setIsEditing(false);

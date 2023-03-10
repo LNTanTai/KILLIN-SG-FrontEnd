@@ -40,7 +40,7 @@ const BannerDashBoard = ({
       {isAddNew === true || isUpdateRow === true ? (
         <Box>
           <Grid container justifyContent="center">
-            <Card sx={{ width: "100%" }}>
+            <Card sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}>
               <CardHeader
                 title="Thông tin Banner"
                 titleTypographyProps={{

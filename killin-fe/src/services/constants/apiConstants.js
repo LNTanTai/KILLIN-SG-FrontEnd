@@ -1,4 +1,5 @@
 export const GET_PRODUCTS = '/api/products';
+export const POST_SEARCH_FILTER = '/api/products/search';
 export const GET_PRODUCTS_ID = (id) => `/api/products/${id}`;
 export const POST_LOGIN = '/authentication/login';
 export const POST_REGISTER = '/authentication/register';
@@ -20,5 +21,9 @@ export const POST_UPDATE_BILL_STATUS = '/api/bill/updateBillStatus';
 export const POST_UPDATE_USER = '/api/users/updateUserInformation';	
 export const POST_GET_LIST_BILL_BY_USERID = '/api/bill/getListBillByUserId';
 export const GET_CATEGORY_NAME = '/api/categories/name';
+export const POST_CATEGORY = '/api/categories';
+export const POST_REMOVE_CATEGORY = '/api/categories/removeCategory';
 export const GET_BANNER = '/api/banners';
 export const POST_CHANGE_PASSWORD = 'api/users/changePassword';
+export const GET_ACCOUNT = '/authentication/getAllAccount';
+

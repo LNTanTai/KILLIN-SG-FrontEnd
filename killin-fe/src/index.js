@@ -5,13 +5,14 @@ import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Theme from "./theme";
+import Themes from "./theme";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
     <BrowserRouter>
-      <Theme/>
+      <Themes/>
     </BrowserRouter>
   //  </React.StrictMode>
 );
