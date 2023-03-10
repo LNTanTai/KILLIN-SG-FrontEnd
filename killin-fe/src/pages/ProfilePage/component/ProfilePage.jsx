@@ -3,14 +3,14 @@ import { Box } from '@mui/system'
 import jwtDecode from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { axiosUrl } from "../../../services/api/axios";
-import { GET_PRODUCTS_ID, GET_PRODUCT_COMMENT_BY_ID, POST_COMMENT, POST_GET_USER_BY_PHONENUMBER, POST_ORDER, POST_UPDATE_USER } from "../../../services/constants/apiConstants";
+import { GET_PRODUCTS_ID, GET_PRODUCT_COMMENT_BY_ID, POST_CHANGE_PASSWORD, POST_COMMENT, POST_GET_USER_BY_PHONENUMBER, POST_ORDER, POST_UPDATE_USER } from "../../../services/constants/apiConstants";
 
 const ProfilePage = () => {
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
     const [isEditingPassword, setIsEditingPassword] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState('');
+    const [currentPass, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [password, setPassword] = useState('');
@@ -42,15 +42,15 @@ const ProfilePage = () => {
             fullName: document.getElementById("name").value,
             email: document.getElementById("email").value,
             address: document.getElementById("address").value,
-            dob: user.dob,
-            phoneNumber: user.phoneNumber,
+            dob: document.getElementById("dob").value,
+            phoneNumber: document.getElementById("phoneNumber").value,
             userId: user.userId
         };
         try {
+            console.log(updatedUser);
             const response = await axiosUrl.put(POST_UPDATE_USER, updatedUser);
             const data = { ...response.data };
             setUser(data);
-            console.log(updatedUser);
             setIsEditing(false);
         } catch (e) {
             console.error(`Error at handleSaveClick: ${e.message}`);
@@ -58,35 +58,38 @@ const ProfilePage = () => {
     };
     const handleSavePasswordClick = async () => {
         try {
-            const params = {
-                phoneNumber: token.phoneNumber,
-                currentPassword,
-                newPassword,
-            };
-            const response = await axiosUrl.post('s', params);
-            const data = response.data;
-            if (data === true && newPassword === confirmPassword) {
+            // const params = {
+            //     userId: token.userId,
+            //     currentPass,
+            //     newPassword,
+            // };
+            if (newPassword === confirmPassword) {
                 const updateParams = {
-                    phoneNumber: token.phoneNumber,
-                    password: newPassword,
+                    userId: token.userId,
+                    currentPass: password.currentPassword,
+                    newPass: password.newPassword,
                 };
-                await axiosUrl.put('s', updateParams);
+                await axiosUrl.post(POST_CHANGE_PASSWORD, updateParams);
                 alert('Password updated successfully');
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
-            } else if (data === false) {
-                alert('Current password is not correct');
             } else {
                 alert('New password and confirm password do not match');
             }
         } catch (error) {
-            console.error(`Error at handleSavePasswordClick: ${error.message}`);
+            if (error.response && error.response.status === 400) {
+                alert('Current password is not correct');
+            } else {
+                console.error(`Error at handleSavePasswordClick: ${error.message}`);
+            }
         }
     };
 
     return (
+
         <div className="container" >
+            {console.log(token)}
             <div style={{ display: 'flex', justifyItems: 'center', alignItems: 'center', justifyContent: 'center', height: '100vh' }} >
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
@@ -98,6 +101,16 @@ const ProfilePage = () => {
                                 </Typography>
                                 {isEditing ? (
                                     <div>
+                                        <TextField
+                                            label="Date Of Birth"
+                                            defaultValue={token.dob}
+                                            fullWidth
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            id="dob"
+                                        />
                                         <TextField
                                             label="Name"
                                             defaultValue={token.fullName}
@@ -116,7 +129,7 @@ const ProfilePage = () => {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-                                            disabled
+                                            id='phoneNumber'
                                         />
                                         <TextField
                                             label="Email"
@@ -244,7 +257,7 @@ const ProfilePage = () => {
                                             <Button
                                                 variant="contained"
                                                 color="primary"
-                                                style={{ marginTop: 25, marginLeft: 250, marginRight:20 }}
+                                                style={{ marginTop: 25, marginLeft: 250, marginRight: 20 }}
                                                 onClick={() => setIsEditingPassword(false)}
                                             >
                                                 Hủy bỏ
