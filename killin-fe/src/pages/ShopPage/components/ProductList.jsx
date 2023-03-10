@@ -46,7 +46,7 @@ const ProductList = (props) => {
   const [loadingCircular, setLoadingCircular] = useState(false);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const location = useLocation("");
-  const search = location?.state?.search??"";
+  const search = location?.state?.search ?? "";
   const [values, setvalues] = useState(initialValues);
   const [categoryItem, setCategoryItem] = useState("");
   const [categoryList, setCategoryList] = useState([]);
@@ -57,11 +57,11 @@ const ProductList = (props) => {
     token = jwtDecode(loginInfo);
   }
 
-  useEffect(()=>{
-    if(search !== "" || search !== undefined){
+  useEffect(() => {
+    if (search !== "" || search !== undefined) {
       setvalues({ ...values, productName: search });
     }
-  },[search])
+  }, [search])
 
   useEffect(() => {
     fetchData(props.categoryId);
@@ -99,7 +99,7 @@ const ProductList = (props) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const params = {
       categoryName: categoryItem === "tất cả" ? "" : categoryItem,
       maxPrice: values.maxPrice,
@@ -113,12 +113,7 @@ const ProductList = (props) => {
       const response = await axiosUrl.post(POST_SEARCH_FILTER, params);
       const data = [...response.data];
 
-      if(categoryItem === "tất cả"){
-        fetchData();
-      }
-      else{
-        setProductData(data);
-      }
+      setProductData(data);
       setLoadingCircular(false);
     } catch (error) {
       console.error(`Error at handleSubmit: ${error}`);
@@ -193,7 +188,7 @@ const ProductList = (props) => {
                 >
                   <br />
                   <Grid container direction="column" spacing={2}>
-                  <Grid item>
+                    <Grid item>
                       <TextField
                         id="productName"
                         name="productName"
@@ -289,8 +284,8 @@ const ProductList = (props) => {
               .filter((product) =>
                 search
                   ? product.productName
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
                   : true
               )
               .map((product) => (

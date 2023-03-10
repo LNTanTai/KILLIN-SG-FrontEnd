@@ -7,6 +7,7 @@ export const POST_BANNER = '/api/banners';
 export const DELETE_BANNER = (id) => `/api/banners/${id}`;
 export const POST_BESTSELLER = '/api/products/bestseller';
 export const GET_PRODUCT_COMMENT_BY_ID = (id) => `/api/comments/product/${id}`;
+export const GET_WISHLIST_BY_USERID = (id) => `/api/wishlists/user/${id}`;
 export const POST_COMMENT = '/api/comments';
 export const POST_ADD_WISHLIST = '/api/wishlists';
 export const POST_ORDER = '/api/orders';
@@ -23,4 +24,6 @@ export const GET_CATEGORY_NAME = '/api/categories/name';
 export const POST_CATEGORY = '/api/categories';
 export const POST_REMOVE_CATEGORY = '/api/categories/removeCategory';
 export const GET_BANNER = '/api/banners';
+export const POST_CHANGE_PASSWORD = 'api/users/changePassword';
 export const GET_ACCOUNT = '/authentication/getAllAccount';
+

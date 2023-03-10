@@ -180,7 +180,7 @@ const Banner = () => {
                         </div>
                     ))}
                 </Slider>
-                <Button href={`../${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
+                <Button href={`${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
                 <div style={{paddingTop:'100px'}}>
                     <Box sx={{
                         textAlign: 'center',

@@ -56,7 +56,7 @@ const index = () => {
               <p>Điện thoại: 1900 252520</p>
             </Grid>
           </Grid>
-          <p>Phương thức thanh toán <img src='/public/images/Zalo.png'></img></p>
+         
           <Box
             sx={{
               flexGrow: 1,

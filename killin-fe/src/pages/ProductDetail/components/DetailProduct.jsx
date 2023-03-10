@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {
   GET_PRODUCTS_ID,
   GET_PRODUCT_COMMENT_BY_ID,
+  GET_WISHLIST_BY_USERID,
   POST_ADD_WISHLIST,
   POST_COMMENT,
   POST_GET_USER_BY_PHONENUMBER,
@@ -35,7 +39,11 @@ const DetailProduct = () => {
   const [newComment, setNewComment] = useState("");
   const [editedComment, setEditedComment] = useState(comment.comment);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+  const MAX_PRODUCTS = 5;
+  const displayedProducts = favoriteProducts.slice(0, MAX_PRODUCTS);
+  const shouldDisplayAllProducts = favoriteProducts.length <= MAX_PRODUCTS;
   const navigate = useNavigate();
   let [url, setUrl] = useState();
   let [quantity, setQuantity] = useState(1);
@@ -51,6 +59,10 @@ const DetailProduct = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    showWishListByUserId();
+  }, [favoriteProducts]);
+
   const onAdd = () => {
     if (quantity !== parseInt(selectedProduct.productQuantity)) {
       setQuantity(quantity + 1);
@@ -62,26 +74,7 @@ const DetailProduct = () => {
       setQuantity(quantity - 1);
     }
   };
-  const handleWishList = async () => {
-    const params = {
-      id: "",
-      items: [
-        {
-          id: "",
-          productId: selectedProduct.productId,
-          wishlist: {}
-        }
-      ],
-      userId: token.userId,
-    };
-    try {
-      const response = await axiosUrl.post(POST_ADD_WISHLIST, params);
-      console.log(response);
-      console.log('Thêm vào sản phẩm yêu thích thành công');
-    } catch (err) {
-      console.error(`Error at handleWistList:  ${err}`);
-    }
-  }
+
 
   const addToCart = async () => {
     const params = {
@@ -144,7 +137,7 @@ const DetailProduct = () => {
     setNewComment(event.target.value);
   };
   const handleCommentChange1 = (event) => {
-    setNewComment(event.target.value);
+    setEditedComment(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -194,8 +187,43 @@ const DetailProduct = () => {
       console.error(`Error at handleSaveComment: ${error}`);
     }
   };
-  const handleDeleteWishList = async () => {
+  const handleWishList = async () => {
+    const params = {
+      id: "",
+      productId: selectedProduct.id,
+      productImage: selectedProduct.productImages[0].url,
+      productName: selectedProduct.productName,
+      userId: token.userId,
+    }
+    try {
+      const response = await axiosUrl.post(POST_ADD_WISHLIST, params);
+      console.log(response);
+      console.log('Thêm vào sản phẩm yêu thích thành công');
+    } catch (err) {
+      console.error(`Error at handleWistList:  ${err}`);
+    }
+  }
 
+  const handleDeleteWishList = async () => {
+    const wishlistId = favoriteProducts.id;
+    try {
+      const response = await axiosUrl.delete(`${POST_ADD_WISHLIST}/${wishlistId}`);
+      console.log("Xóa sản phẩm yêu thích thành công");
+      setFavoriteProducts();
+    } catch (err) {
+      console.error(`Error at handleDeleteWishList: ${err}`);
+    }
+  };
+
+  const showWishListByUserId = async () => {
+    const id = token.userId;
+    try {
+      const response = await axiosUrl.get(GET_WISHLIST_BY_USERID(id));
+      const product = [...response.data];
+      setFavoriteProducts(product);
+    } catch (err) {
+      console.error(`Error at showWishListByUserId: ${err.message}`);
+    }
   };
 
   return (
@@ -204,6 +232,8 @@ const DetailProduct = () => {
         component="main"
         sx={{ flexGrow: 1, p: 3, backgroundColor: "lightgray" }}
       >
+        {console.log(selectedProduct)}
+        {console.log(favoriteProducts)}
         <Toolbar />
         <Grid container spacing={3}>
           <Grid item xs={8}>
@@ -217,7 +247,7 @@ const DetailProduct = () => {
             ></CardMedia>
           </Grid>
           <Grid item xs={4}>
-            <Card>
+            <Card sx={{ marginBottom: 12 }}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {selectedProduct.productName}
@@ -261,21 +291,16 @@ const DetailProduct = () => {
                       Add to Cart
                     </Button>
                     {
-                      likeProduct == true ? (<Button
-                        variant="contained"
-                        style={{ marginTop: 25, backgroundColor: 'red' }}
-                        onClick={() => handleDeleteWishList()}
-                      >
-                        Bỏ yêu thích
-                      </Button>) : (
-                        <Button
-                          variant="contained"
-                          style={{ marginTop: 25, backgroundColor: 'red' }}
-                          onClick={() => handleWishList()}
-                        >
-                          Yêu thích
-                        </Button>
-                      )
+                      likeProduct == true ?
+                        (
+                          <IconButton onClick={() => handleDeleteWishList()} color="error">
+                            <FavoriteIcon />
+                          </IconButton>
+                        ) : (
+                          <IconButton onClick={() => handleWishList()}>
+                            <FavoriteBorderIcon variant="outlined" color="error" />
+                          </IconButton>
+                        )
                     }
                   </div>
                 )}
@@ -283,6 +308,29 @@ const DetailProduct = () => {
             </Card>
           </Grid>
         </Grid>
+        <Box bgcolor="#F2F2F2" borderRadius={8} p={2} boxShadow={1} mt={10} width={800}>
+          <Typography variant="body2" component="h1">
+            <h1>Sản phẩm yêu thích</h1>
+          </Typography>
+          <Box width={800}>
+            <Box overflowX="scroll">
+              <Grid container spacing={2} height={300}>
+                {favoriteProducts.map((product) => (
+                  <Grid item key={product.productName} xs={12} sm={6} md={4}>
+                    <Box bgcolor="white" borderRadius={8} p={2} boxShadow={1} height={250}>
+                      <Link to={`/user/product-detail/${product.productId}`}>
+                        <img src={product.productImage} alt={product.productName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </Link>
+                      <Typography variant="subtitle1" component="p" pt={2}>
+                        {product.productName}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
         <div
           style={{
             width: "66.2%",
@@ -321,7 +369,7 @@ const DetailProduct = () => {
                   <Avatar></Avatar>
                   <div style={{ paddingTop: '8px', paddingLeft: '10px', display: 'flex', flexDirection: 'row' }}>
                     {data.comment}
-
+                    {console.log(editedComment)}
                     {data.userId === token.userId && (
                       <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
                         <Button
@@ -331,9 +379,8 @@ const DetailProduct = () => {
                           Update
                         </Button>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                          <MenuItem onClick={() => {}}>
+                          <MenuItem onClick={() => { }}>
                             <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
-                            
                           </MenuItem>
                           <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
                         </Menu>
