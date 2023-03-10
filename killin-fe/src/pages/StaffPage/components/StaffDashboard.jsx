@@ -245,7 +245,7 @@ const StaffDashboard = ({
                                 <TableCell align="left">Ảnh</TableCell>
                                 <TableCell align="left">Tên sản phẩm</TableCell>
                                 <TableCell align="left">Số lượng</TableCell>
-                                <TableCell align="left">Giá</TableCell>
+                                <TableCell align="left">Đơn giá</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -255,7 +255,7 @@ const StaffDashboard = ({
                                   <CardMedia
                                       component="img"
                                       alt="productImages"
-                                      image={child.productImages}
+                                      image={child.productImages[0]}
                                       title="productImages"
                                       sx={{ width: "50px" }}
                                     ></CardMedia>

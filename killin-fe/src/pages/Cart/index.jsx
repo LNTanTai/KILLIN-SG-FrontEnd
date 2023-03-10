@@ -65,6 +65,7 @@ const Index = () => {
     );
     setCartListOrder(list);
     setCartIndex(index2);
+    if(data.quantity !== data.availableQuantity ){
     if (exist) {
       setCartList(
         cartList.map((child) => {
@@ -85,8 +86,8 @@ const Index = () => {
         })
       );
     }
-
     setIsChange(true);
+  }
   };
 
   const onMinus = async (data, index2, list) => {
@@ -95,6 +96,7 @@ const Index = () => {
     );
     setCartListOrder(list);
     setCartIndex(index2);
+    if(parseInt(data.quantity) > 1 ){
     if (exist) {
       setCartList(
         cartList.map((child) => {
@@ -116,6 +118,7 @@ const Index = () => {
       );
     }
     setIsChange(true);
+  }
   };
 
   const handleUpdate = async (orderData) => {
@@ -148,6 +151,7 @@ const Index = () => {
     try {
       const response = await axiosUrl.post(POST_ORDER_USER, params);
       const data = [...response.data];
+      console.log(data)
       setCartList(data);
       setCartListCompare(data);
       setTotals([]);

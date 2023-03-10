@@ -1,11 +1,18 @@
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   CardMedia,
   CircularProgress,
+  FormControl,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -21,8 +28,10 @@ import {
   tableCellClasses,
 } from "@mui/material";
 import React from "react";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,6 +45,22 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const OwnerDashboard = ({
+  setPage,
+  handleDelete,
+  setCategoryItem,
+  categoryItem,
+  categoryList,
+  handleUrlRemove,
+  handleUrlAdd,
+  handleUrlChange,
+  showAddForm,
+  showUpdateForm,
+  cancelForm,
+  handleSubmit,
+  handleChange,
+  values,
+  isUpdateRow,
+  isAddNew,
   setSearchedVal,
   isloading,
   productData,
@@ -48,6 +73,154 @@ const OwnerDashboard = ({
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
+      {isAddNew === true || isUpdateRow === true ? (
+        <Box>
+          <Grid  container justifyContent="center">
+            <Card  sx={{ width: "100%", border: "solid 1px", borderRadius: "10px"}}>
+              <CardHeader
+                title="Thông tin sản phẩm"
+                titleTypographyProps={{
+                  align: "center",
+                  fontWeight: "bold",
+                }}
+                subheader={isAddNew === true ? "Thêm mới" : "Cập nhật"}
+                subheaderTypographyProps={{
+                  align: "center",
+                }}
+              />
+              <CardContent sx={{ marginBottom: "2%" }}>
+                <Box
+                  component="form"
+                  sx={{
+                    display: "column",
+                  }}
+                  onSubmit={handleSubmit}
+                >
+                  <br />
+                  <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                      <TextField
+                        id="name"
+                        name="name"
+                        fullWidth
+                        variant="standard"
+                        label="Name Product"
+                        value={values.name}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="brand"
+                        name="brand"
+                        fullWidth
+                        variant="standard"
+                        label="Brand"
+                        value={values.brand}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="quantity"
+                        name="quantity"
+                        fullWidth
+                        variant="standard"
+                        label="quantity"
+                        value={values.quantity}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="price"
+                        name="price"
+                        fullWidth
+                        variant="standard"
+                        label="price"
+                        value={values.price}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        id="description"
+                        name="description"
+                        fullWidth
+                        variant="standard"
+                        label="description"
+                        value={values.description}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <FormControl variant="standard" fullWidth required>
+                        <InputLabel id="category-select-label">Chọn loại hàng</InputLabel>
+                        <Select
+                        labelId="category-select-label"
+                          id="categoryItem"
+                          value={categoryItem}
+                          onChange={(event) =>
+                            setCategoryItem(event.target.value)
+                          }
+                        >
+                          {categoryList.map((data, index) => (
+                            <MenuItem key={index} value={data.id}>
+                              {data.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    {values.productImages.map((data, index) => (
+                      <Grid item key={index}>
+                        <TextField
+                          id="url"
+                          name="url"
+                          sx={{ width: "70%" }}
+                          variant="standard"
+                          label="url image"
+                          value={data.url}
+                          onChange={(e) => handleUrlChange(e, index)}
+                        />
+                        {values.productImages.length - 1 === index && (
+                          <Button
+                            variant="contained"
+                            onClick={() => handleUrlAdd()}
+                            sx={{ ml: 1, mt: 1, width: "100px" }}
+                          >
+                            Thêm
+                          </Button>
+                        )}
+                        {values.productImages.length > 1 && (
+                          <Button
+                            variant="contained"
+                            onClick={() => handleUrlRemove(index)}
+                            sx={{ ml: 1, mt: 1, width: "100px" }}
+                          >
+                            Xóa
+                          </Button>
+                        )}
+                      </Grid>
+                    ))}
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{ height: "35px", width: "100%" }}
+                      >
+                        {isAddNew === true ? "Thêm Sản Phẩm" : "Cập Nhật Sản Phẩm"}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Box>
+      ) : (
+        <></>
+      )}
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
@@ -72,24 +245,33 @@ const OwnerDashboard = ({
               Bảng quản lý sản phẩm
             </Typography>
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={5}>
             <TextField
               sx={{ width: "100%" }}
               id="filled-basic"
               label="Tìm Kiếm"
               variant="outlined"
-              onChange={(e) => setSearchedVal(e.target.value)}
+              onChange={(e) => { setPage(0); setSearchedVal(e.target.value);}}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Button
               variant="contained"
-              sx={{ width: "200px", height: "35px", ml: 4 }}
-              onClick={() => {}}
+              sx={{ width: "200px", ml: 4 }}
+              onClick={() => showAddForm()}
             >
               Tạo Sản Phẩm Mới
             </Button>
+            <IconButton
+              size="large"
+              // disabled={!isDisabled}
+              color="error"
+              onClick={cancelForm}
+            >
+              <CloseIcon />
+            </IconButton>
           </Grid>
+
           <Grid item xs={12} />
         </Grid>
 
@@ -109,7 +291,8 @@ const OwnerDashboard = ({
                   <StyledTableCell align="left">Loại Hàng</StyledTableCell>
                   <StyledTableCell align="left">Mô Tả</StyledTableCell>
                   <StyledTableCell align="left">Số Lượng</StyledTableCell>
-                  <StyledTableCell align="left">Giá</StyledTableCell>
+                  <StyledTableCell align="left">Đơn giá</StyledTableCell>
+                  <StyledTableCell align="left">Trạng thái</StyledTableCell>
                   <StyledTableCell align="left"></StyledTableCell>
                   <StyledTableCell align="left"></StyledTableCell>
                 </TableRow>
@@ -175,29 +358,37 @@ const OwnerDashboard = ({
                         {row.productQuantity}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {row.productPrice}
+                        {parseFloat(row.productPrice).toLocaleString("en-US")} VND
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.status === true? "Đang hoạt động": "Dừng hoạt động"}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <IconButton
+                          size="large"
+                          color="info"
+                          onClick={() => {
+                            showUpdateForm(row);
+                          }}
+                        >
+                          <EditRoundedIcon />
+                        </IconButton>
                       </StyledTableCell>
                       <StyledTableCell align="center">
                       <IconButton
-                            size="large"
-                            color="info"
-                            onClick={() => {
-                              // handleDelete(row.id, list.orderId);
-                            }}
-                          >
-                            <EditRoundedIcon />
-                          </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                      <IconButton
-                            size="large"
-                            color="error"
-                            onClick={() => {
-                              // handleDelete(row.id, list.orderId);
-                            }}
-                          >
-                            <DeleteOutlinedIcon />
-                          </IconButton>
+                        size="large"
+                          color={row.status === true ? "error" : "success"}
+                          // disabled={isDisabled}
+                          onClick={() => {
+                            handleDelete(row);
+                          }}
+                        >
+                          {row.status === "Active" ? (
+                            <RemoveCircleOutlineRoundedIcon />
+                          ) : (
+                            <RemoveCircleRoundedIcon />
+                          )}
+                        </IconButton>
                       </StyledTableCell>
                     </TableRow>
                   ))
