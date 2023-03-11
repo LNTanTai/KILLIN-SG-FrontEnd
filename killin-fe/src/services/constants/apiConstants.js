@@ -26,4 +26,5 @@ export const POST_REMOVE_CATEGORY = '/api/categories/removeCategory';
 export const GET_BANNER = '/api/banners';
 export const POST_CHANGE_PASSWORD = 'api/users/changePassword';
 export const GET_ACCOUNT = '/authentication/getAllAccount';
+export const POST_BAN_OR_UNBAN_ACCOUNT = '/authentication/banOrUnbanAccount';
 

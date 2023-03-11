@@ -142,7 +142,6 @@ const CategoryDashBoard = ({
             </Button>
             <IconButton
               size="large"
-              // disabled={!isDisabled}
               color="error"
               onClick={cancelForm}
             >
