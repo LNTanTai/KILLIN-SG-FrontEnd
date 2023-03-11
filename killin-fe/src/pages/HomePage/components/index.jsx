@@ -60,18 +60,18 @@ const Banner = () => {
     }, []);
     const Image = styled('img')({
         width: "100%",
-        height: "500px",
+        height: "700px",
         objectFit: "cover",
     });
     const Root = styled('div')(({ theme }) => ({
         flexGrow: 1,
-        paddingTop: 100,
+        paddingTop:65,
         width: "100%",
         maxWidth: "100%",
         overflow: "hidden",
         textAlign: 'center',
         justifyContent: 'center',
-        height: 1700,
+        minHeight: '100px',
     }));
     const PaperStyled = styled(Paper)(({ theme }) => ({
         paddingTop: 0,
@@ -185,7 +185,7 @@ const Banner = () => {
                     <Box sx={{
                         textAlign: 'center',
                         paddingTop: '50px',
-                        minHeight: '100vh',
+                        minHeight: '400px',
                         backgroundColor: '#f2f2f2'
                     }}>
                         <Typography variant="h2" gutterBottom sx={{ fontFamily: 'Helvetica' }}>

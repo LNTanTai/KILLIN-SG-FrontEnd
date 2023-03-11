@@ -123,7 +123,7 @@ const ProductList = (props) => {
 
   const handleAddToCart = (product) => {
     if (loginInfo === null) {
-      navigate(`/${LOGIN_PATH}`);
+      alert('Vui lòng đăng nhập để có thể sử dụng giỏ hàng');
     } else {
       // console.log(productData);
       addToCart(product);

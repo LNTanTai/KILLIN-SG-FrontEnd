@@ -1,10 +1,11 @@
 import { Button, Card, CardContent, CardMedia, Grid, Toolbar, Typography, TextField } from '@mui/material'
 import { Box } from '@mui/system'
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import jwtDecode from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { axiosUrl } from "../../../services/api/axios";
 import { GET_PRODUCTS_ID, GET_PRODUCT_COMMENT_BY_ID, POST_CHANGE_PASSWORD, POST_COMMENT, POST_GET_USER_BY_PHONENUMBER, POST_ORDER, POST_UPDATE_USER } from "../../../services/constants/apiConstants";
-
+import dayjs from "dayjs";
 const ProfilePage = () => {
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
@@ -14,6 +15,7 @@ const ProfilePage = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [password, setPassword] = useState('');
+    const [dob, setDob] = useState(null);
     const token = jwtDecode(loginInfo);
     useEffect(() => {
         getUser();
@@ -42,15 +44,15 @@ const ProfilePage = () => {
             fullName: document.getElementById("name").value,
             email: document.getElementById("email").value,
             address: document.getElementById("address").value,
-            dob: document.getElementById("dob").value,
-            phoneNumber: document.getElementById("phoneNumber").value,
+            dob: dayjs(dayjs(dob, "DD/MM/YYYY")).format("YYYY-MM-DD"),
+            phoneNumber: "",
             userId: user.userId
         };
         try {
             console.log(updatedUser);
             const response = await axiosUrl.post(POST_UPDATE_USER, updatedUser);
             const data = { ...response.data };
-            setUser(data);
+            getUser();
             setIsEditing(false);
         } catch (e) {
             console.error(`Error at handleSaveClick: ${e.message}`);
@@ -58,11 +60,6 @@ const ProfilePage = () => {
     };
     const handleSavePasswordClick = async () => {
         try {
-            // const params = {
-            //     userId: token.userId,
-            //     currentPass,
-            //     newPassword,
-            // };
             if (newPassword === confirmPassword) {
                 const updateParams = {
                     userId: token.userId,
@@ -101,14 +98,19 @@ const ProfilePage = () => {
                                 </Typography>
                                 {isEditing ? (
                                     <div>
-                                        <TextField
-                                            label="Date Of Birth"
-                                            defaultValue={token.dob}
+                                        <DesktopDatePicker
+                                            label="Ngày sinh"
+                                            inputFormat="DD/MM/YYYY"
+                                            placeholder="DD/MM/YYYY"
+                                            value={dob}
                                             fullWidth
                                             margin="normal"
-                                            InputLabelProps={{
-                                                shrink: true,
+                                            onChange={(newValue) => {
+                                                setDob(newValue);
                                             }}
+                                            renderInput={(params) => (
+                                                <TextField sx={{ pb: 2 }} fullWidth {...params} />
+                                            )}
                                             id="dob"
                                         />
                                         <TextField
@@ -122,16 +124,6 @@ const ProfilePage = () => {
                                             id="name"
                                         />
                                         <TextField
-                                            label="Phone number"
-                                            defaultValue={token.phoneNumber}
-                                            fullWidth
-                                            margin="normal"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            id='phoneNumber'
-                                        />
-                                        <TextField
                                             label="Email"
                                             defaultValue={user.email}
                                             fullWidth
@@ -141,6 +133,16 @@ const ProfilePage = () => {
                                             }}
                                             id="email"
                                         />
+                                        {/* <TextField
+                                            label="Phone Number"
+                                            defaultValue={user.phoneNumber}
+                                            fullWidth
+                                            margin="normal"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            id="phoneNumber"
+                                        /> */}
                                         <TextField
                                             label="Address"
                                             defaultValue={user.address}
@@ -166,13 +168,13 @@ const ProfilePage = () => {
                                             variant="body2"
                                             style={{ marginTop: 25, fontSize: '25px' }}
                                         >
-                                            Name:  {token.fullName}
+                                            Name:  {user.fullName}
                                         </Typography>
                                         <Typography
                                             variant="body2"
                                             style={{ marginTop: 25, fontSize: '25px' }}
                                         >
-                                            Phone number:  {token.phoneNumber}
+                                            Phone number:  {user.phoneNumber}
                                         </Typography>
                                         <Typography
                                             variant="body2"

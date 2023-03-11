@@ -9,6 +9,8 @@ import {
   GET_WISHLIST_BY_USERID,
   POST_ADD_WISHLIST,
   POST_COMMENT,
+  POST_DELETE_CART,
+  POST_DELETE_WISHLIST,
   POST_GET_USER_BY_PHONENUMBER,
   POST_ORDER,
 } from "../../../services/constants/apiConstants";
@@ -26,13 +28,16 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Paper
 } from "@mui/material";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
+import Slider from 'react-slick';
 
 const DetailProduct = () => {
   const { id } = useParams();
   const [selectedProduct, setSelectedProduct] = useState({});
+  const [imageUrls, setImageUrls] = useState([]);
   const [comment, setComment] = useState([]);
   const [selectIdComment, setSelectIdComment] = useState("");
   const [likeProduct, setLikeProduct] = useState(false);
@@ -41,9 +46,8 @@ const DetailProduct = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
-  const MAX_PRODUCTS = 5;
-  const displayedProducts = favoriteProducts.slice(0, MAX_PRODUCTS);
-  const shouldDisplayAllProducts = favoriteProducts.length <= MAX_PRODUCTS;
+  const likeproduct = false;
+  const wishlistid = '';
   const navigate = useNavigate();
   let [url, setUrl] = useState();
   let [quantity, setQuantity] = useState(1);
@@ -61,8 +65,11 @@ const DetailProduct = () => {
 
   useEffect(() => {
     showWishListByUserId();
-  }, [favoriteProducts]);
+  }, []);
 
+  useEffect(() => {
+    console.log(url);
+  }, [url]);
   const onAdd = () => {
     if (quantity !== parseInt(selectedProduct.productQuantity)) {
       setQuantity(quantity + 1);
@@ -107,10 +114,27 @@ const DetailProduct = () => {
         const element = data.productImages[index];
         setUrl(element.url);
       }
-      console.log(data);
+      const urls = data.productImages.map((image) => image.url);
+      setImageUrls(urls);
     } catch (error) {
       console.error(`Error at DetailProduct: ${error}`);
     }
+  };
+  const handleImageClick = (url) => {
+    setHasSelected(true);
+    setSelectedProduct({ ...selectedProduct, imageUrl: url });
+  };
+  const [hasSelected, setHasSelected] = useState(false);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    initialSlide: hasSelected ? 0 : 1
   };
 
   const commentAPI = async () => {
@@ -127,7 +151,7 @@ const DetailProduct = () => {
 
   const handleAddToCart = () => {
     if (loginInfo === null) {
-      navigate(`/${LOGIN_PATH}`);
+      alert('Vui lòng đăng nhập để có thể sử dụng giỏ hàng');
     } else {
       addToCart();
     }
@@ -167,6 +191,7 @@ const DetailProduct = () => {
     setSelectIdComment(id);
   };
 
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -188,6 +213,10 @@ const DetailProduct = () => {
     }
   };
   const handleWishList = async () => {
+    if (loginInfo == null) {
+      alert("Bạn hãy đăng nhập để yêu thích sản phẩm này nhé!");
+      return;
+    }
     const params = {
       id: "",
       productId: selectedProduct.id,
@@ -199,21 +228,37 @@ const DetailProduct = () => {
       const response = await axiosUrl.post(POST_ADD_WISHLIST, params);
       console.log(response);
       console.log('Thêm vào sản phẩm yêu thích thành công');
+      likeProduct = true;
     } catch (err) {
       console.error(`Error at handleWistList:  ${err}`);
     }
   }
 
   const handleDeleteWishList = async () => {
-    const wishlistId = favoriteProducts.id;
+    const params = {
+      productId: selectedProduct.id,
+      userId: token.userId,
+    }
     try {
-      const response = await axiosUrl.delete(`${POST_ADD_WISHLIST}/${wishlistId}`);
+      likeProduct = false;
+      const response = await axiosUrl.post(POST_DELETE_WISHLIST, params);
       console.log("Xóa sản phẩm yêu thích thành công");
       setFavoriteProducts();
     } catch (err) {
       console.error(`Error at handleDeleteWishList: ${err}`);
     }
   };
+  // const showWishListByWishListId = async () => {
+  //   const wiid = token.userId;
+  //   try {
+  //     const response = await axiosUrl.get(GET_WISHLIST_BY_USERID(id));
+  //     const product = [...response.data];
+  //     setFavoriteProducts(product);
+  //     console.log('sản phẩm đã thích:' + favoriteProducts.)
+  //   } catch (err) {
+  //     console.error(`Error at showWishListByUserId: ${err.message}`);
+  //   }
+  // };
 
   const showWishListByUserId = async () => {
     const id = token.userId;
@@ -221,6 +266,7 @@ const DetailProduct = () => {
       const response = await axiosUrl.get(GET_WISHLIST_BY_USERID(id));
       const product = [...response.data];
       setFavoriteProducts(product);
+      console.log('sản phẩm đã thích:' + favoriteProducts)
     } catch (err) {
       console.error(`Error at showWishListByUserId: ${err.message}`);
     }
@@ -242,7 +288,7 @@ const DetailProduct = () => {
               alt={selectedProduct.productName}
               height="500"
               width='300'
-              image={url}
+              image={hasSelected == false ? url : selectedProduct.imageUrl}
               title={selectedProduct.productName}
             ></CardMedia>
           </Grid>
@@ -293,14 +339,16 @@ const DetailProduct = () => {
                     {
                       likeProduct == true ?
                         (
-                          <IconButton onClick={() => handleDeleteWishList()} color="error">
-                            <FavoriteIcon />
-                          </IconButton>
-                        ) : (
                           <IconButton onClick={() => handleWishList()}>
-                            <FavoriteBorderIcon variant="outlined" color="error" />
+                            <FavoriteBorderIcon variant="outlined" color="error" backgroundColor='red' />
+                          </IconButton>
+                        ) :
+                        (
+                          <IconButton onClick={() => handleDeleteWishList()}>
+                            <FavoriteIcon variant="outlined" color="error" />
                           </IconButton>
                         )
+
                     }
                   </div>
                 )}
@@ -308,28 +356,14 @@ const DetailProduct = () => {
             </Card>
           </Grid>
         </Grid>
-        <Box bgcolor="#F2F2F2" borderRadius={8} p={2} boxShadow={1} mt={10} width={800}>
-          <Typography variant="body2" component="h1">
-            <h1>Sản phẩm yêu thích</h1>
-          </Typography>
-          <Box width={800}>
-            <Box overflowX="scroll">
-              <Grid container spacing={2} height={300}>
-                {favoriteProducts.map((product) => (
-                  <Grid item key={product.productName} xs={12} sm={6} md={4}>
-                    <Box bgcolor="white" borderRadius={8} p={2} boxShadow={1} height={250}>
-                      <Link to={`/user/product-detail/${product.productId}`}>
-                        <img src={product.productImage} alt={product.productName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      </Link>
-                      <Typography variant="subtitle1" component="p" pt={2}>
-                        {product.productName}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Box>
+        <Box bgcolor="lightgray" p={2} mt={10} minWidth={100}>
+          <Slider {...settings}>
+            {imageUrls.map((url, index) => (
+              <div style={{ width: '85px', height: '110px' }} key={index} onClick={() => handleImageClick(url)}>
+                <img style={{ width: '20%', height: '30%', objectFit: 'cover' }} src={url} />
+              </div>
+            ))}
+          </Slider>
         </Box>
         <div
           style={{
@@ -370,7 +404,27 @@ const DetailProduct = () => {
                   <div style={{ paddingTop: '8px', paddingLeft: '10px', display: 'flex', flexDirection: 'row' }}>
                     {data.comment}
                     {console.log(editedComment)}
-                    {data.userId === token.userId && (
+                    {loginInfo !== null ? (
+                      data.userId === token.userId(
+                        <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
+                          <Button
+                            variant="text"
+                            onClick={(event) => handleClickComment(event, data.id)}
+                          >
+                            Update
+                          </Button>
+                          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+                            <MenuItem onClick={() => { }}>
+                              <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
+                            </MenuItem>
+                            <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
+                          </Menu>
+                        </div>
+                      )
+                    ) : (
+                      <></>
+                    )}
+                    {/* {data.userId === token.userId (
                       <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
                         <Button
                           variant="text"
@@ -385,7 +439,7 @@ const DetailProduct = () => {
                           <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
                         </Menu>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
