@@ -33,6 +33,8 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseIcon from "@mui/icons-material/Close";
 
 import React from "react";
+import moment from "moment";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,10 +47,170 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const AdminDashboard = () => {
+const AdminDashboard = ({
+  handleDelete,
+  selectDob,
+  setSelectDob,
+  role,
+  setRole,
+  values,
+  showAddForm,
+  showUpdateForm,
+  cancelForm,
+  handleSubmit,
+  handleChange,
+  isUpdateRow,
+  isAddNew,
+  handleChangeSearch,
+  setSearch,
+  search,
+  accountList,
+}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
+      {isAddNew === true || isUpdateRow === true ? (
+        <Box>
+          <Grid container justifyContent="center">
+            <Card
+              sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}
+            >
+              <CardHeader
+                title="Thông tin tài khoản"
+                titleTypographyProps={{
+                  align: "center",
+                  fontWeight: "bold",
+                }}
+                subheader={isAddNew === true ? "Thêm mới" : "Cập nhật"}
+                subheaderTypographyProps={{
+                  align: "center",
+                }}
+              />
+              <CardContent sx={{ marginBottom: "2%" }}>
+                <Box
+                  component="form"
+                  sx={{
+                    display: "column",
+                  }}
+                  onSubmit={handleSubmit}
+                >
+                  <br />
+                  <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                      <TextField
+                        sx={{ pb: 2 }}
+                        fullWidth
+                        label="Name"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your name"
+                        value={values.fullName}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <DesktopDatePicker
+                        label="Ngày Sinh"
+                        inputFormat="DD/MM/YYYY"
+                        placeholder="DD/MM/YYYY"
+                        value={selectDob}
+                        onChange={(newValue) => {
+                          setSelectDob(newValue);
+                        }}
+                        renderInput={(params) => (
+                          <TextField sx={{ pb: 2 }} fullWidth {...params} />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        sx={{ pb: 2 }}
+                        label="Email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={values.email}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        sx={{ pb: 2 }}
+                        label="Adress"
+                        id="address"
+                        name="address"
+                        placeholder="Enter your adress"
+                        value={values.address}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        sx={{ pb: 2 }}
+                        label="Phone Number"
+                        id="userName"
+                        name="userName"
+                        placeholder="Enter your phone number"
+                        value={values.userName}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+                    {isUpdateRow === false && (
+                      <Grid item>
+                        <TextField
+                          fullWidth
+                          sx={{ pb: 2 }}
+                          label="Password"
+                          id="password"
+                          name="password"
+                          placeholder="Enter your password"
+                          value={values.password}
+                          onChange={handleChange}
+                        />
+                      </Grid>
+                    )}
+                    {isUpdateRow === false && (
+                      <Grid item>
+                      <FormControl variant="standard" fullWidth required>
+                        <InputLabel id="category-select-label">
+                          Chọn vai trò
+                        </InputLabel>
+                        <Select
+                          labelId="category-select-label"
+                          id="categoryItem"
+                          value={role}
+                          onChange={(event) => setRole(event.target.value)}
+                        >
+                          <MenuItem value="1">owner</MenuItem>
+                          <MenuItem value="2">staff</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    )}
+                    
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{ height: "35px", width: "100%" }}
+                      >
+                        {isAddNew === true
+                          ? "Thêm Tài Khoản"
+                          : "Cập Nhật Tài Khoản"}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Box>
+      ) : (
+        <></>
+      )}
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
@@ -61,7 +223,6 @@ const AdminDashboard = () => {
           <Grid item xs={12}>
             <Typography
               sx={{
-                color: "black",
                 fontWeight: 600,
                 flexGrow: 1,
                 textAlign: "center",
@@ -70,7 +231,7 @@ const AdminDashboard = () => {
               variant="h4"
               component="div"
             >
-              Bảng quản lý sản phẩm
+              Bảng quản lý tài khoản
             </Typography>
           </Grid>
           <Grid item xs={5}>
@@ -79,14 +240,18 @@ const AdminDashboard = () => {
               id="filled-basic"
               label="Tìm Kiếm"
               variant="outlined"
-              // onChange={(e) => setSearchedVal(e.target.value)}
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                handleChangeSearch(e.target.value);
+              }}
             />
           </Grid>
           <Grid item xs={4}>
             <Button
               variant="contained"
               sx={{ width: "200px", ml: 4 }}
-              // onClick={() => showAddForm()}
+              onClick={() => showAddForm()}
             >
               Tạo Sản Phẩm Mới
             </Button>
@@ -94,7 +259,7 @@ const AdminDashboard = () => {
               size="large"
               // disabled={!isDisabled}
               color="error"
-              // onClick={cancelForm}
+              onClick={cancelForm}
             >
               <CloseIcon />
             </IconButton>
@@ -111,117 +276,118 @@ const AdminDashboard = () => {
                   <TableCell></TableCell>
                 </TableRow>
               ) : ( */}
-                <TableRow>
-                  <StyledTableCell align="center">STT</StyledTableCell>
-                  <StyledTableCell align="left">Ảnh</StyledTableCell>
-                  <StyledTableCell align="left">Tên Sản Phẩm</StyledTableCell>
-                  <StyledTableCell align="left">Nhãn Hiệu</StyledTableCell>
-                  <StyledTableCell align="left">Loại Hàng</StyledTableCell>
-                  <StyledTableCell align="left">Mô Tả</StyledTableCell>
-                  <StyledTableCell align="left">Số Lượng</StyledTableCell>
-                  <StyledTableCell align="left">Đơn giá</StyledTableCell>
-                  <StyledTableCell align="left">Trạng thái</StyledTableCell>
-                  <StyledTableCell align="left"></StyledTableCell>
-                  <StyledTableCell align="left"></StyledTableCell>
-                </TableRow>
+              <TableRow>
+                <StyledTableCell align="center">STT</StyledTableCell>
+                <StyledTableCell align="left">Tên người dùng</StyledTableCell>
+                <StyledTableCell align="left">Số điện thoại</StyledTableCell>
+                <StyledTableCell align="left">Email</StyledTableCell>
+                <StyledTableCell align="left">Ngày sinh</StyledTableCell>
+                <StyledTableCell align="left">Địa chỉ</StyledTableCell>
+                <StyledTableCell align="left">Vai trò</StyledTableCell>
+                <StyledTableCell align="left">Trạng thái</StyledTableCell>
+                <StyledTableCell align="left"></StyledTableCell>
+                <StyledTableCell align="left"></StyledTableCell>
+              </TableRow>
               {/* )} */}
             </TableHead>
-            {/* <TableBody>
-              {isloading === true ? (
-                <TableRow>
-                  <TableCell
-                    sx={{ width: "100%", height: "100%" }}
-                    align="center"
-                  >
-                    <CircularProgress />
-                  </TableCell>
-                </TableRow>
-              ) : productData.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    sx={{ width: "100%", height: "100%" }}
-                    align="center"
-                  >
-                    Không Có Dữ Liệu
-                  </TableCell>
-                </TableRow>
-              ) : (
-                productData
-                  // .filter(
-                  //   (row) =>
-                  //     !searchedVal.length ||
-                  //     `${row.productName} ${row.productBrand} ${row.productCategory.name}`
-                  //       .toString()
-                  //       .toLowerCase()
-                  //       .includes(searchedVal.toString().toLowerCase())
-                  // )
-                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <TableRow key={row.id}>
-                      <StyledTableCell align="center">
-                        {productData.indexOf(row) + 1}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <CardMedia
-                          component="img"
-                          alt="productImages"
-                          image={row.productImages[0].url}
-                          title="productImages"
-                          sx={{ width: "50px" }}
-                        ></CardMedia>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.productName}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.productBrand}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.productCategory.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.description}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.productQuantity}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {parseFloat(row.productPrice).toLocaleString("en-US")} VND
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.status === true? "Đang hoạt động": "Dừng hoạt động"}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <IconButton
-                          size="large"
-                          color="info"
-                          onClick={() => {
-                            showUpdateForm(row);
-                          }}
-                        >
-                          <EditRoundedIcon />
-                        </IconButton>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                      <IconButton
-                        size="large"
-                          color={row.status === true ? "error" : "success"}
-                          // disabled={isDisabled}
-                          onClick={() => {
-                            handleDelete(row);
-                          }}
-                        >
-                          {row.status === "Active" ? (
-                            <RemoveCircleOutlineRoundedIcon />
-                          ) : (
-                            <RemoveCircleRoundedIcon />
-                          )}
-                        </IconButton>
-                      </StyledTableCell>
-                    </TableRow>
-                  ))
-              )}
-            </TableBody> */}
+            <TableBody>
+              {
+                // isloading === true ? (
+                //   <TableRow>
+                //     <TableCell
+                //       sx={{ width: "100%", height: "100%" }}
+                //       align="center"
+                //     >
+                //       <CircularProgress />
+                //     </TableCell>
+                //   </TableRow>
+                // ) :
+                accountList.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      sx={{ width: "100%", height: "100%" }}
+                      align="center"
+                    >
+                      Không Có Dữ Liệu
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  accountList
+                    // .filter(
+                    //   (row) =>
+                    //     !searchedVal.length ||
+                    //     `${row.productName} ${row.productBrand} ${row.productCategory.name}`
+                    //       .toString()
+                    //       .toLowerCase()
+                    //       .includes(searchedVal.toString().toLowerCase())
+                    // )
+                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <TableRow key={index}>
+                        <StyledTableCell align="center">
+                          {index + 1}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.userFullName}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.userName}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.email}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {moment(row.dob).format("DD/MM/YYYY")}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.address}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.role === "3"
+                            ? "Khách hàng"
+                            : row.role === "1"
+                            ? "Quản lý sản phẩm"
+                            : row.role === "2"
+                            ? "Nhân viên"
+                            : ""}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.status === "Active"
+                            ? "Đang hoạt động"
+                            : "Dừng hoạt động"}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <IconButton
+                            size="large"
+                            color="info"
+                            onClick={() => {
+                              showUpdateForm(row);
+                            }}
+                          >
+                            <EditRoundedIcon />
+                          </IconButton>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <IconButton
+                            size="large"
+                            color={row.status !== "Active" ? "error" : "success"}
+                            // disabled={isDisabled}
+                            onClick={() => {
+                              handleDelete(row);
+                            }}
+                          >
+                            {row.status === "Active" ? (
+                              <RemoveCircleOutlineRoundedIcon />
+                            ) : (
+                              <RemoveCircleRoundedIcon />
+                            )}
+                          </IconButton>
+                        </StyledTableCell>
+                      </TableRow>
+                    ))
+                )
+              }
+            </TableBody>
             {/* <TableFooter>
               <TableRow>
                 {isloading === true ? (
