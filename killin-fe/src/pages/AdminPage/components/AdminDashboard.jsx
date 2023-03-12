@@ -253,7 +253,7 @@ const AdminDashboard = ({
               sx={{ width: "200px", ml: 4 }}
               onClick={() => showAddForm()}
             >
-              Tạo Sản Phẩm Mới
+              Tạo Tài Khoản Mới
             </Button>
             <IconButton
               size="large"

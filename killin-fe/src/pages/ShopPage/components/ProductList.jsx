@@ -150,6 +150,7 @@ const ProductList = (props) => {
     };
     try {
       const response = await axiosUrl.post(POST_ORDER, params);
+      alert('Đã thêm sản phẩm vào giỏ hàng thành công!');
       console.log(response);
     } catch (error) {
       console.error(`Error at addToCart: ${error}`);

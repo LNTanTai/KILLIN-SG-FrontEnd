@@ -99,6 +99,7 @@ const DetailProduct = () => {
     try {
       const response = await axiosUrl.post(POST_ORDER, params);
       setLikeProduct(true);
+      alert('Đã thêm sản phẩm vào giỏ hàng thành công!');
       console.log(response);
     } catch (error) {
       console.error(`Error at addToCart: ${error}`);
@@ -345,7 +346,7 @@ const DetailProduct = () => {
                         ) :
                         (
                           <IconButton onClick={() => handleDeleteWishList()}>
-                            <FavoriteIcon variant="outlined" color="error" />
+                            <FavoriteIcon variant="outlined" color="error"/>
                           </IconButton>
                         )
 
