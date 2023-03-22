@@ -4,37 +4,44 @@ import Navbar from '../../components/Navbar'
 import { axiosUrl } from "../../services/api/axios";
 import {
   POST_GET_LIST_BILL_BY_DATE,
-  POST_GET_USER_BY_PHONENUMBER,
   POST_UPDATE_BILL_STATUS,
 } from "../../services/constants/apiConstants";
 import jwtDecode from "jwt-decode";
 import StaffDashboard from './components/StaffDashboard';
 import dayjs from 'dayjs';
+import { StaffSidebar } from '../../services/constants/componentConstants';
 
 const bill = [];
 
 const Index = () => {
   const [open, setOpen] = useState(-1);
   const [billData, setBillData] = useState(bill);
-  const [userData, setUserData] = useState();
- 
   const current = new Date();
   const date = `${current.getFullYear()}-${(current.getMonth() + 1)
     .toString()
     .padStart(2, "0")}-${current.getDate().toString().padStart(2, "0")}`;
 
   const [selectDate, setSelectDate] = useState(date);
-
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   let token;
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
+  const [temp, setTemp] = useState(0)
 
-  useEffect(() => {
-    fetchUserByPhoneNumber();
-    fetchData(date);
-  }, []);
+  useEffect(()=>{
+    setInterval(()=>{
+      setTemp((prevTemp)=>prevTemp+1)
+    }, 2000)
+  }, [])
+  
+  useEffect(()=>{
+    fetchData(selectDate)
+  }, [temp])
+
+  // useEffect(() => {
+  //   fetchData(date);
+  // }, []);
 
   const handleSearchByDate = () => {
     if (selectDate === null) {
@@ -73,7 +80,7 @@ const Index = () => {
       const response = await axiosUrl.post(POST_UPDATE_BILL_STATUS, params);
       // const data = [...response.data];
       console.log(response);
-      fetchData(date);
+      fetchData(selectDate);
     } catch (error) {
       console.error(`Error at handleConfirm: ${error}`);
     }
@@ -90,7 +97,7 @@ const Index = () => {
       const response = await axiosUrl.post(POST_UPDATE_BILL_STATUS, params);
       // const data = [...response.data];
       console.log(response);
-      fetchData(date);
+      fetchData(selectDate);
     } catch (error) {
       console.error(`Error at handleFinish: ${error}`);
     }
@@ -107,35 +114,19 @@ const Index = () => {
       const response = await axiosUrl.post(POST_UPDATE_BILL_STATUS, params);
       // const data = [...response.data];
       console.log(response);
-      fetchData(date);
+      fetchData(selectDate);
     } catch (error) {
       console.error(`Error at handleCancel: ${error}`);
     }
   };
 
-  const fetchUserByPhoneNumber = async () => {
-    const params = {
-      phoneNumber: token.phoneNumber,
-    };
-    try {
-      const response = await axiosUrl.post(
-        POST_GET_USER_BY_PHONENUMBER,
-        params
-      );
-      const data = { ...response.data };
-      setUserData(data);
-    } catch (error) {
-      console.error(`Error at fetchUserByPhoneNumber: ${error}`);
-    }
-  };
-
   return (
-    <Box sx={{ display: "flex", flexDirection: "column"  }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {/* <Navbar /> */}
+      <StaffSidebar />
       <StaffDashboard
       handleConfirm={handleConfirm}
-      userData={userData}
       billData={billData}
       open={open}
       setOpen={setOpen}

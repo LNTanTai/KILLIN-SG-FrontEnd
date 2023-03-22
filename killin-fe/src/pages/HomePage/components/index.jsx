@@ -49,7 +49,7 @@ const Banner = () => {
             const response = await axiosUrl.get(POST_BESTSELLER);
             const bestSellerData = [...response.data];
             setBestSeller(bestSellerData);
-            console.log(`this is the best seller product : ${bestSellerData}`);
+            // console.log(`this is the best seller product : ${bestSellerData}`);
         } catch (error) {
             console.error(`Error fetching best : ${error}`);
         }

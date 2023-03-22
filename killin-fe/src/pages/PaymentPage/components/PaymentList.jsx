@@ -4,6 +4,7 @@ import {
   CardMedia,
   FormControl,
   Grid,
+  InputLabel,
   MenuItem,
   Select,
   Table,
@@ -11,12 +12,17 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TextField,
   Toolbar,
 } from "@mui/material";
 import moment from "moment/moment";
 import React from "react";
 
 const PaymentList = ({
+  setNewAdress,
+  newAdress,
+  setAddressItem,
+  addressItem,
   totalQuantity,
   totalPrice,
   paymentMethod,
@@ -56,7 +62,8 @@ const PaymentList = ({
                         marginRight: 20,
                       }}
                     >
-                      Total Price: {parseFloat(totals[index]).toLocaleString("en-US")} VND
+                      Total Price:{" "}
+                      {parseFloat(totals[index]).toLocaleString("en-US")} VND
                     </h2>
                   </Grid>
                 </Grid>
@@ -104,35 +111,90 @@ const PaymentList = ({
               </div>
             </div>
           ))}
-          <div style={{ marginTop: "2%" ,borderRadius: "10px" , backgroundColor: "white"}}>
-          <div style={{padding: "20px"}}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Items: </TableCell>
-                  <TableCell>{totalQuantity}</TableCell>
-                </TableRow>
-              </TableBody>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Bill: </TableCell>
-                  <TableCell>
-                    {parseFloat(totalPrice).toLocaleString("en-US")} VND
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+          <div
+            style={{
+              marginTop: "2%",
+              borderRadius: "10px",
+              backgroundColor: "white",
+            }}
+          >
+            <div style={{ padding: "20px" }}>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Total Items: </TableCell>
+                    <TableCell>{totalQuantity}</TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Phí giao hàng: </TableCell>
+                    <TableCell>15,000 VND</TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Total Bill: </TableCell>
+                    <TableCell>
+                      {(parseFloat(totalPrice) + 15000).toLocaleString("en-US")}{" "}
+                      VND
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
           <div style={{ display: "flex", flexDirection: "row" }}>
             <div className="cart-3-pay">
               <div className="cart-table">
                 <h1>Thông tin người nhận: </h1>
-                {/* {console.log(userData)} */}
                 <p>Tên người dùng : {userData.fullName}</p>
                 <p>Ngày sinh: {userData.dob}</p>
                 <p>Số điện thoại: {userData.phoneNumber}</p>
-                <p>Địa chỉ : {userData.address}</p>
+              </div>
+              <div className="cart-table">
+                <br/>
+                <br/>
+                <p>
+                  Địa chỉ :{" "}
+                  {addressItem === ""
+                    ? userData.address
+                    : addressItem === "New"
+                    ? "Tạo địa chỉ mới"
+                    : userData.addressList[userData.addressList.findIndex(obj => obj.addressId === addressItem)].address}{" "}
+                </p>
+                {addressItem === "New" && (
+                  <TextField
+                    fullWidth
+                    sx={{ pb: 2, pr: 2 }}
+                    label="Tạo địa chỉ mới*"
+                    id="newAdress"
+                    name="newAdress"
+                    value={newAdress}
+                    onChange={(e) => setNewAdress(e.target.value)}
+                  />
+                )}
+                <FormControl variant="standard" sx={{ width: 160 }} required>
+                  <InputLabel id="address-select-label">
+                    Chọn địa chỉ
+                  </InputLabel>
+                  <Select
+                    labelId="address-select-label"
+                    id="addressItem"
+                    value={addressItem}
+                    onChange={(event) => {
+                      setNewAdress("");
+                      setAddressItem(event.target.value);}}
+                  >
+                    <MenuItem value={"New"}>Tạo mới</MenuItem>
+                    {userData.addressList !== undefined &&
+                      userData.addressList.map((data, index) => (
+                        <MenuItem key={index} value={data.addressId}>
+                          Địa chỉ {index + 1}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
               </div>
             </div>
             <div className="cart-2-pay">

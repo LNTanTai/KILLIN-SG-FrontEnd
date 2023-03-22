@@ -1,26 +1,25 @@
 import {
-  Box,
-  Divider,
-  Drawer,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-} from "@mui/material";
-import React from "react";
-import { NavLink } from "react-router-dom";
-import {
-  BANNER_PATH,
-  CATEGORY_PATH,
-  OWNER_PATH,
-} from "../../services/constants/pathConstants";
+    Box,
+    Divider,
+    Drawer,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Toolbar,
+  } from "@mui/material";
+  import React from "react";
+  import { NavLink } from "react-router-dom";
+  import {
+    REFUND_PATH,
+    STAFF_PATH,
+  } from "../../services/constants/pathConstants";
+  
+  const drawerWidth = 190;
 
-const drawerWidth = 190;
-const OwnerPageArray = [
-  { name: "Quản lý Product", path: OWNER_PATH },
-  { name: "Quản lý Category", path: CATEGORY_PATH },
-  { name: "Quản lý Banner", path: BANNER_PATH },
-];
+  const StaffPageArray = [
+    { name: "Quản lý hóa đơn", path: STAFF_PATH },
+    { name: "Quản lý đổi trả hàng", path: REFUND_PATH },
+  ];
 
 const Index = () => {
   return (
@@ -39,7 +38,7 @@ const Index = () => {
       >
         <Toolbar />
 
-        {OwnerPageArray.map((text, index) => (
+        {StaffPageArray.map((text, index) => (
           <NavLink
             to={text.path}
             style={{ textDecoration: "none" }}
@@ -56,7 +55,7 @@ const Index = () => {
         ))}
       </Drawer>
     </Box>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
