@@ -17,7 +17,7 @@ export const CATEGORY_PATH = "/owner/category";
 export const BANNER_PATH = "/owner/banner";
 
 export const STAFF_PATH = "/staff/homepage";
+export const REFUND_PATH = "/staff/refund";
 
 export const SEARCH_PATH = "search";
-
 export const BILL_PATH = "billhistory";

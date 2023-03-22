@@ -160,12 +160,19 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
   const handleLogout = async () => {
     setOpenBackdrop(true);
     localStorage.clear();
+    let path = location.pathname.split("/");
     setOpenBackdrop(false);
-    navigate(HOMEPAGE_PATH);
+    if (path[1] === "user") {
+      let path2 = location.pathname.substring(5);
+      return path[2] === "shop" || path[2] === "product-detail"
+        ? navigate(path2)
+        : navigate(HOMEPAGE_PATH);
+    } else {
+      navigate(HOMEPAGE_PATH);
+    }
   };
 
   const handleProfile = async () => {
-    console.log(token.role);
     if (token.role === "3") {
       navigate(`/user/${PROFILE_PATH}`);
     } else if (token.role === "1") {
@@ -234,45 +241,45 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
             {loginInfo !== null ? (
               token.role === "3" ? (
                 <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              // sx={{ mt: 1 }}
-            >
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
-                  value={searchInput}
-                  onChange={(e) => searchItems(e.target.value)}
-                />
-              </Search>
-            </Box>
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  // sx={{ mt: 1 }}
+                >
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Search…"
+                      inputProps={{ "aria-label": "search" }}
+                      value={searchInput}
+                      onChange={(e) => searchItems(e.target.value)}
+                    />
+                  </Search>
+                </Box>
               ) : (
                 <></>
               )
             ) : (
               <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              // sx={{ mt: 1 }}
-            >
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
-                  value={searchInput}
-                  onChange={(e) => searchItems(e.target.value)}
-                />
-              </Search>
-            </Box>
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                // sx={{ mt: 1 }}
+              >
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                    value={searchInput}
+                    onChange={(e) => searchItems(e.target.value)}
+                  />
+                </Search>
+              </Box>
             )}
             {isClose === false ? <></> : "Nhấn Enter để tìm kiếm"}
             {isClose === false ? (
@@ -391,9 +398,13 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   </MenuItem>
                 </Menu>
               </Box>
-            ) : location.pathname !== "/login" ? (
+            ) : (
               <Box sx={{ flexGrow: 0 }}>
-                <Link to={`/${LOGIN_PATH}`} style={{ textDecoration: "none" }}>
+                <Link
+                  to={`/${LOGIN_PATH}`}
+                  state={{ previousUrl: location.pathname }}
+                  style={{ textDecoration: "none" }}
+                >
                   <Typography
                     variant="h6"
                     component="div"
@@ -403,8 +414,6 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   </Typography>
                 </Link>
               </Box>
-            ) : (
-              <></>
             )}
           </Toolbar>
         </AppBar>

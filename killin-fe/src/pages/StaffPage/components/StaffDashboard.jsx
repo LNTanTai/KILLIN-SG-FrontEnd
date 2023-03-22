@@ -27,7 +27,6 @@ const StaffDashboard = ({
   billData,
   open,
   setOpen,
-  userData,
   handleFinish,
   handleCancel,
   selectDate,
@@ -103,6 +102,7 @@ const StaffDashboard = ({
                   <TableCell align="left">Khách hàng</TableCell>
                   <TableCell align="left">Ngày tạo</TableCell>
                   <TableCell align="left">Thời gian</TableCell>
+                  <TableCell align="left">Phí giao hàng</TableCell>
                   <TableCell align="left">Tổng thanh toán</TableCell>
                   <TableCell align="left">Trạng thái</TableCell>
                   <TableCell align="center"></TableCell>
@@ -156,7 +156,10 @@ const StaffDashboard = ({
                         {moment(row.timeCreate).format("hh:mm A")}
                       </TableCell>
                       <TableCell align="left">
-                        {parseFloat(row.totalPrice).toLocaleString("en-US")} VND
+                        15,000 VND
+                      </TableCell>
+                      <TableCell align="left">
+                        {(parseFloat(row.totalPrice) + 15000).toLocaleString("en-US")} VND
                       </TableCell>
                       <TableCell align="left">{row.processStatus}</TableCell>
                       <TableCell align="center">
@@ -176,7 +179,7 @@ const StaffDashboard = ({
                         ) : (
                           <Button
                             variant="contained"
-                            sx={{ width: "100%", height: "35px" }}
+                            sx={{ width: 160, height: "35px" }}
                             onClick={() => {
                               handleFinish(row.billId);
                             }}
@@ -224,16 +227,16 @@ const StaffDashboard = ({
                             <TableBody>
                               <TableRow>
                                 <TableCell align="left">
-                                  {userData.fullName}
+                                  {row.userFullName}
                                 </TableCell>
                                 <TableCell align="left">
-                                  {userData.phoneNumber}
+                                  {row.userPhoneNumber}
                                 </TableCell>
                                 <TableCell align="left">
-                                  {userData.email}
+                                  {row.userEmail}
                                 </TableCell>
                                 <TableCell align="left">
-                                  {userData.address}
+                                  {row.userAddress}
                                 </TableCell>
                               </TableRow>
                             </TableBody>
@@ -334,5 +337,5 @@ const StaffDashboard = ({
     </Box>
   );
 };
-//1
+
 export default StaffDashboard;

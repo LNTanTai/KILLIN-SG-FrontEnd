@@ -61,7 +61,7 @@ const ProductList = (props) => {
     if (search !== "" || search !== undefined) {
       setvalues({ ...values, productName: search });
     }
-  }, [search])
+  }, [search]);
 
   useEffect(() => {
     fetchData(props.categoryId);
@@ -89,6 +89,7 @@ const ProductList = (props) => {
           );
         });
       }
+
       setCategoryList(data2);
       setProductData(filter);
       setLoadingCircular(false);
@@ -107,13 +108,23 @@ const ProductList = (props) => {
       productBrand: values.productBrand,
       productName: values.productName,
     };
-    console.log(params)
+    console.log(params);
     try {
       setLoadingCircular(true);
       const response = await axiosUrl.post(POST_SEARCH_FILTER, params);
       const data = [...response.data];
 
-      setProductData(data);
+      if (
+        values.maxPrice === "" &&
+        values.minPrice === "" &&
+        values.productBrand === "" &&
+        values.productName === "" &&
+        categoryItem === "tất cả"
+      ) {
+        fetchData(props.categoryId);
+      } else {
+        setProductData(data);
+      }
       setLoadingCircular(false);
     } catch (error) {
       console.error(`Error at handleSubmit: ${error}`);
@@ -123,7 +134,7 @@ const ProductList = (props) => {
 
   const handleAddToCart = (product) => {
     if (loginInfo === null) {
-      alert('Vui lòng đăng nhập để có thể sử dụng giỏ hàng');
+      alert("Vui lòng đăng nhập để có thể sử dụng giỏ hàng");
     } else {
       // console.log(productData);
       addToCart(product);
@@ -150,7 +161,7 @@ const ProductList = (props) => {
     };
     try {
       const response = await axiosUrl.post(POST_ORDER, params);
-      alert('Đã thêm sản phẩm vào giỏ hàng thành công!');
+      alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
       console.log(response);
     } catch (error) {
       console.error(`Error at addToCart: ${error}`);
@@ -285,8 +296,8 @@ const ProductList = (props) => {
               .filter((product) =>
                 search
                   ? product.productName
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
                   : true
               )
               .map((product) => (

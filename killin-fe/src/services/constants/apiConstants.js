@@ -29,4 +29,7 @@ export const GET_BANNER = '/api/banners';
 export const POST_CHANGE_PASSWORD = 'api/users/changePassword';
 export const GET_ACCOUNT = '/authentication/getAllAccount';
 export const POST_BAN_OR_UNBAN_ACCOUNT = '/authentication/banOrUnbanAccount';
-
+export const POST_CREATE_REFUND = '/api/refund/createRefund';
+export const POST_GET_ALL_REFUND = '/api/refund/getAllRefund';
+export const POST_GET_REFUND_BY_USER_ID = '/api/refund/getRefundByUserId';
+export const POST_UPDATE_REFUND_STATUS = '/api/refund/staffUpdateRefundStatus';
