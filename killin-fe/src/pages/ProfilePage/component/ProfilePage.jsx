@@ -17,6 +17,13 @@ const ProfilePage = () => {
     const [password, setPassword] = useState('');
     const [dob, setDob] = useState(null);
     const token = jwtDecode(loginInfo);
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [dobError, setDobError] = useState(null);
+    const [fullNameError, setFullNameError] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [addressError, setAddressError] = useState("");
     useEffect(() => {
         getUser();
     }, [])
@@ -40,6 +47,26 @@ const ProfilePage = () => {
         }
     }
     const handleSaveClick = async () => {
+        let isValid = true;
+        if (!fullName) {
+            setFullNameError("Hãy nhập tên");
+            isValid = false;
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setEmailError("Hãy nhập email đúng định dạng");
+            isValid = false;
+        }
+        if (!address) {
+            setAddressError("Hãy nhập địa chỉ");
+            isValid = false;
+        }
+        if (!dobError) {
+            setDobError("Hãy nhập ngày sinh");
+            isValid = false;
+        }
+        if (!isValid) {
+            return;
+        }
         const updatedUser = {
             fullName: document.getElementById("name").value,
             email: document.getElementById("email").value,
@@ -112,9 +139,11 @@ const ProfilePage = () => {
                                                 <TextField sx={{ pb: 2 }} fullWidth {...params} />
                                             )}
                                             id="dob"
+                                            error={dobError !== ""}
+                                            helperText={dobError}
                                         />
                                         <TextField
-                                            label="Name"
+                                            label="Tên"
                                             defaultValue={token.fullName}
                                             fullWidth
                                             margin="normal"
@@ -122,6 +151,12 @@ const ProfilePage = () => {
                                                 shrink: true,
                                             }}
                                             id="name"
+                                            error={fullNameError !== ""}
+                                            helperText={fullNameError}
+                                            onChange={(e) => {
+                                                setFullName(e.target.value);
+                                                setFullNameError("");
+                                            }}
                                         />
                                         <TextField
                                             label="Email"
@@ -132,19 +167,15 @@ const ProfilePage = () => {
                                                 shrink: true,
                                             }}
                                             id="email"
-                                        />
-                                        {/* <TextField
-                                            label="Phone Number"
-                                            defaultValue={user.phoneNumber}
-                                            fullWidth
-                                            margin="normal"
-                                            InputLabelProps={{
-                                                shrink: true,
+                                            error={emailError !== ""}
+                                            helperText={emailError}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                setEmailError("");
                                             }}
-                                            id="phoneNumber"
-                                        /> */}
+                                        />
                                         <TextField
-                                            label="Address"
+                                            label="Địa chỉ"
                                             defaultValue={user.address}
                                             fullWidth
                                             margin="normal"
@@ -152,6 +183,12 @@ const ProfilePage = () => {
                                                 shrink: true,
                                             }}
                                             id="address"
+                                            error={addressError !== ""}
+                                            helperText={addressError}
+                                            onChange={(e) => {
+                                                setAddressError(e.target.value);
+                                                setAddressError("");
+                                            }}
                                         />
                                         <Button
                                             variant="contained"
@@ -168,13 +205,13 @@ const ProfilePage = () => {
                                             variant="body2"
                                             style={{ marginTop: 25, fontSize: '25px' }}
                                         >
-                                            Name:  {user.fullName}
+                                            Tên:  {user.fullName}
                                         </Typography>
                                         <Typography
                                             variant="body2"
                                             style={{ marginTop: 25, fontSize: '25px' }}
                                         >
-                                            Phone number:  {user.phoneNumber}
+                                            Số điện thoại:  {user.phoneNumber}
                                         </Typography>
                                         <Typography
                                             variant="body2"
@@ -186,7 +223,7 @@ const ProfilePage = () => {
                                             variant="body2"
                                             style={{ marginTop: 25, fontSize: '25px' }}
                                         >
-                                            Address:  {user.address}
+                                            Địa chỉ:  {user.address}
                                         </Typography>
                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                                             <Button
@@ -203,7 +240,7 @@ const ProfilePage = () => {
                                                 style={{ marginTop: 25, marginLeft: 20 }}
                                                 onClick={handleUpdateClick}
                                             >
-                                                Update profile
+                                                Cập nhật
                                             </Button>
                                             <Button
                                                 variant="contained"

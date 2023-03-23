@@ -95,7 +95,7 @@ const SideBar = () => {
         >
 
           <Typography variant="h5" component="div">
-            Category
+           Phân loại
           </Typography>
         </Box>
         <Divider />
@@ -133,22 +133,27 @@ const SideBar = () => {
         {console.log(favoriteProducts)}
         {favoriteProducts.map((product) => (
           <List key={product.id}>
-            {
-              loginInfo !== null ? (
-              <ListItem disablePadding >
-                <ListItemButton>
-                  {/* <ListItemAvatar>
+            {loginInfo !== null ? (
+              <Link to={`/user/product-detail/${product.productId}`}>
+              <ListItem disablePadding>
+                <ListItemButton sx={{ display: 'flex', alignItems: 'center' }}>
+                  <ListItemAvatar sx={{ minWidth: '64px', mr: 2 }}>
                     <img
-                     style={{ width: '5%', height: '5%', objectFit:'fit', padding:'0px' }} 
-                     src={`${product.productImage}`} alt="Product" />
-                  </ListItemAvatar> */}
+                      style={{ width: '80px', height: 'auto', objectFit: 'cover' }}
+                      src={product.productImage}
+                      alt={product.productName}
+                    />
+                  </ListItemAvatar>
                   <ListItemText primary={product.productName} />
                 </ListItemButton>
               </ListItem>
-              ) : (<div></div>)
-            }
+              </Link>
+            ) : (
+              <div></div>
+            )}
           </List>
         ))}
+
       </Drawer>
     </Box>
   );

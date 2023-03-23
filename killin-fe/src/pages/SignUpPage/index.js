@@ -21,7 +21,8 @@ const Index = () => {
   const [values, setvalues] = useState(initialValues);
   const [selectDob, setSelectDob] = useState(null);
   const navigate = useNavigate();
-
+  const [errors, setErrors] = useState({});
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setvalues({ ...values, [name]: value });
@@ -29,9 +30,40 @@ const Index = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const isValid = validateInputs();
+    if (isValid) {
+      const dob = selectDob ? selectDob.toISOString() : "";
+      createUser(values, dob);
+    }
     createUser(values, selectDob);
   };
+  const validateInputs = () => {
+    let newErrors = {};
+
+    // Kiểm tra Họ và tên không được để trống
+    if (!values.fullName) {
+      newErrors.fullName = "Họ và tên không được để trống";
+    }
+
+    // Kiểm tra Email phải theo dạng email tiêu chuẩn
+    if (!/\S+@\S+\.\S+/.test(values.email)) {
+      newErrors.email = "Email không hợp lệ";
+    }
+
+    // Kiểm tra Địa chỉ không được trống
+    if (!values.address) {
+      newErrors.address = "Địa chỉ không được để trống";
+    }
+
+    // Kiểm tra Số điện thoại theo phải format tiêu chuẩn
+    if (!/^(0\d{9})$/.test(values.userName)) {
+      newErrors.userName = "Số điện thoại không hợp lệ";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
 
   const createUser = async (newValues, dob) => {
     // setIsLoading(true);
@@ -63,6 +95,7 @@ const Index = () => {
         handleSubmit={handleSubmit}
         values={values}
         handleChange={handleChange}
+        errorMessage={errors}
       />
     </Box>
   );

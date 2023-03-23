@@ -11,7 +11,7 @@ import {
 import { DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import React from "react";
 
-const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleChange }) => {
+const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleChange, errorMessage }) => {
   const paperStyle = {
     padding: "30px 20px",
     width: "50%",
@@ -29,7 +29,7 @@ const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleCha
             <Avatar style={avatarStyle}>ok</Avatar>
             <h2 style={headerStyle}>Sign Up</h2>
             <Typography variant="caption" gutterBottom>
-              Please fill this form to create an account !
+              Vui lòng điền những thông tin dưới đây
             </Typography>
           </Grid>
           <Box
@@ -42,12 +42,14 @@ const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleCha
             <TextField
               sx={{ pb: 2 }}
               fullWidth
-              label="Name"
+              label="Họ và tên"
               id="fullName"
               name="fullName"
               placeholder="Enter your name"
               value={values.fullName}
               onChange={handleChange}
+              error={errorMessage.fullName ? true : false}
+              helperText={errorMessage.fullName}
             />
             <DesktopDatePicker
               label="Ngày Sinh"
@@ -70,44 +72,50 @@ const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleCha
               placeholder="Enter your email"
               value={values.email}
               onChange={handleChange}
+              error={errorMessage.email ? true : false}
+              helperText={errorMessage.email}
             />
             <TextField
               fullWidth
               sx={{ pb: 2 }}
-              label="Adress"
+              label="Địa chỉ"
               id="address"
               name="address"
-              placeholder="Enter your adress"
+              placeholder="Nhập địa chỉ của bạn"
               value={values.address}
               onChange={handleChange}
+              error={errorMessage.address ? true : false}
+              helperText={errorMessage.address}
             />
             <TextField
               fullWidth
               sx={{ pb: 2 }}
-              label="Phone Number"
+              label="Số điện thoại"
               id="userName"
               name="userName"
-              placeholder="Enter your phone number"
+              placeholder="Nhập số điện thoại của bạn"
               value={values.userName}
               onChange={handleChange}
+              error={errorMessage.userName ? true : false}
+              helperText={errorMessage.userName}
             />
             <TextField
               fullWidth
               sx={{ pb: 2 }}
-              label="Password"
+              label="Mật khẩu"
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Nhập mật khẩu"
               value={values.password}
               onChange={handleChange}
             />
             <TextField
               fullWidth
               sx={{ pb: 2 }}
-              label="Confirm Password"
+              label="Xác nhận mật khẩu"
               id="confirmPassword"
               name="confirmPassword"
-              placeholder="Confirm your password"
+              placeholder="Xác nhận lại mật khẩu"
               value={values.confirmPassword}
               onChange={handleChange}
             />
@@ -124,7 +132,7 @@ const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleCha
                 variant="contained"
                 color="primary"
               >
-                Sign up
+                Đăng kí
               </Button>
             </Box>
           </Box>

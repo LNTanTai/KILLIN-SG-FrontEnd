@@ -208,6 +208,15 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
       navigate("/user/shop", { state: { search: "" } });
     }
   };
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleClose = () => {
+    setShowPopup(false);
+  };
+
+  const handleOpen = () => {
+    setShowPopup(true);
+  };
 
   return (
     <>
@@ -290,13 +299,20 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
             )}
 
             <Box sx={{ flexGrow: 1 }} />
+            {loginInfo !== null ? (<Typography
+              sx={{ color: "white", pr: 2 }}
+              variant="h6"
+              component="div"
+            >
+              Chào mừng {token.fullName}
+            </Typography>): <></>}
             <Link to={HOMEPAGE_PATH} style={{ textDecoration: "none" }}>
               <Typography
                 sx={{ color: "white", pr: 2 }}
                 variant="h6"
                 component="div"
               >
-                Home
+                Trang chủ
               </Typography>
             </Link>
             {loginInfo !== null ? (
@@ -310,7 +326,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                     variant="h6"
                     component="div"
                   >
-                    Shop
+                    Cửa hàng
                   </Typography>
                 </Link>
               ) : (
@@ -323,7 +339,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   variant="h6"
                   component="div"
                 >
-                  Shop
+                  Cửa hàng
                 </Typography>
               </Link>
             )}
@@ -377,17 +393,17 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleProfile}>
-                    <Typography textAlign="center">Profile</Typography>
+                    <Typography textAlign="center">Thông tin cá nhân</Typography>
                   </MenuItem>
                   {token.role === "3" ? (
                     <MenuItem onClick={handleBillHistory}>
-                      <Typography textAlign="center">Bill history</Typography>
+                      <Typography textAlign="center">Lịch sử mua hàng</Typography>
                     </MenuItem>
                   ) : (
                     <></>
                   )}
                   <MenuItem onClick={handleLogout}>
-                    <Typography textAlign="center">Logout</Typography>
+                    <Typography textAlign="center">Đăng xuất</Typography>
                   </MenuItem>
                 </Menu>
               </Box>
@@ -399,7 +415,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                     component="div"
                     sx={{ color: "white" }}
                   >
-                    Login
+                    Đăng nhập
                   </Typography>
                 </Link>
               </Box>
