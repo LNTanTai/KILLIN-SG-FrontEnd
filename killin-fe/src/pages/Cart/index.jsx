@@ -1,5 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../components/Navbar";
 import CartList from "./components/CartList";
 import { axiosUrl } from "../../services/api/axios";
@@ -15,7 +15,6 @@ import { PAYMENT_PATH } from "../../services/constants/pathConstants";
 const Index = () => {
   const [cartList, setCartList] = useState([]);
   const [cartListCompare, setCartListCompare] = useState([]);
-  const [cartIndex, setCartIndex] = useState();
   const [cartListOrder, setCartListOrder] = useState({});
   const [totals, setTotals] = useState([]);
   const [isChange, setIsChange] = useState(false);
@@ -26,8 +25,6 @@ const Index = () => {
     token = jwtDecode(loginInfo);
   }
   const navigate = useNavigate();
-
-  // const cartStorage = JSON.parse(localStorage.getItem("ok"))
 
   useEffect(() => {
     fetchData();
@@ -49,76 +46,68 @@ const Index = () => {
       const check =
         JSON.stringify(cartList) === JSON.stringify(cartListCompare);
       if (check === false) {
-        const exist = cartList.find(
-          (x) =>
-            x.itemList[cartIndex].id === cartListOrder.itemList[cartIndex].id
-        );
+        const exist = cartList.find((x) => x.orderId === cartListOrder.orderId);
         handleUpdate(exist);
       }
       setIsChange(false);
     }
   }, [isChange]);
 
-  const onAdd = async (data, index2, list) => {
-    const exist = cartList.find(
-      (x) => x.itemList[index2].id === list.itemList[index2].id
-    );
+  const onAdd = async (data, list) => {
+    console.log(list.orderId);
+    const exist = cartList.find((x) => x.orderId === list.orderId);
     setCartListOrder(list);
-    setCartIndex(index2);
-    if(data.quantity !== data.availableQuantity ){
-    if (exist) {
-      setCartList(
-        cartList.map((child) => {
-          return child.itemList[index2].id === list.itemList[index2].id
-            ? {
-                ...exist,
-                itemList: child.itemList.map((children) =>
-                  children.id === data.id
-                    ? {
-                        ...children,
-                        quantity: `${parseInt(data.quantity) + 1}`,
-                      }
-                    : children
-                ),
-                totalQuantity: `${parseInt(child.totalQuantity) + 1}`,
-              }
-            : child;
-        })
-      );
+    if (parseInt(data.quantity) < parseInt(data.availableQuantity)) {
+      if (exist) {
+        setCartList(
+          cartList.map((child) => {
+            return child.orderId === list.orderId
+              ? {
+                  ...exist,
+                  itemList: child.itemList.map((children) =>
+                    children.id === data.id
+                      ? {
+                          ...children,
+                          quantity: `${parseInt(data.quantity) + 1}`,
+                        }
+                      : children
+                  ),
+                  totalQuantity: `${parseInt(child.totalQuantity) + 1}`,
+                }
+              : child;
+          })
+        );
+      }
+      setIsChange(true);
     }
-    setIsChange(true);
-  }
   };
 
-  const onMinus = async (data, index2, list) => {
-    const exist = cartList.find(
-      (x) => x.itemList[index2].id === list.itemList[index2].id
-    );
+  const onMinus = async (data, list) => {
+    const exist = cartList.find((x) => x.orderId === list.orderId);
     setCartListOrder(list);
-    setCartIndex(index2);
-    if(parseInt(data.quantity) > 1 ){
-    if (exist) {
-      setCartList(
-        cartList.map((child) => {
-          return child.itemList[index2].id === list.itemList[index2].id
-            ? {
-                ...exist,
-                itemList: child.itemList.map((children) =>
-                  children.id === data.id
-                    ? {
-                        ...children,
-                        quantity: `${parseInt(data.quantity) - 1}`,
-                      }
-                    : children
-                ),
-                totalQuantity: `${parseInt(child.totalQuantity) - 1}`,
-              }
-            : child;
-        })
-      );
+    if (parseInt(data.quantity) > 1) {
+      if (exist) {
+        setCartList(
+          cartList.map((child) => {
+            return child.orderId === list.orderId
+              ? {
+                  ...exist,
+                  itemList: child.itemList.map((children) =>
+                    children.id === data.id
+                      ? {
+                          ...children,
+                          quantity: `${parseInt(data.quantity) - 1}`,
+                        }
+                      : children
+                  ),
+                  totalQuantity: `${parseInt(child.totalQuantity) - 1}`,
+                }
+              : child;
+          })
+        );
+      }
+      setIsChange(true);
     }
-    setIsChange(true);
-  }
   };
 
   const handleUpdate = async (orderData) => {
@@ -151,7 +140,7 @@ const Index = () => {
     try {
       const response = await axiosUrl.post(POST_ORDER_USER, params);
       const data = [...response.data];
-      console.log(data)
+      console.log(data);
       setCartList(data);
       setCartListCompare(data);
       setTotals([]);
@@ -188,6 +177,8 @@ const Index = () => {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline />
       <CartList
+        setIsChange={setIsChange}
+        setCartList={setCartList}
         cartList={cartList}
         totals={totals}
         totalPrice={totalPrice}
@@ -196,6 +187,7 @@ const Index = () => {
         handleDelete={handleDelete}
         onAdd={onAdd}
         onMinus={onMinus}
+        setCartListOrder={setCartListOrder}
       />
     </Box>
   );

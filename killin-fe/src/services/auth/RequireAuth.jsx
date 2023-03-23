@@ -11,12 +11,13 @@ const RequireAuth = ({ allowedRoles }) => {
     user = jwtDecode(loginInfo);
     roleID = user.role;
   }
-
   const location = useLocation();
+
+  // console.log(location);
   return allowedRoles?.includes(roleID) ? (
     <Outlet />
   ) : (
-    <Navigate to={HOMEPAGE_PATH} state={{ from: location }} replace />
+    <Navigate to={HOMEPAGE_PATH} replace state={{ from: location }}  />
   );
 };
 

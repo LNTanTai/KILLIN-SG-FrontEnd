@@ -8,9 +8,7 @@ import {
 } from "../../services/constants/apiConstants";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {
-  CHECKOUT_PATH,
-} from "../../services/constants/pathConstants";
+import { CHECKOUT_PATH } from "../../services/constants/pathConstants";
 import Navbar from "../../components/Navbar";
 import PaymentList from "./components/PaymentList";
 
@@ -19,7 +17,7 @@ const Index = () => {
   const [userData, setUserData] = useState([]);
   const location = useLocation();
   const cartList = location.state;
-  // const [cartList, setCartList] = useState([]);
+  const [addressItem, setAddressItem] = useState("");
   const [totals, setTotals] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   let token;
@@ -27,6 +25,7 @@ const Index = () => {
     token = jwtDecode(loginInfo);
   }
   const navigate = useNavigate();
+  const [newAdress, setNewAdress] = useState("");
   // useEffect(() => {
   //   // fetchData();
   //   console.log("user phonenumber: " + token.phoneNumber);
@@ -56,34 +55,13 @@ const Index = () => {
         params
       );
       const data = { ...response.data };
+      console.log(data);
       setUserData(data);
-      console.log("get API: " + response);
+      // console.log("get API: " + response);
     } catch (error) {
       console.error(`Error at fetchUserByPhoneNumber: ${error}`);
     }
   };
-
-  // const fetchData = async () => {
-  //   const params = {
-  //     userId: token.userId,
-  //   };
-  //   try {
-  //     const response = await axiosUrl.post(POST_ORDER_USER, params);
-  //     const data = [...response.data];
-  //     setCartList(data);
-      // data.forEach((element) => {
-      //   const total = element.itemList.reduce(
-      //     (previousScore, currentScore, index) =>
-      //       previousScore +
-      //       parseFloat(currentScore.quantity * currentScore.price),
-      //     0
-      //   );
-      //   setTotals((totals) => [...totals, total]);
-      // });
-  //   } catch (error) {
-  //     console.error(`Error at fetchData: ${error}`);
-  //   }
-  // };
 
   const totalPrice = totals.reduce(
     (previousScore, currentScore, index) => previousScore + currentScore,
@@ -95,10 +73,6 @@ const Index = () => {
       previousScore + parseInt(currentScore.totalQuantity),
     0
   );
-
-  const handleCheckout = () => {
-    
-  };
 
   const handlePayment = async () => {
     let data = [];
@@ -113,6 +87,9 @@ const Index = () => {
     const params = {
       userId: token.userId,
       orderDetailList: data,
+      addressId: addressItem === "New"? "" : addressItem === ""? userData.addressList[0].addressId : addressItem,
+      // addressId: "",
+      newAddress: addressItem === "New"? newAdress: "",
     };
     console.log(params);
     try {
@@ -120,8 +97,12 @@ const Index = () => {
       // const data = [...response.data];
       console.log(response.data);
       // console.log(data);
-      localStorage.setItem("ko", response.data);
-      navigate(`/user/${CHECKOUT_PATH}`, { state: response.data });
+      // localStorage.setItem("ko", response.data);
+      navigate(
+        `/user/${CHECKOUT_PATH}`,
+        { state: response.data },
+        { replace: true }
+      );
     } catch (error) {
       console.error(`Error at fetchData: ${error}`);
     }
@@ -132,11 +113,24 @@ const Index = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column"  }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {console.log(totals)} */}
       <CssBaseline />
       <Navbar />
-      <PaymentList totalQuantity={totalQuantity} totalPrice={totalPrice} handlePaymentMethodChange={handlePaymentMethodChange} paymentMethod={paymentMethod} userData={userData} totals={totals} cartList={cartList} handlePayment={handlePayment}/>
+      <PaymentList
+      setNewAdress={setNewAdress}
+      newAddress={newAdress}
+        setAddressItem={setAddressItem}
+        addressItem={addressItem}
+        totalQuantity={totalQuantity}
+        totalPrice={totalPrice}
+        handlePaymentMethodChange={handlePaymentMethodChange}
+        paymentMethod={paymentMethod}
+        userData={userData}
+        totals={totals}
+        cartList={cartList}
+        handlePayment={handlePayment}
+      />
     </Box>
   );
 };

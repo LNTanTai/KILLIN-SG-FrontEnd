@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {
   GET_PRODUCTS_ID,
   GET_PRODUCT_COMMENT_BY_ID,
@@ -28,11 +28,11 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Paper
+  Paper,
 } from "@mui/material";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
-import Slider from 'react-slick';
+import Slider from "react-slick";
 
 const DetailProduct = () => {
   const { id } = useParams();
@@ -47,7 +47,7 @@ const DetailProduct = () => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const likeproduct = false;
-  const wishlistid = '';
+  const wishlistid = "";
   const navigate = useNavigate();
   let [url, setUrl] = useState();
   let [quantity, setQuantity] = useState(1);
@@ -61,27 +61,32 @@ const DetailProduct = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
     showWishListByUserId();
   }, []);
 
   useEffect(() => {
-    console.log(url);
-  }, [url]);
+    const body = document.querySelector('#root');
+
+    body.scrollIntoView({
+        behavior: 'auto'
+    }, 500)
+
+}, []);
+
+  // useEffect(() => {
+  //   console.log(url);
+  // }, [url]);
   const onAdd = () => {
-    if (quantity !== parseInt(selectedProduct.productQuantity)) {
-      setQuantity(quantity + 1);
+    if (parseInt(quantity) < parseInt(selectedProduct.productQuantity)) {
+      setQuantity(parseInt(quantity) + 1);
     }
   };
 
   const onMinus = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    if (parseInt(quantity) > 1) {
+      setQuantity(parseInt(quantity) - 1);
     }
   };
-
 
   const addToCart = async () => {
     const params = {
@@ -99,7 +104,7 @@ const DetailProduct = () => {
     try {
       const response = await axiosUrl.post(POST_ORDER, params);
       setLikeProduct(true);
-      alert('Đã thêm sản phẩm vào giỏ hàng thành công!');
+      alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
       console.log(response);
     } catch (error) {
       console.error(`Error at addToCart: ${error}`);
@@ -135,7 +140,7 @@ const DetailProduct = () => {
     arrows: false,
     autoplay: true,
     autoplaySpeed: 3000,
-    initialSlide: hasSelected ? 0 : 1
+    initialSlide: hasSelected ? 0 : 1,
   };
 
   const commentAPI = async () => {
@@ -149,10 +154,9 @@ const DetailProduct = () => {
     }
   };
 
-
   const handleAddToCart = () => {
     if (loginInfo === null) {
-      alert('Vui lòng đăng nhập để có thể sử dụng giỏ hàng');
+      alert("Vui lòng đăng nhập để có thể sử dụng giỏ hàng");
     } else {
       addToCart();
     }
@@ -175,7 +179,7 @@ const DetailProduct = () => {
       comment: newComment,
       id: "", // ID của bình luận mới, có thể được tạo ngẫu nhiên hoặc dựa trên thời gian
       productId: selectedProduct.id, // ID của sản phẩm được xem
-      userId: token.userId // ID người dùng đăng nhập
+      userId: token.userId, // ID người dùng đăng nhập
     };
     try {
       const response = await axiosUrl.post(POST_COMMENT, params);
@@ -191,7 +195,6 @@ const DetailProduct = () => {
     setAnchorEl(event.currentTarget);
     setSelectIdComment(id);
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -258,12 +261,28 @@ const DetailProduct = () => {
     // Cập nhật biến likeProduct và thay đổi màu trái tim nếu cần
     likeProduct = isProductLiked;
   }
+    const params = {
+      id: "",
+      productId: selectedProduct.id,
+      productImage: selectedProduct.productImages[0].url,
+      productName: selectedProduct.productName,
+      userId: token.userId,
+    };
+    try {
+      const response = await axiosUrl.post(POST_ADD_WISHLIST, params);
+      console.log(response);
+      console.log("Thêm vào sản phẩm yêu thích thành công");
+      likeProduct = true;
+    } catch (err) {
+      console.error(`Error at handleWistList:  ${err}`);
+    }
+  };
 
   const handleDeleteWishList = async () => {
     const params = {
       productId: selectedProduct.id,
       userId: token.userId,
-    }
+    };
     try {
       likeProduct = false;
       const response = await axiosUrl.post(POST_DELETE_WISHLIST, params);
@@ -291,7 +310,7 @@ const DetailProduct = () => {
       const response = await axiosUrl.get(GET_WISHLIST_BY_USERID(id));
       const product = [...response.data];
       setFavoriteProducts(product);
-      console.log('sản phẩm đã thích:' + favoriteProducts)
+      console.log("sản phẩm đã thích:" + favoriteProducts);
     } catch (err) {
       console.error(`Error at showWishListByUserId: ${err.message}`);
     }
@@ -327,12 +346,31 @@ const DetailProduct = () => {
                 {quantity === 0 ? (
                   <></>
                 ) : (
-                  <Box sx={{ flex: 12, display: "inline-block" }}>
-                    <Button onClick={() => onAdd()}>+</Button>
-                    <Typography variant="div" color="textSecondary" width={5}>
-                      {quantity}
-                    </Typography>
+                  <Box sx={{ flex: 12, display: "inline-flex", alignItems: 'center' }}>
                     <Button onClick={() => onMinus()}>-</Button>
+                    <TextField
+                      required
+                      id="quantity"
+                      name="quantity"
+                      value={quantity}
+                      sx={{width: 50}}
+                      onFocus={e => e.target.select()}
+                      onChange={(e)=> { 
+                        if(e.target.value <= parseInt(selectedProduct.productQuantity) && e.target.value > 0){
+                          setQuantity(e.target.value);
+                        }
+                      }}
+                      inputProps={{ maxLength: 2 }}
+                    />
+                    <Button onClick={() => onAdd()}>+</Button>
+                    <Typography
+                    variant="body3"
+                    color="textSecondary"
+                    style={{ mt: 20, }}
+                    
+                  >
+                    {selectedProduct.productQuantity} sản phẩm có sẵn
+                  </Typography>
                   </Box>
                 )}
                 {quantity === 0 ? (
@@ -353,7 +391,7 @@ const DetailProduct = () => {
                 {quantity === 0 ? (
                   <h2>Hết sản phẩm</h2>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -378,8 +416,16 @@ const DetailProduct = () => {
         <Box bgcolor="lightgray" p={2} mt={10} minWidth={100}>
           <Slider {...settings}>
             {imageUrls.map((url, index) => (
-              <div style={{ width: '85px', height: '110px' }} key={index} onClick={() => handleImageClick(url)}>
-                <img style={{ width: '20%', height: '30%', objectFit: 'cover' }} src={url} />
+              <div
+                style={{ width: "85px", height: "110px" }}
+                key={index}
+                onClick={() => handleImageClick(url)}
+              >
+                <img
+                  alt="imag"
+                  style={{ width: "20%", height: "30%", objectFit: "cover" }}
+                  src={url}
+                />
               </div>
             ))}
           </Slider>
@@ -417,26 +463,61 @@ const DetailProduct = () => {
             <h1>Bình luận: </h1>
             {comment.length === 0 && <p>Không có bình luận</p>}
             {comment.map((data) => (
-              <div key={data.id} style={{ border: 'solid 1px', margin: '10px 10px 10px 0', borderRadius: '10px' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', padding: '10px' }}>
+              <div
+                key={data.id}
+                style={{
+                  border: "solid 1px",
+                  margin: "10px 10px 10px 0",
+                  borderRadius: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    padding: "10px",
+                  }}
+                >
                   <Avatar></Avatar>
-                  <div style={{ paddingTop: '8px', paddingLeft: '10px', display: 'flex', flexDirection: 'row' }}>
+                  <div
+                    style={{
+                      paddingTop: "8px",
+                      paddingLeft: "10px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
                     {data.comment}
                     {console.log(editedComment)}
                     {loginInfo !== null ? (
-                      data.userId === token.userId(
-                        <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
+                      data.userId ===
+                      token.userId(
+                        <div
+                          style={{ paddingLeft: "300px", paddingBottom: "2px" }}
+                        >
                           <Button
                             variant="text"
-                            onClick={(event) => handleClickComment(event, data.id)}
+                            onClick={(event) =>
+                              handleClickComment(event, data.id)
+                            }
                           >
                             Cập nhật
                           </Button>
-                          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                            <MenuItem onClick={() => { }}>
-                              <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
+                          <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                          >
+                            <MenuItem onClick={() => {}}>
+                              <TextField
+                                label="Edit comment"
+                                value={editedComment}
+                                onChange={handleCommentChange1}
+                              />
                             </MenuItem>
-                            <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
+                            <MenuItem>
+                              <Button onClick={handleSaveComment}>Save</Button>
+                            </MenuItem>
                           </Menu>
                         </div>
                       )
@@ -459,8 +540,8 @@ const DetailProduct = () => {
                 value={newComment}
                 onChange={handleCommentChange}
                 style={{
-                  width: '100%',
-                  paddingBottom: '10px'
+                  width: "100%",
+                  paddingBottom: "10px",
                 }}
               />
               <Button variant="contained" color="primary" type="submit">

@@ -5,6 +5,7 @@ import {
   Container,
   CssBaseline,
   Grid,
+  Snackbar,
   TextField,
   Toolbar,
   Typography,
@@ -14,7 +15,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { LoadingBackdrop } from "../../../services/constants/componentConstants";
 import { SIGN_UP_PATH } from "../../../services/constants/pathConstants";
 import { Link } from "react-router-dom";
+import { SimpleSnackbar } from "../../../services/utils";
 const LoginForm = ({
+  handleCloseSnackbar,
+  messageSnackbar,
+  openSnackbar,
   handleSubmit,
   values,
   handleChange,
@@ -105,6 +110,8 @@ const LoginForm = ({
               </Box>
             </Box>
           </Container>
+          
+          <SimpleSnackbar messageSnackbar={messageSnackbar} handleCloseSnackbar={handleCloseSnackbar} openSnackbar={openSnackbar} />
       </Box>
       <LoadingBackdrop open={openBackdrop} />
     </>
