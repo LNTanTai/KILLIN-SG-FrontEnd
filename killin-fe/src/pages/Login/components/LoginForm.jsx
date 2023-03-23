@@ -16,7 +16,6 @@ import { LoadingBackdrop } from "../../../services/constants/componentConstants"
 import { SIGN_UP_PATH } from "../../../services/constants/pathConstants";
 import { Link } from "react-router-dom";
 import { SimpleSnackbar } from "../../../services/utils";
-
 const LoginForm = ({
   handleCloseSnackbar,
   messageSnackbar,
@@ -25,7 +24,9 @@ const LoginForm = ({
   values,
   handleChange,
   openBackdrop,
+  errorMessage
 }) => {
+
   return (
     <>
       <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }}>
@@ -44,7 +45,7 @@ const LoginForm = ({
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign in
+                Đăng nhập
               </Typography>
               <Box
                 component="form"
@@ -64,6 +65,11 @@ const LoginForm = ({
                   onChange={handleChange}
                   autoFocus
                 />
+              {errorMessage && (
+                <Typography variant="caption" color="error">
+                  {errorMessage}
+                </Typography>
+              )}
                 <TextField
                   margin="normal"
                   required
@@ -76,27 +82,28 @@ const LoginForm = ({
                   autoComplete="current-password"
                   onChange={handleChange}
                 />
-                {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+              {errorMessage && (
+                <Typography variant="caption" color="error">
+                  {errorMessage}
+                </Typography>
+              )}
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  Đăng nhập
                 </Button>
                 <Grid container>
                   <Grid item xs>
                     {/* <Link href="#" variant="body2"> */}
-                      Forgot password?
+                      Quên mật khẩu?
                     {/* </Link> */}
                   </Grid>
                   <Grid item>
                     <Link to={`/${SIGN_UP_PATH}`} style={{ textDecoration: "none" }}>
-                      {"Don't have an account? Sign Up"}
+                      {"Không có tài khoản ? Đăng ký tại đây"}
                     </Link>
                   </Grid>
                 </Grid>

@@ -221,6 +221,46 @@ const DetailProduct = () => {
       alert("Bạn hãy đăng nhập để yêu thích sản phẩm này nhé!");
       return;
     }
+
+    // Lấy danh sách các sản phẩm yêu thích của người dùng hiện tại
+    const response = await axiosUrl.get(GET_WISHLIST_BY_USERID, {
+      params: {
+        userId: token.userId,
+      },
+    });
+    const wishlistItems = response.data;
+
+    // Kiểm tra xem selectedProduct đã được thêm vào wishlist của người dùng hay chưa
+    let isProductLiked = false;
+    wishlistItems.forEach(item => {
+      if (item.productId === selectedProduct.productId) {
+        isProductLiked = true;
+        return;
+      }
+    });
+
+    // Nếu selectedProduct chưa được thêm vào wishlist của người dùng, thực hiện thêm mới
+    if (!isProductLiked) {
+      const params = {
+        id: "",
+        productId: selectedProduct.id,
+        productImage: selectedProduct.productImages[0].url,
+        productName: selectedProduct.productName,
+        userId: token.userId,
+      }
+      try {
+        await axiosUrl.post(POST_ADD_WISHLIST, params);
+        console.log('Thêm vào sản phẩm yêu thích thành công');
+        // Đánh dấu sản phẩm này đã được thêm vào wishlist của người dùng
+        isProductLiked = true;
+      } catch (err) {
+        console.error(`Error at handleWistList:  ${err}`);
+      }
+    }
+
+    // Cập nhật biến likeProduct và thay đổi màu trái tim nếu cần
+    likeProduct = isProductLiked;
+  }
     const params = {
       id: "",
       productId: selectedProduct.id,
@@ -290,9 +330,10 @@ const DetailProduct = () => {
             <CardMedia
               component="img"
               alt={selectedProduct.productName}
-              height="500"
-              width="300"
-              image={hasSelected === false ? url : selectedProduct.imageUrl}
+              height="700"
+              width='400'
+              objectFit='cover'
+              image={hasSelected == false ? url : selectedProduct.imageUrl}
               title={selectedProduct.productName}
             ></CardMedia>
           </Grid>
@@ -340,7 +381,7 @@ const DetailProduct = () => {
                     color="textSecondary"
                     style={{ marginTop: 25 }}
                   >
-                    Price:{" "}
+                    Giá:{" "}
                     {parseFloat(
                       quantity * selectedProduct.productPrice
                     ).toLocaleString("en-US")}{" "}
@@ -357,21 +398,15 @@ const DetailProduct = () => {
                       style={{ marginTop: 25 }}
                       onClick={() => handleAddToCart()}
                     >
-                      Add to Cart
+                      Thêm vào giỏ hàng
                     </Button>
-                    {likeProduct === true ? (
                       <IconButton onClick={() => handleWishList()}>
-                        <FavoriteBorderIcon
-                          variant="outlined"
-                          color="error"
-                          backgroundColor="red"
-                        />
+                        {likeProduct ? (
+                          <FavoriteIcon variant="outlined" color="error" backgroundColor='red' />
+                        ) : (
+                            <FavoriteBorderIcon variant="outlined" />
+                        )}
                       </IconButton>
-                    ) : (
-                      <IconButton onClick={() => handleDeleteWishList()}>
-                        <FavoriteIcon variant="outlined" color="error" />
-                      </IconButton>
-                    )}
                   </div>
                 )}
               </CardContent>
@@ -466,7 +501,7 @@ const DetailProduct = () => {
                               handleClickComment(event, data.id)
                             }
                           >
-                            Update
+                            Cập nhật
                           </Button>
                           <Menu
                             anchorEl={anchorEl}
@@ -489,22 +524,6 @@ const DetailProduct = () => {
                     ) : (
                       <></>
                     )}
-                    {/* {data.userId === token.userId (
-                      <div style={{ paddingLeft: '300px', paddingBottom: '2px' }}>
-                        <Button
-                          variant="text"
-                          onClick={(event) => handleClickComment(event, data.id)}
-                        >
-                          Update
-                        </Button>
-                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                          <MenuItem onClick={() => { }}>
-                            <TextField label="Edit comment" value={editedComment} onChange={handleCommentChange1} />
-                          </MenuItem>
-                          <MenuItem><Button onClick={handleSaveComment}>Save</Button></MenuItem>
-                        </Menu>
-                      </div>
-                    )} */}
                   </div>
                 </div>
               </div>

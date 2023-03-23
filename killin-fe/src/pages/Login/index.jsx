@@ -14,15 +14,13 @@ import {
   STAFF_PATH,
   USER_PATH,
 } from "../../services/constants/pathConstants";
-
 const user = [];
-
 const initialValues = {
   phoneNumber: "",
   password: "",
 };
-
 const Index = () => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [openBackdrop, setOpenBackdrop] = useState(false);
   // const [userLogin, setUserLogin] = useState(user);
   const [values, setvalues] = useState(initialValues);
@@ -38,7 +36,6 @@ const Index = () => {
 
     setOpenSnackbar(false);
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setvalues({ ...values, [name]: value });
@@ -91,6 +88,12 @@ const Index = () => {
       }
       // console.log(token);
     } catch (e) {
+      setOpenBackdrop(false);
+      if (e.response.status === 401) {
+        setErrorMessage('Tài khoản hoặc mật khẩu không đúng');
+      } else {
+        setErrorMessage('');
+      }
       console.error(`Error at handleLogin: ${e.response}`);
       setMessageSnackbar("Đăng nhập không thành công");
       setOpenBackdrop(true);
@@ -108,6 +111,7 @@ const Index = () => {
         openBackdrop={openBackdrop}
         handleSubmit={handleSubmit}
         values={values}
+        errorMessage={errorMessage}
       />
     </Box>
   );
