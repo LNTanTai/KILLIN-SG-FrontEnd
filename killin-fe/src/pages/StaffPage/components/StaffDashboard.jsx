@@ -161,7 +161,7 @@ const StaffDashboard = ({
                       <TableCell align="left">
                         {(parseFloat(row.totalPrice) + 15000).toLocaleString("en-US")} VND
                       </TableCell>
-                      <TableCell align="left">{row.processStatus}</TableCell>
+                      <TableCell align="left">{row.processStatus === "In Progress" ? "Đang chờ duyệt" : row.processStatus === "Cancel" ? "Hủy đơn hàng" : row.processStatus}</TableCell>
                       <TableCell align="center">
                         {row.processStatus === "In Progress" ? (
                           <Button

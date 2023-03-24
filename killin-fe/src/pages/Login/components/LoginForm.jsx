@@ -96,11 +96,6 @@ const LoginForm = ({
                   Đăng nhập
                 </Button>
                 <Grid container>
-                  <Grid item xs>
-                    {/* <Link href="#" variant="body2"> */}
-                      Quên mật khẩu?
-                    {/* </Link> */}
-                  </Grid>
                   <Grid item>
                     <Link to={`/${SIGN_UP_PATH}`} style={{ textDecoration: "none" }}>
                       {"Không có tài khoản ? Đăng ký tại đây"}

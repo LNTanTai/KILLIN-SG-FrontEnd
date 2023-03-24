@@ -9,7 +9,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField,
   Toolbar,
 } from "@mui/material";
 import React from "react";
@@ -18,8 +17,6 @@ import moment from "moment/moment";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 const CartList = ({
-  setCartListOrder,
-  setCartList,
   cartList,
   totals,
   totalPrice,
@@ -28,12 +25,11 @@ const CartList = ({
   handleDelete,
   onAdd,
   onMinus,
-  setIsChange,
 }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>Your shopping cart</h1>
+      <h1 style={{ paddingLeft: "40px" }}>Giỏ hàng của bạn</h1>
       <div className="cart-container">
         <div className="cart">
           {cartList.map((list, index) => (
@@ -49,7 +45,7 @@ const CartList = ({
                 >
                   <Grid item xs={6}>
                     <h2 style={{ marginLeft: 15, flexGrow: 1 }}>
-                      Date: {moment(list.timeCreated).format("DD-MM-YYYY")}
+                      Ngày: {moment(list.timeCreated).format("DD-MM-YYYY")}
                     </h2>
                   </Grid>
                   <Grid item xs={6}>
@@ -60,7 +56,7 @@ const CartList = ({
                         marginRight: 20,
                       }}
                     >
-                      Total Price: {totals[index].toLocaleString("en-US")} VND
+                      Tổng bill: {totals[index].toLocaleString("en-US")} VND
                     </h2>
                   </Grid>
                 </Grid>
@@ -68,12 +64,12 @@ const CartList = ({
                   <TableHead>
                     <TableRow>
                       <TableCell style={{ width: "190px" }} align="center">
-                        Image
+                        Hình ảnh
                       </TableCell>
                       <TableCell style={{ width: "400px" }}>Item</TableCell>
-                      <TableCell>Price</TableCell>
-                      <TableCell>Quantity</TableCell>
-                      <TableCell>Total</TableCell>
+                      <TableCell>Giá</TableCell>
+                      <TableCell>Số lượng</TableCell>
+                      <TableCell>Tổng</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -95,66 +91,14 @@ const CartList = ({
                         <TableCell>
                           {parseFloat(row.price).toLocaleString("en-US")} VND
                         </TableCell>
-                        <TableCell xs={12}>
-                        <Button onClick={() => onMinus(row, list)}>-</Button>
-                          <TextField
-                            required
-                            id="quantity"
-                            name="quantity"
-                            value={row.quantity}
-                            sx={{ width: 50 }}
-                            onFocus={(e) => e.target.select()}
-                            onChange={(e) => {
-                              if (
-                                e.target.value <=
-                                  parseInt(row.availableQuantity) &&
-                                e.target.value > 0
-                              ) {
-                                const exist = cartList.find(
-                                  (x) => x.orderId === list.orderId
-                                );
-                                setCartListOrder(list);
-                                setCartList(
-                                  cartList.map((child) => {
-                                    return child.orderId === list.orderId
-                                      ? {
-                                          ...exist,
-                                          itemList: child.itemList.map(
-                                            (children) =>
-                                              children.id === row.id
-                                                ? {
-                                                    ...children,
-                                                    quantity: `${e.target.value}`,
-                                                  }
-                                                : children
-                                          ),
-                                          totalQuantity:
-                                            parseInt(row.quantity) >
-                                            parseInt(e.target.value)
-                                              ? `${
-                                                  parseInt(
-                                                    child.totalQuantity
-                                                  ) -
-                                                  (parseInt(row.quantity) -
-                                                    parseInt(e.target.value))
-                                                }`
-                                              : `${
-                                                  parseInt(
-                                                    child.totalQuantity
-                                                  ) +
-                                                  (parseInt(e.target.value) -
-                                                    parseInt(row.quantity))
-                                                }`,
-                                        }
-                                      : child;
-                                  })
-                                );
-                                setIsChange(true);
-                              }
-                            }}
-                            inputProps={{ maxLength: 2 }}
-                          />
-                          <Button onClick={() => onAdd(row, list)}>+</Button>
+                        <TableCell>
+                          <Button onClick={() => onAdd(row, index2, list)}>
+                            +
+                          </Button>
+                          {row.quantity}
+                          <Button onClick={() => onMinus(row, index2, list)}>
+                            -
+                          </Button>
                         </TableCell>
                         <TableCell>
                           {parseFloat(row.quantity * row.price).toLocaleString(
@@ -191,13 +135,13 @@ const CartList = ({
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Total Items: </TableCell>
+                    <TableCell>Tổng số hàng mua: </TableCell>
                     <TableCell>{totalQuantity}</TableCell>
                   </TableRow>
                 </TableBody>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Total Bill: </TableCell>
+                    <TableCell>Tổng bill: </TableCell>
                     <TableCell>
                       {parseFloat(totalPrice).toLocaleString("en-US")} VND
                     </TableCell>
@@ -221,7 +165,7 @@ const CartList = ({
                   variant="contained"
                   style={{ width: "170px" }}
                 >
-                  Check out
+                  Thanh toán
                 </Button>
               )}
             </div>
