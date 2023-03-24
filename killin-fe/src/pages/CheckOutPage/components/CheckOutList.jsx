@@ -24,7 +24,7 @@ const CheckOutList = ({ userData, checkOutList }) => {
               <p>Tên người dùng : {userData.fullName}</p>
               <p>Ngày sinh: {userData.dob}</p>
               <p>Số điện thoại: {userData.phoneNumber}</p>
-              <p>Địa chỉ : {checkOutList.address}</p>
+              <p>Địa chỉ : {userData.address}</p>
             </div>
           </div>
           <div className="cart-2-pay">
@@ -35,11 +35,8 @@ const CheckOutList = ({ userData, checkOutList }) => {
                 {moment(checkOutList.timeCreate).format("DD/MM/YYYY hh:mm A")}
               </p>
               <p>
-                Phí giao hàng: 15,000 VND
-              </p>
-              <p>
-                Phí thanh toán:{" "}
-                {(parseFloat(checkOutList.totalPrice) + 15000).toLocaleString("en-US")}{" "}
+                Tổng thanh toán:{" "}
+                {parseFloat(checkOutList.totalPrice).toLocaleString("en-US")}{" "}
                 VND
               </p>
               <p>
@@ -57,12 +54,12 @@ const CheckOutList = ({ userData, checkOutList }) => {
               <TableHead>
                 <TableRow>
                   <TableCell style={{ width: "190px" }} align="center">
-                    Image
+                    Hình ảnh
                   </TableCell>
                   <TableCell style={{ width: "400px" }}>Item</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Quantity</TableCell>
-                  <TableCell>Total</TableCell>
+                  <TableCell>Giá</TableCell>
+                  <TableCell>Số lượng</TableCell>
+                  <TableCell>Tổng</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

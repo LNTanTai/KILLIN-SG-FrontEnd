@@ -27,7 +27,7 @@ const Index = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [messageSnackbar, setMessageSnackbar] = useState("cc");
+  const [messageSnackbar, setMessageSnackbar] = useState("");
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
@@ -68,8 +68,6 @@ const Index = () => {
           setOpenSnackbar(true);
           navigate(STAFF_PATH, { replace: true });
         } else if (token.role === "3") {
-          setMessageSnackbar("Đăng nhập thành công");
-          setOpenSnackbar(true);
           if(location.state?.previousUrl !== "/"){
             setMessageSnackbar("Đăng nhập thành công");
             setOpenSnackbar(true);
@@ -88,16 +86,12 @@ const Index = () => {
       }
       // console.log(token);
     } catch (e) {
-      setOpenBackdrop(false);
       if (e.response.status === 401) {
         setErrorMessage('Tài khoản hoặc mật khẩu không đúng');
-      } else {
-        setErrorMessage('');
+        setOpenBackdrop(false);
+        setMessageSnackbar('Tài khoản hoặc mật khẩu không đúng');
+        setOpenSnackbar(true);
       }
-      console.error(`Error at handleLogin: ${e.response}`);
-      setMessageSnackbar("Đăng nhập không thành công");
-      setOpenBackdrop(true);
-      setOpenSnackbar(true);
     }
   };
   return (

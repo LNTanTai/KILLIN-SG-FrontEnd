@@ -110,7 +110,7 @@ const StaffRefundDashboard = ({ handleFinish, handleCancel, refundList }) => {
                         {row.productRefundList[0].reason}
                       </TableCell>
                       <TableCell align="left">
-                        {row.refundStatus !== null && row.refundStatus}
+                        {row.refundStatus !== null && row.refundStatus === "In Progress" ? "Đang chờ duyệt" : row.refundStatus === "Accept" ? "Chấp nhận đổi trả" : row.refundStatus === "Cancel" ? "Hủy đổi trả" : row.refundStatus}
                       </TableCell>
                       <TableCell align="center">
                         {row.productRefundList[0].imagesUrl.map(

@@ -306,13 +306,6 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
             )}
 
             <Box sx={{ flexGrow: 1 }} />
-            {loginInfo !== null ? (<Typography
-              sx={{ color: "white", pr: 2 }}
-              variant="h6"
-              component="div"
-            >
-              Chào mừng {token.fullName}
-            </Typography>): <></>}
             <Link to={HOMEPAGE_PATH} style={{ textDecoration: "none" }}>
               <Typography
                 sx={{ color: "white", pr: 2 }}
@@ -376,6 +369,13 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                 }
               />
             </FormGroup>
+            {loginInfo !== null ? (<Typography
+              sx={{ color: "white", pr: 2 }}
+              variant="h6"
+              component="div"
+            >
+              Chào mừng {token.fullName}
+            </Typography>) : <></>}
             {loginInfo !== null ? (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
