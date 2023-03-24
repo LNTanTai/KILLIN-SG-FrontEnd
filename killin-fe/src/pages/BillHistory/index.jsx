@@ -1,5 +1,8 @@
 import { CssBaseline, Box } from "@mui/material";
-import { Footer } from "../../services/constants/componentConstants";
+import {
+  Footer,
+  UserSidebar,
+} from "../../services/constants/componentConstants";
 import React, { useEffect, useState } from "react";
 import BillHistory from "./component/BillHistory";
 import jwtDecode from "jwt-decode";
@@ -27,28 +30,22 @@ const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState({});
   const [selectedBill, setSelectedBill] = useState({});
   const [refundList, setRefundList] = useState([]);
-
+  const [temp, setTemp] = useState(0);
   let token;
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
 
-  const [temp, setTemp] = useState(0)
+  useEffect(() => {
+    setInterval(() => {
+      setTemp((prevTemp) => prevTemp + 1);
+    }, 2000);
+  }, []);
 
-  useEffect(()=>{
-    setInterval(()=>{
-      setTemp((prevTemp)=>prevTemp+1)
-    }, 2000)
-  }, [])
-  
-  useEffect(()=>{
+  useEffect(() => {
     fetchRefund();
     fetchBill();
-  }, [temp])
-
-  // useEffect(() => {
-    
-  // }, []);
+  }, [temp]);
 
   useEffect(() => {
     const body = document.querySelector("#root");
@@ -85,7 +82,7 @@ const Index = () => {
     };
     try {
       const response = await axiosUrl.post(POST_GET_REFUND_BY_USER_ID, params);
-      const data = {...response.data};
+      const data = { ...response.data };
       setRefundList(data.refundList);
       console.log(data.refundList);
     } catch (err) {
@@ -191,10 +188,11 @@ const Index = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      <UserSidebar />
       <BillHistory
-      refundList={refundList}
+        refundList={refundList}
         handleSubmit={handleSubmit}
         handleUrlChange={handleUrlChange}
         handleUrlRemove={handleUrlRemove}
@@ -216,7 +214,6 @@ const Index = () => {
         error={error}
         orders={orders}
       />
-      <Footer></Footer>
     </Box>
   );
 };

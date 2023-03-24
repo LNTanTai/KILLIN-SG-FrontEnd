@@ -17,6 +17,7 @@ import {
   SignUpPage,
   StaffPage,
   StaffRefund,
+  UserRefund,
 } from "../services/constants/pageConstants";
 import {
   ADMIN_PATH,
@@ -28,7 +29,6 @@ import {
   OWNER_PATH,
   PAYMENT_PATH,
   PROFILE_PATH,
-  REFUND_PATH,
   SHOP_PATH,
   SIGN_UP_PATH,
   STAFF_PATH,
@@ -95,7 +95,8 @@ export default function Routes() {
         { path: PAYMENT_PATH, element: <PaymentPage /> },
         { path: CHECKOUT_PATH, element: <CheckOutPage /> },
         { path: PROFILE_PATH, element: <ProfilePage /> },
-        { path: BILL_PATH, element: <BillHistory /> }
+        { path: BILL_PATH, element: <BillHistory /> },
+        { path: "view-refund", element: <UserRefund /> }
       ],
     },
     //Role Admin
