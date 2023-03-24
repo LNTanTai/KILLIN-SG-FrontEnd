@@ -9,6 +9,8 @@ export const CHECKOUT_PATH = "checkout";
 export const PROFILE_PATH = "profile";
 
 export const USER_PATH = "/user/homepage";
+export const VIEW_REFUND_PATH = "/user/view-refund";
+export const VIEW_BILL_PATH = "/user/billhistory";
 
 export const ADMIN_PATH = "/admin/homepage";
 
