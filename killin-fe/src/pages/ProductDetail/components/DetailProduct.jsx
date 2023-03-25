@@ -61,27 +61,29 @@ const DetailProduct = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
     showWishListByUserId();
   }, []);
 
   useEffect(() => {
-    console.log(url);
-  }, [url]);
+    const body = document.querySelector('#root');
+
+    body.scrollIntoView({
+      behavior: 'auto'
+    }, 500)
+
+  }, []);
+
   const onAdd = () => {
-    if (quantity !== parseInt(selectedProduct.productQuantity)) {
-      setQuantity(quantity + 1);
+    if (parseInt(quantity) < parseInt(selectedProduct.productQuantity)) {
+      setQuantity(parseInt(quantity) + 1);
     }
   };
 
   const onMinus = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    if (parseInt(quantity) > 1) {
+      setQuantity(parseInt(quantity) - 1);
     }
   };
-
 
   const addToCart = async () => {
     const params = {
@@ -316,12 +318,31 @@ const DetailProduct = () => {
                 {quantity === 0 ? (
                   <></>
                 ) : (
-                  <Box sx={{ flex: 12, display: "inline-block" }}>
-                    <Button onClick={() => onAdd()}>+</Button>
-                    <Typography variant="div" color="textSecondary" width={5}>
-                      {quantity}
-                    </Typography>
+                  < Box sx={{ flex: 12, display: "inline-flex", alignItems: 'center' }}>
                     <Button onClick={() => onMinus()}>-</Button>
+                    <TextField
+                      required
+                      id="quantity"
+                      name="quantity"
+                      value={quantity}
+                      sx={{ width: 50 }}
+                      onFocus={e => e.target.select()}
+                      onChange={(e) => {
+                        if (e.target.value <= parseInt(selectedProduct.productQuantity) && e.target.value > 0) {
+                          setQuantity(e.target.value);
+                        }
+                      }}
+                      inputProps={{ maxLength: 2 }}
+                    />
+                    <Button onClick={() => onAdd()}>+</Button>
+                      <Typography
+                        variant="body3"
+                        color="textSecondary"
+                        style={{ mt: 20, }}
+
+                      >
+                        {selectedProduct.productQuantity} sản phẩm có sẵn
+                      </Typography>
                   </Box>
                 )}
                 {quantity === 0 ? (
