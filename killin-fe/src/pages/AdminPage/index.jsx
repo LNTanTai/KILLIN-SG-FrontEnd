@@ -33,6 +33,7 @@ const Index = () => {
   const [isUpdateRow, setIsUpdateRow] = useState(false);
   const [role, setRole] = useState("");
   const [selectDob, setSelectDob] = useState(null);
+  const [selectRole, setSelectRole] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -46,7 +47,7 @@ const Index = () => {
       const filter = data.filter(
         (datas) => `${datas.role}`.toString().toLowerCase() !== "4" && `${datas.role}`.toString().toLowerCase() !== "3"
       );
-      console.log(data);
+      // console.log(data);
       if (search !== "") {
         const filterData = filter.filter(
           (datas) =>
@@ -66,6 +67,23 @@ const Index = () => {
       console.error(`Error at fetchData: ${error}`);
     }
   };
+
+  const handleSearch = () => {
+    if (selectRole === "") {
+      setAccountList(accountFilter);
+    } else {
+      const filter = accountFilter.filter(
+        (data) =>
+        !selectRole.length ||
+        `${data.role}`
+          .toString()
+          .toLowerCase()
+          .includes(selectRole.toString().toLowerCase())
+      );
+
+      setAccountList(filter);
+    }
+  }
 
   const createUser = async (newValues, dob, role) => {
     const params = {
@@ -191,6 +209,9 @@ const Index = () => {
       <CssBaseline />
       {/* <Navbar /> */}
       <AdminDashboard
+      handleSearch={handleSearch}
+      selectRole={selectRole}
+      setSelectRole={setSelectRole}
         handleDelete={handleDelete}
         selectDob={selectDob}
         setSelectDob={setSelectDob}

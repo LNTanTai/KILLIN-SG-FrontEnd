@@ -92,6 +92,10 @@ const Index = () => {
         setMessageSnackbar('Tài khoản hoặc mật khẩu không đúng');
         setOpenSnackbar(true);
       }
+      setErrorMessage('Tài khoản hoặc mật khẩu không đúng');
+        setOpenBackdrop(false);
+        setMessageSnackbar('Tài khoản hoặc mật khẩu không đúng');
+        setOpenSnackbar(true);
     }
   };
   return (

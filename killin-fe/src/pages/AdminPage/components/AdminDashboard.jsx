@@ -31,6 +31,7 @@ import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutl
 import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
 
 import React from "react";
 import moment from "moment";
@@ -48,6 +49,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const AdminDashboard = ({
+  selectRole,
+  setSelectRole,
   handleDelete,
   selectDob,
   setSelectDob,
@@ -65,6 +68,7 @@ const AdminDashboard = ({
   setSearch,
   search,
   accountList,
+  handleSearch,
 }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -188,6 +192,11 @@ const AdminDashboard = ({
                           <MenuItem value="2">staff</MenuItem>
                         </Select>
                       </FormControl>
+                      <IconButton 
+                      // onClick={handleOpenUserMenu} 
+                      sx={{ p: 0 }}>
+                          <SearchIcon />
+                  </IconButton>
                     </Grid>
                     )}
                     
@@ -234,7 +243,7 @@ const AdminDashboard = ({
               Bảng quản lý tài khoản
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={4}>
             <TextField
               sx={{ width: "100%" }}
               id="filled-basic"
@@ -246,6 +255,34 @@ const AdminDashboard = ({
                 handleChangeSearch(e.target.value);
               }}
             />
+          </Grid>
+          <Grid item xs={2}>
+          <FormControl variant="standard" fullWidth required>
+                        <InputLabel id="category-select-label">
+                          Tìm vai trò
+                        </InputLabel>
+          <Select
+                          labelId="category-select-label"
+                          id="categoryItem"
+                          value={selectRole}
+                          onChange={(event) => setSelectRole(event.target.value)}
+                        >
+                          <MenuItem value="">Tất cả</MenuItem>
+                          <MenuItem value="1">Quản lý sản phẩm</MenuItem>
+                          <MenuItem value="2">Nhân viên</MenuItem>
+                        </Select>
+                        </FormControl>
+                        
+          </Grid>
+          <Grid item xs={1}>
+          <IconButton
+                            size="large"
+                            onClick={() => {
+                              handleSearch();
+                            }}
+                          >
+                            <SearchIcon/>
+                          </IconButton>
           </Grid>
           <Grid item xs={4}>
             <Button
