@@ -24,7 +24,7 @@ const Index = () => {
     try {
       const response = await axiosUrl.post(POST_GET_ALL_REFUND, params);
       const data = [...response.data];
-      console.log(data);
+      setRefundList([]);
       setRefundList(data);
     } catch (error) {
       console.error(`Error at fetchData: ${error}`);
