@@ -251,7 +251,7 @@ const OwnerDashboard = ({
               id="filled-basic"
               label="Tìm Kiếm"
               variant="outlined"
-              onChange={(e) => { setPage(0); setSearchedVal(e.target.value);}}
+              onChange={(e) => { setPage(0); setSearchedVal(e.target.value.trim());}}
             />
           </Grid>
           <Grid item xs={4}>

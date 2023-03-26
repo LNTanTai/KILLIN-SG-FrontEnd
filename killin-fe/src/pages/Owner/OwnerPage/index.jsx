@@ -44,9 +44,21 @@ const Index = () => {
   const [pageSave, setPageSave] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  const [temp, setTemp] = useState(0)
+
+  useEffect(()=>{
+    setInterval(()=>{
+      setTemp((prevTemp)=>prevTemp+1)
+    }, 2000)
+  }, [])
+  
+  useEffect(()=>{
+    fetchData()
+  }, [temp])
 
   const fetchData = async () => {
     const params = {};
@@ -58,9 +70,11 @@ const Index = () => {
       const data2 = [...response2.data];
 
       console.log(data);
+      setCategoryList([]);
       setCategoryList(data2);
 
       // console.log(data);
+      setProductData(product);
       setProductData(data);
     } catch (error) {
       console.error(`Error at OwnerDashboard: ${error}`);

@@ -166,7 +166,7 @@ const StaffDashboard = ({
                         {row.processStatus === "In Progress" ? (
                           <Button
                             variant="contained"
-                            sx={{ width: "100%", height: "35px" }}
+                            sx={{ width: "150px", height: "35px" }}
                             onClick={() => {
                               handleConfirm(row.billId);
                             }}
