@@ -55,7 +55,7 @@ const PaymentForm = () => {
                     displayEmpty
                 >
                     <MenuItem value="" disabled>
-                        Select payment method
+                        Chọn phương thức thanh toán
                     </MenuItem>
                     <MenuItem value="creditCard">Credit Card</MenuItem>
                     <MenuItem value="paypal">PayPal</MenuItem>

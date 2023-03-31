@@ -10,7 +10,9 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos"
+import 'aos/dist/aos.css'
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { LoadingBackdrop } from "../../../services/constants/componentConstants";
 import { SIGN_UP_PATH } from "../../../services/constants/pathConstants";
@@ -26,10 +28,12 @@ const LoginForm = ({
   openBackdrop,
   errorMessage
 }) => {
-
+  useEffect(() => {
+    AOS.init({ duration: 1000 })
+  }, []);
   return (
     <>
-      <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }}>
+      <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }} data-aos="flip-left">
         <Toolbar />
           <Container maxWidth="xs">
             <CssBaseline />

@@ -7,29 +7,11 @@ import { axiosUrl } from "../../../services/api/axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { width } from "@mui/system";
 import { SHOP_PATH } from "../../../services/constants/pathConstants";
 import { Typography, Box } from '@mui/material';
-
-
-// const Image = styled('img')({
-//     height: 200,
-//     width: "100%",
-//     objectFit: "cover",
-// });
-
-// const Root = styled('div')(({ theme }) => ({
-//     flexGrow: 1,
-//     padding: theme.spacing(2),
-// }));
-
-// const PaperStyled = styled(Paper)(({ theme }) => ({
-//     padding: theme.spacing(2),
-//     textAlign: "center",
-//     color: theme.palette.text.secondary,
-// }));
-
-
+import AOS from "aos"
+import 'aos/dist/aos.css'
+import { duration } from "moment";
 const Banner = () => {
     const [images, setImages] = useState([]);
     const [bestSeller, setBestSeller] = useState([]);
@@ -58,6 +40,9 @@ const Banner = () => {
         fetchBanner();
         fetchBestSeller();
     }, []);
+    useEffect(() => {
+        AOS.init({ duration: 1500 })
+    }, []);
     const Image = styled('img')({
         width: "100%",
         height: "700px",
@@ -65,7 +50,7 @@ const Banner = () => {
     });
     const Root = styled('div')(({ theme }) => ({
         flexGrow: 1,
-        paddingTop:65,
+        paddingTop: 65,
         width: "100%",
         maxWidth: "100%",
         overflow: "hidden",
@@ -160,28 +145,33 @@ const Banner = () => {
     return (
         <div>
             <Root>
-                <Slider {...settings}>
-                    {images.slice(0, 4).map((image) => (
-                        <div key={image.id} >
-                            <PaperStyled>
-                                <Image src={image.banner_url} />
-                            </PaperStyled>
-                        </div>
-                    ))}
-                </Slider>
-                <h1>
+                <div data-aos="fade-up">
+                    <Slider {...settings} >
+                        {images.slice(0, 4).map((image) => (
+                            <div key={image.id} id="myElement">
+                                <PaperStyled>
+                                    <Image src={image.banner_url} />
+                                </PaperStyled>
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+                <h1 data-aos="fade-right">
                     BEST SELLER
                 </h1>
-                <Slider {...settingSeller}>
-                    {bestSeller.slice(0, 7).map((product) => (
-                        <div key={product.id}>
-                            <p>{product.productName}</p>
-                            <Image src={product.productImages[0].url} style={{ height: '400px', objectFit: 'cover' }} />
-                        </div>
-                    ))}
-                </Slider>
-                <Button href={`${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
-                <div style={{paddingTop:'100px'}}>
+                <div data-aos="fade-up">
+                    <Slider {...settingSeller}>
+                        {bestSeller.slice(0, 7).map((product) => (
+                            <div key={product.id}>
+                                <p>{product.productName}</p>
+                                <Image src={product.productImages[0].url} style={{ height: '400px', objectFit: 'cover' }} />
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+
+                <Button data-aos="fade-right" href={`${SHOP_PATH}`} sx={{ mt: '10px', backgroundColor: 'black', color: 'white', width: '100px' }}>See more</Button>
+                <div style={{ paddingTop: '100px' }} data-aos="flip-right">
                     <Box sx={{
                         textAlign: 'center',
                         paddingTop: '50px',
@@ -197,9 +187,8 @@ const Banner = () => {
                     </Box>
                 </div>
 
-
             </Root>
-        </div>
+        </div >
     );
 };
 

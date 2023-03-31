@@ -9,7 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker, DesktopDatePicker } from "@mui/x-date-pickers";
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos"
+import 'aos/dist/aos.css'
 
 const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleChange, errorMessage }) => {
   const paperStyle = {
@@ -19,9 +21,11 @@ const SignUpDetail = ({ selectDob, setSelectDob, handleSubmit, values, handleCha
   };
   const headerStyle = { margin: 0 };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
-
+  useEffect(() => {
+    AOS.init({ duration: 1000 })
+  }, []);
   return (
-    <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }}>
+    <Box component="main" sx={{ flex: 12, p: 3, pr: 12 }} data-aos="flip-right">
       <Toolbar />
       <Grid>
         <Paper elevation={20} style={paperStyle}>
