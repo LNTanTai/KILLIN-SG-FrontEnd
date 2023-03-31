@@ -28,6 +28,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import CloseIcon from "@mui/icons-material/Close";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Footer } from "../../../services/constants/componentConstants";
+import DeliveryDiningRoundedIcon from "@mui/icons-material/DeliveryDiningRounded";
 
 const BillHistory = ({
   refundList,
@@ -118,7 +119,11 @@ const BillHistory = ({
                       <></>
                     ) : (
                       bill.canRefund === "Y" && (
-                        <Typography variant="body6" color="textSecondary">
+                        <Typography
+                          sx={{ color: "#E28413" }}
+                          variant="body6"
+                          color="textSecondary"
+                        >
                           Đổi trả hàng trước 7 ngày sau khi nhận hàng
                         </Typography>
                       )
@@ -132,7 +137,11 @@ const BillHistory = ({
                     <TableRow>
                       <TableCell align="center"></TableCell>
                       <TableCell align="left">Mã đơn hàng</TableCell>
-                      <TableCell align="left">Trạng thái thanh toán</TableCell>
+                      {bill.processStatus !== "Cancel" && (
+                        <TableCell align="left">
+                          Trạng thái thanh toán
+                        </TableCell>
+                      )}
                       <TableCell align="left">Trạng thái đơn hàng</TableCell>
                       <TableCell align="left">Địa chỉ giao hàng</TableCell>
                       <TableCell align="left">Phí giao hàng</TableCell>
@@ -153,8 +162,44 @@ const BillHistory = ({
                         </IconButton>
                       </TableCell>
                       <TableCell align="left">{bill.billId}</TableCell>
-                      <TableCell align="left">{bill.paymentStatus}</TableCell>
-                      <TableCell align="left">{bill.processStatus}</TableCell>
+                      {bill.processStatus !== "Cancel" && (
+                        <TableCell align="left">
+                          <Typography
+                            sx={{
+                              color:
+                                bill.paymentStatus === "paid"
+                                  ? "#00A3A3"
+                                  : "#C33C54",
+                            }}
+                            variant="subtitle1"
+                          >
+                            {bill.paymentStatus === "paid"
+                              ? "Đã thanh toán"
+                              : "Chờ thanh toán"}
+                          </Typography>
+                        </TableCell>
+                      )}
+
+                      <TableCell align="left">
+                        <Typography
+                          sx={{
+                            color:
+                              bill.processStatus === "In Progress"
+                                ? "#531FFF"
+                                : bill.processStatus === "Cancel"
+                                ? "#FF5714"
+                                : bill.processStatus === "Đang giao hàng"
+                                ? "#ED9831" :"#16A22D",
+                          }}
+                          variant="subtitle1"
+                        >
+                          {bill.processStatus === "In Progress"
+                            ? "Chờ xác nhận"
+                            : bill.processStatus === "Cancel"
+                            ? "Đã hủy"
+                            : bill.processStatus }
+                        </Typography>
+                      </TableCell>
                       <TableCell align="left">{bill.address}</TableCell>
                       <TableCell align="left">15,000 VND</TableCell>
                       <TableCell align="left">
@@ -215,8 +260,22 @@ const BillHistory = ({
                                         "hh:mm A"
                                       )}
                                     </TableCell>
-                                    <TableCell align="left">
-                                      {staff.processAfter}
+                                    <TableCell
+                                      sx={{
+                                        color:
+                                          staff.processAfter === "Đã giao hàng"
+                                            ? "#16A22D"
+                                            : staff.processAfter === "Cancel"
+                                            ? "#FF5714"
+                                            : "#ED9831",
+                                      }}
+                                      align="left"
+                                    >
+                                      {staff.processAfter === "In Progress"
+                                        ? "Đang giao hàng"
+                                        : staff.processAfter === "Cancel"
+                                        ? "Đã hủy"
+                                        : staff.processAfter}
                                     </TableCell>
                                   </TableRow>
                                 ))}

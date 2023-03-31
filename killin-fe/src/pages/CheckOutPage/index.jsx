@@ -5,12 +5,16 @@ import { axiosUrl } from "../../services/api/axios";
 import { POST_GET_USER_BY_PHONENUMBER } from "../../services/constants/apiConstants";
 import jwtDecode from "jwt-decode";
 import { useLocation } from "react-router-dom";
+import { SimpleSnackbar } from "../../services/utils";
 
 const Index = () => {
   const [userData, setUserData] = useState([]);
   const location = useLocation();
-  const checkOutList = location.state;
-  console.log(checkOutList)
+  const checkOutList = location?.state?.checkOutList ?? "";
+  let notify = location?.state?.notify ?? "";
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
+  // console.log(checkOutList)
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   let token;
   if (loginInfo !== null) {
@@ -29,9 +33,21 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    console.log(checkOutList.itemList);
+    if (notify !== "") {
+      setOpenSnackbar(true);
+      setMessageSnackbar(notify);
+      window.history.replaceState({ notify: "" }, document.title);
+    }
+    // console.log(checkOutList.itemList);
     fetchUserByPhoneNumber();
   }, []);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const fetchUserByPhoneNumber = async () => {
     const params = {
@@ -54,6 +70,11 @@ const Index = () => {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline />
       <CheckOutList userData={userData} checkOutList={checkOutList} />
+      <SimpleSnackbar
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
+      />
     </Box>
   );
 };

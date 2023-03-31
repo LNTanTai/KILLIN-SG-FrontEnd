@@ -50,7 +50,7 @@ const light = {
       {/* <Button onClick={handleClick}>Open simple snackbar</Button> */}
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={2000}
+        autoHideDuration={1000}
         onClose={handleCloseSnackbar}
         message={messageSnackbar}
         action={action}

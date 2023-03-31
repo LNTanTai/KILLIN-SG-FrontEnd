@@ -1,6 +1,5 @@
 import { CssBaseline, Box } from "@mui/material";
 import {
-  Footer,
   UserSidebar,
 } from "../../services/constants/componentConstants";
 import React, { useEffect, useState } from "react";
@@ -65,8 +64,9 @@ const Index = () => {
     try {
       const response = await axiosUrl.post(POST_BILL_BY_USERID, params);
       const data = [...response.data];
+      setOrders([]);
       setOrders(data);
-      console.log(data);
+      // console.log(data);
     } catch (err) {
       if (err.response && err.response.status === 404) {
         setError("Hệ thống này đang cập nhật");
@@ -84,7 +84,7 @@ const Index = () => {
       const response = await axiosUrl.post(POST_GET_REFUND_BY_USER_ID, params);
       const data = { ...response.data };
       setRefundList(data.refundList);
-      console.log(data.refundList);
+      // console.log(data.refundList);
     } catch (err) {
       console.error(`Error at fetchRefund: ${err.message}`);
     }

@@ -75,8 +75,10 @@ const OwnerDashboard = ({
       <Toolbar />
       {isAddNew === true || isUpdateRow === true ? (
         <Box>
-          <Grid  container justifyContent="center">
-            <Card  sx={{ width: "100%", border: "solid 1px", borderRadius: "10px"}}>
+          <Grid container justifyContent="center">
+            <Card
+              sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}
+            >
               <CardHeader
                 title="Thông tin sản phẩm"
                 titleTypographyProps={{
@@ -155,9 +157,11 @@ const OwnerDashboard = ({
                     </Grid>
                     <Grid item>
                       <FormControl variant="standard" fullWidth required>
-                        <InputLabel id="category-select-label">Chọn loại hàng</InputLabel>
+                        <InputLabel id="category-select-label">
+                          Chọn loại hàng
+                        </InputLabel>
                         <Select
-                        labelId="category-select-label"
+                          labelId="category-select-label"
                           id="categoryItem"
                           value={categoryItem}
                           onChange={(event) =>
@@ -209,7 +213,9 @@ const OwnerDashboard = ({
                         type="submit"
                         sx={{ height: "35px", width: "100%" }}
                       >
-                        {isAddNew === true ? "Thêm Sản Phẩm" : "Cập Nhật Sản Phẩm"}
+                        {isAddNew === true
+                          ? "Thêm Sản Phẩm"
+                          : "Cập Nhật Sản Phẩm"}
                       </Button>
                     </Grid>
                   </Grid>
@@ -251,7 +257,10 @@ const OwnerDashboard = ({
               id="filled-basic"
               label="Tìm Kiếm"
               variant="outlined"
-              onChange={(e) => { setPage(0); setSearchedVal(e.target.value.trim());}}
+              onChange={(e) => {
+                setPage(0);
+                setSearchedVal(e.target.value.trim());
+              }}
             />
           </Grid>
           <Grid item xs={4}>
@@ -358,10 +367,18 @@ const OwnerDashboard = ({
                         {row.productQuantity}
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        {parseFloat(row.productPrice).toLocaleString("en-US")} VND
+                        {parseFloat(row.productPrice).toLocaleString("en-US")}{" "}
+                        VND
                       </StyledTableCell>
-                      <StyledTableCell align="left">
-                        {row.status === true? "Đang hoạt động": "Dừng hoạt động"}
+                      <StyledTableCell
+                        sx={{
+                          color: row.status === true ? "#16A22D" : "#FF5714",
+                        }}
+                        align="left"
+                      >
+                        {row.status === true
+                          ? "Đang hoạt động"
+                          : "Dừng hoạt động"}
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <IconButton
@@ -375,8 +392,8 @@ const OwnerDashboard = ({
                         </IconButton>
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                      <IconButton
-                        size="large"
+                        <IconButton
+                          size="large"
                           color={row.status === true ? "error" : "success"}
                           // disabled={isDisabled}
                           onClick={() => {
