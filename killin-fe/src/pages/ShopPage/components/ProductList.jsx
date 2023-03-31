@@ -33,6 +33,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AOS from "aos"
 import 'aos/dist/aos.css'
+import { SimpleSnackbar } from "../../../services/utils";
 const initialValues = {
   categoryName: "",
   maxPrice: "",
@@ -51,8 +52,9 @@ const ProductList = (props) => {
   const [values, setvalues] = useState(initialValues);
   const [categoryItem, setCategoryItem] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-
-  const navigate = useNavigate();
+  let notify = location?.state?.notify ?? "";
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
   let token;
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
@@ -66,9 +68,25 @@ const ProductList = (props) => {
     }
   }, [search]);
 
+  // useEffect(() => {
+
+  // }, []);
+
   useEffect(() => {
+    if (notify !== "") {
+      setOpenSnackbar(true);
+      setMessageSnackbar(notify);
+      window.history.replaceState({ notify: "" }, document.title);
+    }
     fetchData(props.categoryId);
   }, [props.categoryId]);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const fetchData = async (categoryId) => {
     const params = {};
@@ -164,8 +182,9 @@ const ProductList = (props) => {
     };
     try {
       const response = await axiosUrl.post(POST_ORDER, params);
-      alert("Đã thêm sản phẩm vào giỏ hàng thành công!");
-      console.log(response);
+      setOpenSnackbar(true);
+      setMessageSnackbar("Đã thêm vào giỏ hàng");
+      // console.log(response);
     } catch (error) {
       console.error(`Error at addToCart: ${error}`);
     }
@@ -299,8 +318,8 @@ const ProductList = (props) => {
               .filter((product) =>
                 search
                   ? product.productName
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
                   : true
               )
               .map((product) => (
@@ -330,9 +349,10 @@ const ProductList = (props) => {
                     <CardContent>
                       <Typography
                         gutterBottom
-                        variant="h5"
-                        component="h2"
+                        variant="body2"
+                        component="body2"
                         align="center"
+                        sx={{ fontSize: "16px" }}
                       >
                         {product.productName}
                       </Typography>
@@ -350,11 +370,12 @@ const ProductList = (props) => {
                           <Button
                             variant="contained"
                             color="primary"
+                            sx={{ fontSize: 15 }}
                             onClick={() => {
                               handleAddToCart(product);
                             }}
                           >
-                            Add to Cart
+                            Thêm vào giỏ hàng
                           </Button>
                         </Grid>
                       </Grid>
@@ -365,6 +386,11 @@ const ProductList = (props) => {
           )}
         </Grid>
       </Box>
+      <SimpleSnackbar
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
+      />
     </>
   );
 };

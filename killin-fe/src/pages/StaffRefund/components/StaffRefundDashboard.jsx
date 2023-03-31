@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
   CardMedia,
   Grid,
   Paper,
@@ -15,7 +17,12 @@ import {
 import moment from "moment";
 import React from "react";
 
-const StaffRefundDashboard = ({ handleFinish, handleCancel, refundList }) => {
+const StaffRefundDashboard = ({
+  handleClickImg,
+  handleFinish,
+  handleCancel,
+  refundList,
+}) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
@@ -90,7 +97,7 @@ const StaffRefundDashboard = ({ handleFinish, handleCancel, refundList }) => {
                   // )
                   // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
-                    <TableRow key={row.billId}>
+                    <TableRow key={index}>
                       <TableCell align="center">{index + 1}</TableCell>
                       <TableCell align="left">{row.refundId}</TableCell>
                       <TableCell align="left">{row.billId}</TableCell>
@@ -109,26 +116,55 @@ const StaffRefundDashboard = ({ handleFinish, handleCancel, refundList }) => {
                       <TableCell align="left">
                         {row.productRefundList[0].reason}
                       </TableCell>
-                      <TableCell align="left">
-                        {row.refundStatus !== null && row.refundStatus === "In Progress" ? "Đang chờ duyệt" : row.refundStatus === "Accept" ? "Chấp nhận đổi trả" : row.refundStatus === "Cancel" ? "Hủy đổi trả" : row.refundStatus}
+                      <TableCell
+                        sx={{
+                          color:
+                            row.refundStatus === "In Progress"
+                              ? "#ED9831"
+                              : row.refundStatus === "Cancel"
+                              ? "#FF5714"
+                              : "#16A22D",
+                        }}
+                        align="left"
+                      >
+                        {row.refundStatus !== null &&
+                        row.refundStatus === "In Progress"
+                          ? "Đang chờ duyệt"
+                          : row.refundStatus === "Accept"
+                          ? "Chấp nhận đổi trả"
+                          : row.refundStatus === "Cancel"
+                          ? "Hủy đổi trả"
+                          : row.refundStatus}
                       </TableCell>
                       <TableCell align="center">
                         {row.productRefundList[0].imagesUrl.map(
                           (image, index2) => (
-                            <CardMedia
-                              component="img"
-                              alt="productImages"
-                              image={image}
-                              title="productImages"
-                              sx={{ width: "50px" }}
-                              key={index2}
-                            ></CardMedia>
+                            <Card sx={{ width: "50px" }} key={index2}>
+                              {index2 === 0 && <CardActionArea
+                                onClick={() =>
+                                  handleClickImg(
+                                    row.productRefundList[0].imagesUrl,
+                                    image,
+                                    index2
+                                  )
+                                }
+                              >
+                                <CardMedia
+                                  component="img"
+                                  alt="productImages"
+                                  image={image}
+                                  title="productImages"
+                                  sx={{ width: "50px" }}
+                                ></CardMedia>
+                              </CardActionArea>}
+                              
+                            </Card>
                           )
                         )}
                       </TableCell>
                       <TableCell align="center">
                         {row.refundStatus === "Accept" ||
-                          row.refundStatus === "Cancel" ? (
+                        row.refundStatus === "Cancel" ? (
                           <></>
                         ) : (
                           <Button
@@ -144,7 +180,7 @@ const StaffRefundDashboard = ({ handleFinish, handleCancel, refundList }) => {
                       </TableCell>
                       <TableCell align="center">
                         {row.refundStatus === "Accept" ||
-                          row.refundStatus === "Cancel" ? (
+                        row.refundStatus === "Cancel" ? (
                           <></>
                         ) : (
                           <Button

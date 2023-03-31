@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Card,
+  CardActionArea,
   CardMedia,
   Collapse,
   Grid,
@@ -31,7 +33,7 @@ const StaffDashboard = ({
   handleCancel,
   selectDate,
   setSelectDate,
-  handleSearchByDate
+  handleSearchByDate,
 }) => {
   return (
     <Box component="main" sx={{ flexGrow: 2, p: 3 }}>
@@ -87,15 +89,14 @@ const StaffDashboard = ({
           <Table aria-label="simple table">
             <TableHead>
               {billData.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      sx={{ width: "100%", height: "100%" }}
-                      align="center"
-                    >
-                    </TableCell>
-                  </TableRow>
-                ) :
-                (<TableRow>
+                <TableRow>
+                  <TableCell
+                    sx={{ width: "100%", height: "100%" }}
+                    align="center"
+                  ></TableCell>
+                </TableRow>
+              ) : (
+                <TableRow>
                   <TableCell align="center"></TableCell>
                   <TableCell align="center">STT</TableCell>
                   <TableCell align="left">Mã đơn hàng</TableCell>
@@ -107,181 +108,206 @@ const StaffDashboard = ({
                   <TableCell align="left">Trạng thái</TableCell>
                   <TableCell align="center"></TableCell>
                   <TableCell align="center"></TableCell>
-                </TableRow>)}
-              
+                </TableRow>
+              )}
             </TableHead>
             <TableBody>
-              {
-                billData.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      sx={{ width: "100%", height: "100%" }}
-                      align="center"
-                    >
-                      Không Có Dữ Liệu
-                    </TableCell>
-                  </TableRow>
-                ) :
-              (billData
-                // .filter(
-                //   (row) =>
-                //     !searchedVal.length ||
-                //     `${row.fullName} ${row.phoneNumber} ${row.address}`
-                //       .toString()
-                //       .toLowerCase()
-                //       .includes(searchedVal.toString().toLowerCase())
-                // )
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => (
-                  <>
-                    <TableRow key={row.billId}>
-                      <TableCell align="center">
-                        <IconButton
-                          onClick={() => setOpen(open === index ? -1 : index)}
+              {billData.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    sx={{ width: "100%", height: "100%" }}
+                    align="center"
+                  >
+                    Không Có Dữ Liệu
+                  </TableCell>
+                </TableRow>
+              ) : (
+                billData
+                  // .filter(
+                  //   (row) =>
+                  //     !searchedVal.length ||
+                  //     `${row.fullName} ${row.phoneNumber} ${row.address}`
+                  //       .toString()
+                  //       .toLowerCase()
+                  //       .includes(searchedVal.toString().toLowerCase())
+                  // )
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <>
+                      <TableRow key={row.billId}>
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={() => setOpen(open === index ? -1 : index)}
+                          >
+                            {open === index ? (
+                              <KeyboardArrowUpIcon />
+                            ) : (
+                              <KeyboardArrowDownIcon />
+                            )}
+                          </IconButton>
+                        </TableCell>
+                        <TableCell align="center">{index + 1}</TableCell>
+                        <TableCell align="left">{row.billId}</TableCell>
+                        <TableCell align="left">{row.userFullName}</TableCell>
+                        <TableCell align="left">
+                          {moment(row.timeCreate).format("DD/MM/YYYY")}
+                        </TableCell>
+                        <TableCell align="left">
+                          {moment(row.timeCreate).format("hh:mm A")}
+                        </TableCell>
+                        <TableCell align="left">15,000 VND</TableCell>
+                        <TableCell align="left">
+                          {(parseFloat(row.totalPrice) + 15000).toLocaleString(
+                            "en-US"
+                          )}{" "}
+                          VND
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            color:
+                              row.processStatus === "In Progress"
+                                ? "#531FFF"
+                                : row.processStatus === "Cancel"
+                                ? "#FF5714"
+                                : row.processStatus === "Đang giao hàng"
+                                ? "#ED9831" :"#16A22D",
+                          }}
+                          align="left"
                         >
-                          {open === index ? (
-                            <KeyboardArrowUpIcon />
+                          {row.processStatus === "In Progress"
+                            ? "Chờ xác nhận"
+                            : row.processStatus === "Cancel"
+                            ? "Hủy đơn hàng"
+                            : row.processStatus}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.processStatus === "In Progress" ? (
+                            <Button
+                              variant="contained"
+                              sx={{ width: "150px", height: "35px" }}
+                              onClick={() => {
+                                handleConfirm(row.billId);
+                              }}
+                            >
+                              Xác Nhận
+                            </Button>
+                          ) : row.processStatus === "Đã giao hàng" ||
+                            row.processStatus === "Cancel" ? (
+                            <></>
                           ) : (
-                            <KeyboardArrowDownIcon />
+                            <Button
+                              variant="contained"
+                              sx={{ width: 160, height: "35px" }}
+                              onClick={() => {
+                                handleFinish(row.billId);
+                              }}
+                            >
+                              Đã giao hàng
+                            </Button>
                           )}
-                        </IconButton>
-                      </TableCell>
-                      <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell align="left">{row.billId}</TableCell>
-                      <TableCell align="left">{row.userFullName}</TableCell>
-                      <TableCell align="left">
-                        {moment(row.timeCreate).format("DD/MM/YYYY")}
-                      </TableCell>
-                      <TableCell align="left">
-                        {moment(row.timeCreate).format("hh:mm A")}
-                      </TableCell>
-                      <TableCell align="left">
-                        15,000 VND
-                      </TableCell>
-                      <TableCell align="left">
-                        {(parseFloat(row.totalPrice) + 15000).toLocaleString("en-US")} VND
-                      </TableCell>
-                      <TableCell align="left">{row.processStatus === "In Progress" ? "Đang chờ duyệt" : row.processStatus === "Cancel" ? "Hủy đơn hàng" : row.processStatus}</TableCell>
-                      <TableCell align="center">
-                        {row.processStatus === "In Progress" ? (
-                          <Button
-                            variant="contained"
-                            sx={{ width: "100%", height: "35px" }}
-                            onClick={() => {
-                              handleConfirm(row.billId);
-                            }}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.processStatus === "In Progress" ? (
+                            <></>
+                          ) : row.processStatus === "Đã giao hàng" ||
+                            row.processStatus === "Cancel" ? (
+                            <></>
+                          ) : (
+                            <Button
+                              variant="contained"
+                              sx={{ width: "100%", height: "35px" }}
+                              onClick={() => {
+                                handleCancel(row.billId);
+                              }}
+                            >
+                              Hủy
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={10} sx={{ pb: 0, pt: 0, b: 0 }}>
+                          <Collapse
+                            in={open === index}
+                            timeout="auto"
+                            unmountOnExit
                           >
-                            Xác Nhận
-                          </Button>
-                        ) : row.processStatus === "Đã giao hàng" ||
-                          row.processStatus === "Cancel" ? (
-                          <></>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            sx={{ width: 160, height: "35px" }}
-                            onClick={() => {
-                              handleFinish(row.billId);
-                            }}
-                          >
-                            Đã giao hàng
-                          </Button>
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.processStatus === "In Progress" ? (
-                          <></>
-                        ) : row.processStatus === "Đã giao hàng" ||
-                          row.processStatus === "Cancel" ? (
-                          <></>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            sx={{ width: "100%", height: "35px" }}
-                            onClick={() => {
-                              handleCancel(row.billId);
-                            }}
-                          >
-                            Hủy
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell colSpan={10} sx={{ pb: 0, pt: 0, b: 0 }}>
-                        <Collapse
-                          in={open === index}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <h2>Thông tin khách hàng:</h2>
-                          <Table size="medium">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="left">Khách hàng</TableCell>
-                                <TableCell align="left">SDT</TableCell>
-                                <TableCell align="left">Email</TableCell>
-                                <TableCell align="left">Địa chỉ</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align="left">
-                                  {row.userFullName}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {row.userPhoneNumber}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {row.userEmail}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {row.userAddress}
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                          <h2>Thông tin sản phẩm:</h2>
-                          <Table size="medium" aria-label="purchases">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="left">Ảnh</TableCell>
-                                <TableCell align="left">Tên sản phẩm</TableCell>
-                                <TableCell align="left">Số lượng</TableCell>
-                                <TableCell align="left">Đơn giá</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {row.itemList.map((child , index2) => (
-                                <TableRow key={index2}>
+                            <h2>Thông tin khách hàng:</h2>
+                            <Table size="medium">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="left">Khách hàng</TableCell>
+                                  <TableCell align="left">SDT</TableCell>
+                                  <TableCell align="left">Email</TableCell>
+                                  <TableCell align="left">Địa chỉ</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
                                   <TableCell align="left">
-                                  <CardMedia
-                                      component="img"
-                                      alt="productImages"
-                                      image={child.productImages[0]}
-                                      title="productImages"
-                                      sx={{ width: "50px" }}
-                                    ></CardMedia>
+                                    {row.userFullName}
                                   </TableCell>
                                   <TableCell align="left">
-                                  {child.productName}
+                                    {row.userPhoneNumber}
                                   </TableCell>
                                   <TableCell align="left">
-                                    {child.quantity}
+                                    {row.userEmail}
                                   </TableCell>
                                   <TableCell align="left">
-                                    {parseFloat(child.currentPrice).toLocaleString("en-US")} VND
+                                    {row.userAddress}
                                   </TableCell>
                                 </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))
-                )}
+                              </TableBody>
+                            </Table>
+                            <h2>Thông tin sản phẩm:</h2>
+                            <Table size="medium" aria-label="purchases">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="left">Ảnh</TableCell>
+                                  <TableCell align="left">
+                                    Tên sản phẩm
+                                  </TableCell>
+                                  <TableCell align="left">Số lượng</TableCell>
+                                  <TableCell align="left">Đơn giá</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {row.itemList.map((child, index2) => (
+                                  <TableRow key={index2}>
+                                    <TableCell align="left">
+                                      <Card sx={{ width: "60px" }}>
+                                        <CardActionArea >
+                                          <CardMedia
+                                            component="img"
+                                            alt="productImages"
+                                            image={child.productImages[0]}
+                                            title="productImages"
+                                          ></CardMedia>
+                                        </CardActionArea>
+                                      </Card>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {child.productName}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {child.quantity}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {parseFloat(
+                                        child.currentPrice
+                                      ).toLocaleString("en-US")}{" "}
+                                      VND
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  ))
+              )}
               {/* {isloading === true ? (
                 <TableRow>
                   <TableCell

@@ -15,7 +15,7 @@ const CheckOutList = ({ userData, checkOutList }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>CHECKOUT</h1>
+      <h1 style={{ paddingLeft: "40px" }}>HÓA ĐƠN THANH TOÁN</h1>
       <div className="cart-container">
         <div style={{ display: "flex", flexDirection: "row" }}>
           <div className="cart-3-pay">

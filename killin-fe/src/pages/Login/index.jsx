@@ -1,7 +1,4 @@
-import {
-  Box,
-  CssBaseline,
-} from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import React, { useState } from "react";
 import LoginForm from "./components/LoginForm";
 import { useLocation, useNavigate } from "react-router-dom/dist";
@@ -14,15 +11,15 @@ import {
   STAFF_PATH,
   USER_PATH,
 } from "../../services/constants/pathConstants";
-const user = [];
+
 const initialValues = {
   phoneNumber: "",
   password: "",
 };
+
 const Index = () => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  // const [userLogin, setUserLogin] = useState(user);
   const [values, setvalues] = useState(initialValues);
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,47 +57,49 @@ const Index = () => {
       if (data.message === "Logged In") {
         localStorage.setItem("loginInfo", JSON.stringify(data.token));
         if (token.role === "1") {
-          setMessageSnackbar("Đăng nhập thành công");
-          setOpenSnackbar(true);
-          navigate(OWNER_PATH, { replace: true });
+          navigate(OWNER_PATH, {
+            replace: true,
+            state: { notify: "Đăng nhập thành công" },
+          });
         } else if (token.role === "2") {
-          setMessageSnackbar("Đăng nhập thành công");
-          setOpenSnackbar(true);
-          navigate(STAFF_PATH, { replace: true });
+          navigate(STAFF_PATH, {
+            replace: true,
+            state: { notify: "Đăng nhập thành công" },
+          });
         } else if (token.role === "3") {
-          if(location.state?.previousUrl !== "/"){
-            setMessageSnackbar("Đăng nhập thành công");
-            setOpenSnackbar(true);
-            navigate(`/user${location.state.previousUrl}`, { replace: true });
-          }
-          else{
-            setMessageSnackbar("Đăng nhập thành công");
-            setOpenSnackbar(true);
-          navigate(USER_PATH, { replace: true });
+          if (location.state?.previousUrl !== "/") {
+            navigate(`/user${location.state.previousUrl}`, {
+              replace: true,
+              state: { notify: "Đăng nhập thành công" },
+            });
+          } else {
+            navigate(USER_PATH, {
+              replace: true,
+              state: { notify: "Đăng nhập thành công" },
+            });
           }
         } else if (token.role === "4") {
-          setMessageSnackbar("Đăng nhập thành công");
-          setOpenSnackbar(true);
-          navigate(ADMIN_PATH, { replace: true });
+          navigate(ADMIN_PATH, {
+            replace: true,
+            state: { notify: "Đăng nhập thành công" },
+          });
         }
       }
       // console.log(token);
     } catch (e) {
-      if (e.response.status === 401) {
-        setErrorMessage('Tài khoản hoặc mật khẩu không đúng');
-        setOpenBackdrop(false);
-        setMessageSnackbar('Tài khoản hoặc mật khẩu không đúng');
-        setOpenSnackbar(true);
-      }
+      setErrorMessage("Tài khoản hoặc mật khẩu không đúng");
+      setOpenBackdrop(false);
+      setMessageSnackbar("Tài khoản hoặc mật khẩu không đúng");
+      setOpenSnackbar(true);
     }
   };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <LoginForm
-      openSnackbar={openSnackbar}
-      messageSnackbar={messageSnackbar}
-      handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
         handleChange={handleChange}
         openBackdrop={openBackdrop}
         handleSubmit={handleSubmit}
