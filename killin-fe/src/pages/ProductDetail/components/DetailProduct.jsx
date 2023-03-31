@@ -32,7 +32,8 @@ import {
 } from "@mui/material";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
-import Slider from "react-slick";
+import AOS from "aos"
+import 'aos/dist/aos.css'
 import { SimpleSnackbar } from "../../../services/utils";
 
 const DetailProduct = () => {
@@ -320,6 +321,9 @@ const DetailProduct = () => {
       }
     }
   };
+  useEffect(() => {
+    AOS.init({ duration: 900 })
+  }, []);
 
   return (
     <div className="container">
@@ -330,18 +334,17 @@ const DetailProduct = () => {
         <Toolbar />
         <Grid container spacing={3}>
           <Grid item xs={8}>
-            <CardMedia
+            <CardMedia data-aos="fade-up"
               component="img"
               alt={selectedProduct.productName}
-              height="700"
-              width="400"
-              objectFit="cover"
+              height="100%"
+              width='200px'
               image={hasSelected == false ? url : selectedProduct.imageUrl}
               title={selectedProduct.productName}
             ></CardMedia>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ marginBottom: 12 }}>
+            <Card sx={{ marginBottom: 12 }} data-aos="fade-up">
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {selectedProduct.productName}
@@ -379,7 +382,8 @@ const DetailProduct = () => {
                     <Typography
                       variant="body3"
                       color="textSecondary"
-                      style={{ mt: 20 }}
+                      style={{ mt: 20, }}
+
                     >
                       {selectedProduct.productQuantity} sản phẩm có sẵn
                     </Typography>
@@ -429,22 +433,16 @@ const DetailProduct = () => {
             </Card>
           </Grid>
         </Grid>
-        <Box bgcolor="lightgray" p={2} mt={10} minWidth={100}>
-          <Slider {...settings}>
-            {imageUrls.map((url, index) => (
-              <div
-                style={{ width: "85px", height: "110px" }}
-                key={index}
-                onClick={() => handleImageClick(url)}
-              >
+            <div style={{ display: 'relative' }}>
+              {imageUrls.map((url, index) => (
                 <img
-                  style={{ width: "20%", height: "30%", objectFit: "cover" }}
+                  style={{ width: '100px', height: '100px', display: 'inline-block', margin: '10px' }}
                   src={url}
+                  key={index}
+                  onClick={() => handleImageClick(url)}
                 />
-              </div>
-            ))}
-          </Slider>
-        </Box>
+              ))}
+            </div>
         <div
           style={{
             width: "66.2%",

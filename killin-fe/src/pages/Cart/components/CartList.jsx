@@ -183,12 +183,6 @@ const CartList = ({
                     </TableBody>
                   </Table>
                 </div>
-
-                {/* <div className="cart-1-button">
-              <Button variant="contained" color="success">
-                Update cart
-              </Button>
-            </div> */}
               </div>
             ))
           )}

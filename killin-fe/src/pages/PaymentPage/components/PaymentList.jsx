@@ -35,7 +35,7 @@ const PaymentList = ({
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>PAYMENT</h1>
+      <h1 style={{ paddingLeft: "40px" }}>PHƯƠNG THỨC THANH TOÁN</h1>
       <div className="cart-container">
         <div className="cart">
           {cartList.map((list, index) => (
@@ -51,7 +51,7 @@ const PaymentList = ({
                 >
                   <Grid item xs={6}>
                     <h2 style={{ marginLeft: 15, flexGrow: 1 }}>
-                      Date: {moment(list.timeCreated).format("DD-MM-YYYY")}
+                      Ngày: {moment(list.timeCreated).format("DD-MM-YYYY")}
                     </h2>
                   </Grid>
                   <Grid item xs={6}>
@@ -62,7 +62,7 @@ const PaymentList = ({
                         marginRight: 20,
                       }}
                     >
-                      Total Price:{" "}
+                      Tổng giá:{" "}
                       {parseFloat(totals[index]).toLocaleString("en-US")} VND
                     </h2>
                   </Grid>
@@ -71,12 +71,12 @@ const PaymentList = ({
                   <TableHead>
                     <TableRow>
                       <TableCell style={{ width: "190px" }} align="center">
-                        Image
+                        Hình ảnh
                       </TableCell>
-                      <TableCell style={{ width: "400px" }}>Item</TableCell>
-                      <TableCell>Price</TableCell>
-                      <TableCell>Quantity</TableCell>
-                      <TableCell>Total</TableCell>
+                      <TableCell style={{ width: "400px" }}>Món hàng</TableCell>
+                      <TableCell>Giá</TableCell>
+                      <TableCell>Giá</TableCell>
+                      <TableCell>Tổng tiền</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -122,7 +122,7 @@ const PaymentList = ({
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Total Items: </TableCell>
+                    <TableCell>Tổng hàng mua: </TableCell>
                     <TableCell>{totalQuantity}</TableCell>
                   </TableRow>
                 </TableBody>
@@ -134,7 +134,7 @@ const PaymentList = ({
                 </TableBody>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Total Bill: </TableCell>
+                    <TableCell>Tổng hóa đơn: </TableCell>
                     <TableCell>
                       {(parseFloat(totalPrice) + 15000).toLocaleString("en-US")}{" "}
                       VND
@@ -199,7 +199,7 @@ const PaymentList = ({
             </div>
             <div className="cart-2-pay">
               <div className="cart-table">
-                <h2>Choose method payment: </h2>
+                <h2>Chọn phương thức thanh toán: </h2>
                 <form>
                   <FormControl margin="normal" required>
                     <Select
@@ -208,9 +208,9 @@ const PaymentList = ({
                       displayEmpty
                     >
                       <MenuItem value="" disabled>
-                        Select payment method
+                        Chọn phương thức
                       </MenuItem>
-                      <MenuItem value="cod">Delivery</MenuItem>
+                      <MenuItem value="cod">Giao hàng tận nơi</MenuItem>
                       <MenuItem value="zalopay">ZaloPay</MenuItem>
                     </Select>
                   </FormControl>
@@ -227,7 +227,7 @@ const PaymentList = ({
                   variant="contained"
                   style={{ width: "170px" }}
                 >
-                  Pay
+                  Thanh toán
                 </Button>
               </div>
             </div>

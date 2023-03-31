@@ -31,8 +31,9 @@ import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import AOS from "aos"
+import 'aos/dist/aos.css'
 import { SimpleSnackbar } from "../../../services/utils";
-
 const initialValues = {
   categoryName: "",
   maxPrice: "",
@@ -58,7 +59,9 @@ const ProductList = (props) => {
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
-
+  useEffect(() => {
+    AOS.init({ duration: 900 })
+  }, []);
   useEffect(() => {
     if (search !== "" || search !== undefined) {
       setvalues({ ...values, productName: search });
@@ -191,7 +194,7 @@ const ProductList = (props) => {
     <>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Grid container spacing={3}>
+        <Grid container spacing={3} data-aos="fade-up">
           <Card sx={{ width: "100%", border: "solid 1px", ml: 3, mt: 2 }}>
             <CardHeader
               title="Tìm kiếm nâng cao"
@@ -315,13 +318,13 @@ const ProductList = (props) => {
               .filter((product) =>
                 search
                   ? product.productName
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
                   : true
               )
               .map((product) => (
                 <Grid item xs={3} key={product.id}>
-                  <Card>
+                  <Card data-aos="fade-up">
                     {loginInfo !== null ? (
                       <Link to={`/user/product-detail/${product.id}`}>
                         <CardMedia
@@ -346,9 +349,10 @@ const ProductList = (props) => {
                     <CardContent>
                       <Typography
                         gutterBottom
-                        variant="h5"
-                        component="h2"
+                        variant="body2"
+                        component="body2"
                         align="center"
+                        sx={{ fontSize: "16px" }}
                       >
                         {product.productName}
                       </Typography>
@@ -366,7 +370,7 @@ const ProductList = (props) => {
                           <Button
                             variant="contained"
                             color="primary"
-                            sx={{fontSize: 15}}
+                            sx={{ fontSize: 15 }}
                             onClick={() => {
                               handleAddToCart(product);
                             }}
