@@ -1,6 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import Navbar from "../../components/Navbar";
 import CartList from "./components/CartList";
 import { axiosUrl } from "../../services/api/axios";
 import {

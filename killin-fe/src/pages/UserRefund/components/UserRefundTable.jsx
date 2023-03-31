@@ -1,5 +1,7 @@
 import {
   Box,
+  Card,
+  CardActionArea,
   CardMedia,
   Grid,
   Table,
@@ -9,12 +11,13 @@ import {
   TableHead,
   TableRow,
   Toolbar,
+  Typography,
 } from "@mui/material";
 import moment from "moment";
 import React from "react";
 import { Footer } from "../../../services/constants/componentConstants";
 
-const UserRefundTable = ({ refundList }) => {
+const UserRefundTable = ({handleClickImg, refundList }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, paddingTop: 5 }}>
       <Toolbar />
@@ -85,25 +88,60 @@ const UserRefundTable = ({ refundList }) => {
                     </TableCell>
                     <TableCell align="left">
                       {data.refundStatus !== null &&
-                      data.refundStatus === "In Progress"
-                        ? "Đang chờ duyệt"
-                        : data.refundStatus === "Accept"
-                        ? "Chấp nhận đổi trả"
-                        : data.refundStatus === "Cancel"
-                        ? "Hủy đổi trả"
-                        : data.refundStatus}
+                      data.refundStatus === "In Progress" ? (
+                        <Typography
+                        sx={{
+                          color:"#ED9831"
+                        }}
+                          variant="subtitle1"
+                        >
+                          Đang chờ duyệt
+                        </Typography>
+                      ) : data.refundStatus === "Accept" ? (
+                        <Typography
+                        sx={{
+                          color:"#16A22D"
+                        }}
+                          variant="subtitle1"
+                        >
+                          Chấp nhận đổi trả
+                        </Typography>
+                      ) : data.refundStatus === "Cancel" ? (
+                        <Typography
+                          sx={{
+                            color:"#FF5714"
+                          }}
+                          variant="subtitle1"
+                        >
+                          Hủy đổi trả
+                        </Typography>
+                      ) : (
+                        data.refundStatus
+                      )}
                     </TableCell>
                     <TableCell align="center">
                       {data.productRefundList[0].imagesUrl.map(
                         (image, index2) => (
-                          <CardMedia
-                            component="img"
-                            alt="productImages"
-                            image={image}
-                            title="productImages"
-                            sx={{ width: "50px" }}
-                            key={index2}
-                          ></CardMedia>
+                          <Card sx={{ width: "50px" }} key={index2}>
+                            {index2 === 0 && <CardActionArea
+                              onClick={() =>
+                                handleClickImg(
+                                  data.productRefundList[0].imagesUrl,
+                                  image,
+                                  index2
+                                )
+                              }
+                            >
+                              <CardMedia
+                                component="img"
+                                alt="productImages"
+                                image={image}
+                                title="productImages"
+                                sx={{ width: "50px" }}
+                              ></CardMedia>
+                            </CardActionArea>}
+                            
+                          </Card>
                         )
                       )}
                     </TableCell>

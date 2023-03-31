@@ -2,7 +2,6 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   FormControlLabel,
   FormGroup,
   IconButton,
@@ -28,12 +27,11 @@ import {
   LOGIN_PATH,
   PROFILE_PATH,
   SHOP_PATH,
-  USER_PATH,
 } from "../../services/constants/pathConstants";
 import { LoadingBackdrop } from "../../services/constants/componentConstants";
 import jwtDecode from "jwt-decode";
-import ProductList from "../../pages/ShopPage/components/ProductList";
 import CloseIcon from "@mui/icons-material/Close";
+import { SimpleSnackbar } from "../../services/utils";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -136,6 +134,8 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
 
   useEffect(() => {
     if (location.pathname === "/user/shop" || location.pathname === "/shop") {
@@ -148,6 +148,13 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
       }
     }
   }, [searchInput]);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  }
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -162,6 +169,8 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
     localStorage.clear();
     let path = location.pathname.split("/");
     setOpenBackdrop(false);
+    setOpenSnackbar(true);
+    setMessageSnackbar("Đăng xuất thành công");
     if (path[1] === "user") {
       let path2 = location.pathname.substring(5);
       return path[2] === "shop" || path[2] === "product-detail"
@@ -369,13 +378,17 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                 }
               />
             </FormGroup>
-            {loginInfo !== null ? (<Typography
-              sx={{ color: "white", pr: 2 }}
-              variant="h6"
-              component="div"
-            >
-              Chào mừng {token.fullName}
-            </Typography>) : <></>}
+            {loginInfo !== null ? (
+              <Typography
+                sx={{ color: "white", pr: 2 }}
+                variant="h6"
+                component="div"
+              >
+                Chào mừng {token.fullName}
+              </Typography>
+            ) : (
+              <></>
+            )}
             {loginInfo !== null ? (
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
@@ -400,11 +413,15 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
                   onClose={handleCloseUserMenu}
                 >
                   <MenuItem onClick={handleProfile}>
-                    <Typography textAlign="center">Thông tin cá nhân</Typography>
+                    <Typography textAlign="center">
+                      Thông tin cá nhân
+                    </Typography>
                   </MenuItem>
                   {token.role === "3" ? (
                     <MenuItem onClick={handleBillHistory}>
-                      <Typography textAlign="center">Lịch sử mua hàng</Typography>
+                      <Typography textAlign="center">
+                        Lịch sử mua hàng
+                      </Typography>
                     </MenuItem>
                   ) : (
                     <></>
@@ -435,6 +452,7 @@ const Navbar = ({ isDarkTheme, changeTheme }) => {
         </AppBar>
       </Box>
       <LoadingBackdrop open={openBackdrop} />
+      <SimpleSnackbar messageSnackbar={messageSnackbar} handleCloseSnackbar={handleCloseSnackbar} openSnackbar={openSnackbar} />
     </>
   );
 };

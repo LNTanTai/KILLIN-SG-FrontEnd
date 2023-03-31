@@ -9,6 +9,8 @@ import {
   GET_PRODUCTS_ID,
 } from "../../../services/constants/apiConstants";
 import { OwnerSidebar } from "../../../services/constants/componentConstants";
+import { SimpleSnackbar } from "../../../services/utils";
+import { useLocation } from "react-router-dom";
 
 const product = [];
 
@@ -38,6 +40,10 @@ const Index = () => {
   const [isUpdateRow, setIsUpdateRow] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [categoryItem, setCategoryItem] = useState("");
+  const location = useLocation("");
+  let notify = location?.state?.notify ?? "";
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
 
   const pages = [10, 25, 100];
   const [page, setPage] = useState(0);
@@ -51,14 +57,26 @@ const Index = () => {
   const [temp, setTemp] = useState(0)
 
   useEffect(()=>{
+    if (notify !== "") {
+      setOpenSnackbar(true);
+      setMessageSnackbar(notify);
+      window.history.replaceState({ notify: "" }, document.title);
+    }
     setInterval(()=>{
       setTemp((prevTemp)=>prevTemp+1)
     }, 2000)
-  }, [])
+  }, []);
   
   useEffect(()=>{
     fetchData()
-  }, [temp])
+  }, [temp]);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const fetchData = async () => {
     const params = {};
@@ -69,7 +87,7 @@ const Index = () => {
       const response2 = await axiosUrl.get(GET_CATEGORY_NAME, params);
       const data2 = [...response2.data];
 
-      console.log(data);
+      // console.log(data);
       setCategoryList([]);
       setCategoryList(data2);
 
@@ -252,6 +270,11 @@ const Index = () => {
         rowsPerPage={rowsPerPage}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      <SimpleSnackbar
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
       />
     </Box>
   );

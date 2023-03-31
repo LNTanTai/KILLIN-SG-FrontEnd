@@ -100,8 +100,7 @@ const Index = () => {
       // localStorage.setItem("ko", response.data);
       navigate(
         `/user/${CHECKOUT_PATH}`,
-        { state: response.data },
-        { replace: true }
+        { state: {checkOutList: response.data, notify: "Thanh toán thành công"}, replace: true },
       );
     } catch (error) {
       console.error(`Error at fetchData: ${error}`);
@@ -116,7 +115,7 @@ const Index = () => {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {console.log(totals)} */}
       <CssBaseline />
-      <Navbar />
+      {/* <Navbar /> */}
       <PaymentList
       setNewAdress={setNewAdress}
       newAddress={newAdress}

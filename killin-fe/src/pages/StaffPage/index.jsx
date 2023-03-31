@@ -10,6 +10,8 @@ import jwtDecode from "jwt-decode";
 import StaffDashboard from './components/StaffDashboard';
 import dayjs from 'dayjs';
 import { StaffSidebar } from '../../services/constants/componentConstants';
+import { SimpleSnackbar } from '../../services/utils';
+import { useLocation } from 'react-router-dom';
 
 const bill = [];
 
@@ -27,9 +29,18 @@ const Index = () => {
   if (loginInfo !== null) {
     token = jwtDecode(loginInfo);
   }
-  const [temp, setTemp] = useState(0)
+  const [temp, setTemp] = useState(0);
+  const location = useLocation("");
+  let notify = location?.state?.notify ?? "";
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
 
   useEffect(()=>{
+    if (notify !== "") {
+      setOpenSnackbar(true);
+      setMessageSnackbar(notify);
+      window.history.replaceState({ notify: "" }, document.title);
+    }
     setInterval(()=>{
       setTemp((prevTemp)=>prevTemp+1)
     }, 2000)
@@ -42,7 +53,13 @@ const Index = () => {
   // useEffect(() => {
   //   fetchData(date);
   // }, []);
-
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+  
   const handleSearchByDate = () => {
     if (selectDate === null) {
       setBillData(bill);
@@ -61,7 +78,7 @@ const Index = () => {
     try {
       const response = await axiosUrl.post(POST_GET_LIST_BILL_BY_DATE, params);
       const data = [...response.data];
-      console.log(data);
+      setBillData(bill);
       setBillData(data);
     } catch (error) {
       setBillData(bill);
@@ -135,6 +152,11 @@ const Index = () => {
       selectDate={selectDate}
       setSelectDate={setSelectDate}
       handleSearchByDate={handleSearchByDate}
+      />
+      <SimpleSnackbar
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
       />
     </Box>
   )

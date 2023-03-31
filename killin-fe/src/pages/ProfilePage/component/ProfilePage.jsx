@@ -44,6 +44,16 @@ const ProfilePage = () => {
   useEffect(() => {
     getUser();
   }, []);
+  useEffect(() => {
+    const body = document.querySelector("#root");
+
+    body.scrollIntoView(
+      {
+        behavior: "auto",
+      },
+      500
+    );
+  }, []);
   const handleUpdateClick = () => {
     setIsEditing(true);
   };

@@ -1,6 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import AdminDashboard from "./components/AdminDashboard";
 import { axiosUrl } from "../../services/api/axios";
 import {
@@ -10,6 +9,9 @@ import {
   POST_UPDATE_USER,
 } from "../../services/constants/apiConstants";
 import dayjs from "dayjs";
+import { SimpleSnackbar } from "../../services/utils";
+import { useLocation } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 
 const account = [];
 
@@ -34,10 +36,38 @@ const Index = () => {
   const [role, setRole] = useState("");
   const [selectDob, setSelectDob] = useState(null);
   const [selectRole, setSelectRole] = useState("");
+  const location = useLocation("");
+  let notify = location?.state?.notify ?? "";
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
+  const [temp, setTemp] = useState(0);
 
   useEffect(() => {
-    fetchData();
+    if (notify !== "") {
+      setOpenSnackbar(true);
+      setMessageSnackbar(notify);
+      window.history.replaceState({ notify: "" }, document.title);
+    }
+    setInterval(() => {
+      setTemp((prevTemp) => prevTemp + 1);
+    }, 2000);
   }, []);
+
+  useEffect(() => {
+    
+    fetchData();
+  }, [temp]);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const fetchData = async () => {
     const params = {};
@@ -45,21 +75,51 @@ const Index = () => {
       const response = await axiosUrl.post(GET_ACCOUNT, params);
       const data = [...response.data];
       const filter = data.filter(
-        (datas) => `${datas.role}`.toString().toLowerCase() !== "4" && `${datas.role}`.toString().toLowerCase() !== "3"
+        (datas) =>
+          `${datas.role}`.toString().toLowerCase() !== "4" &&
+          `${datas.role}`.toString().toLowerCase() !== "3"
       );
       // console.log(data);
-      if (search !== "") {
+      if (search !== "" || selectRole !== "") {
         const filterData = filter.filter(
           (datas) =>
             !search.length ||
-            `${datas.name}`
+            `${datas.userFullName} ${datas.userName} ${datas.email}`
               .toString()
               .toLowerCase()
-              .includes(search.toString().toLowerCase())
+              .includes(search.toString().toLowerCase().trim())
         );
-        setAccountList(filterData);
-        setAccountFilter(filter);
+        if (selectRole !== "" && search !== "") {
+          console.log(1);
+          const filterRole = filterData.filter(
+            (data) =>
+              !selectRole.length ||
+              `${data.role}`
+                .toString()
+                .toLowerCase()
+                .includes(selectRole.toString().toLowerCase())
+          );
+          setAccountList(filterRole);
+          setAccountFilter(filter);
+        } else if (selectRole !== "" && search === "") {
+          console.log(2);
+          const filterRole = filter.filter(
+            (data) =>
+              !selectRole.length ||
+              `${data.role}`
+                .toString()
+                .toLowerCase()
+                .includes(selectRole.toString().toLowerCase())
+          );
+          setAccountList(filterRole);
+          setAccountFilter(filter);
+        } else {
+          console.log(3);
+          setAccountList(filterData);
+          setAccountFilter(filter);
+        }
       } else {
+        console.log(4);
         setAccountList(filter);
         setAccountFilter(filter);
       }
@@ -74,16 +134,16 @@ const Index = () => {
     } else {
       const filter = accountFilter.filter(
         (data) =>
-        !selectRole.length ||
-        `${data.role}`
-          .toString()
-          .toLowerCase()
-          .includes(selectRole.toString().toLowerCase())
+          !selectRole.length ||
+          `${data.role}`
+            .toString()
+            .toLowerCase()
+            .includes(selectRole.toString().toLowerCase())
       );
 
       setAccountList(filter);
     }
-  }
+  };
 
   const createUser = async (newValues, dob, role) => {
     const params = {
@@ -113,10 +173,13 @@ const Index = () => {
       fullName: newValues.fullName,
       email: newValues.email,
       address: newValues.address,
-      dob: dob !== null ?dayjs(dayjs(dob, "DD/MM/YYYY")).format('YYYY-MM-DD') ===
-      "Invalid Date"
-        ? dob
-        : dayjs(dayjs(dob, "DD/MM/YYYY")).format('YYYY-MM-DD'): "",
+      dob:
+        dob !== null
+          ? dayjs(dayjs(dob, "DD/MM/YYYY")).format("YYYY-MM-DD") ===
+            "Invalid Date"
+            ? dob
+            : dayjs(dayjs(dob, "DD/MM/YYYY")).format("YYYY-MM-DD")
+          : "",
       phoneNumber: "",
       userId: newValues.userId,
     };
@@ -138,7 +201,7 @@ const Index = () => {
       userName: value.userName,
     };
     try {
-      await axiosUrl.post( POST_BAN_OR_UNBAN_ACCOUNT, params);
+      await axiosUrl.post(POST_BAN_OR_UNBAN_ACCOUNT, params);
 
       fetchData();
     } catch (error) {
@@ -153,7 +216,7 @@ const Index = () => {
       const filter = accountFilter.filter(
         (data) =>
           !value.length ||
-          `${data.userFullName} ${data.userName} ${data.email} ${data.email}`
+          `${data.userFullName} ${data.userName} ${data.email}`
             .toString()
             .toLowerCase()
             .includes(value.toString().toLowerCase())
@@ -165,7 +228,9 @@ const Index = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    isAddNew === true ? createUser(values, selectDob, role) : updateUser(values, selectDob);
+    isAddNew === true
+      ? createUser(values, selectDob, role)
+      : updateUser(values, selectDob);
   };
 
   const handleChange = (e) => {
@@ -191,7 +256,7 @@ const Index = () => {
     //   address: row.address,
     //   password: "",
     // };
-    setvalues({...values, userId: row.userId});
+    setvalues({ ...values, userId: row.userId });
     // setRole(row.role);
     // setSelectDob(row.dob);
   };
@@ -207,11 +272,11 @@ const Index = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <CssBaseline />
-      {/* <Navbar /> */}
+      <Navbar />
       <AdminDashboard
-      handleSearch={handleSearch}
-      selectRole={selectRole}
-      setSelectRole={setSelectRole}
+        handleSearch={handleSearch}
+        selectRole={selectRole}
+        setSelectRole={setSelectRole}
         handleDelete={handleDelete}
         selectDob={selectDob}
         setSelectDob={setSelectDob}
@@ -229,6 +294,11 @@ const Index = () => {
         setSearch={setSearch}
         handleChangeSearch={handleChangeSearch}
         accountList={accountList}
+      />
+      <SimpleSnackbar
+        messageSnackbar={messageSnackbar}
+        handleCloseSnackbar={handleCloseSnackbar}
+        openSnackbar={openSnackbar}
       />
     </Box>
   );
