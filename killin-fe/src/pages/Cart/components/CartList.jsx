@@ -91,14 +91,64 @@ const CartList = ({
                         <TableCell>
                           {parseFloat(row.price).toLocaleString("en-US")} VND
                         </TableCell>
-                        <TableCell>
-                          <Button onClick={() => onAdd(row, index2, list)}>
-                            +
-                          </Button>
-                          {row.quantity}
-                          <Button onClick={() => onMinus(row, index2, list)}>
-                            -
-                          </Button>
+                          <TableCell xs={12}>
+                            <Button onClick={() => onMinus(row, list)}>-</Button>
+                            <TextField
+                              required
+                              id="quantity"
+                              name="quantity"
+                              value={row.quantity}
+                              sx={{ width: 50 }}
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                if (
+                                  e.target.value <=
+                                  parseInt(row.availableQuantity) &&
+                                  e.target.value > 0
+                                ) {
+                                  const exist = cartList.find(
+                                    (x) => x.orderId === list.orderId
+                                  );
+                                  setCartListOrder(list);
+                                  setCartList(
+                                    cartList.map((child) => {
+                                      return child.orderId === list.orderId
+                                        ? {
+                                          ...exist,
+                                          itemList: child.itemList.map(
+                                            (children) =>
+                                              children.id === row.id
+                                                ? {
+                                                  ...children,
+                                                  quantity: `${e.target.value}`,
+                                                }
+                                                : children
+                                          ),
+                                          totalQuantity:
+                                            parseInt(row.quantity) >
+                                              parseInt(e.target.value)
+                                              ? `${parseInt(
+                                                child.totalQuantity
+                                              ) -
+                                              (parseInt(row.quantity) -
+                                                parseInt(e.target.value))
+                                              }`
+                                              : `${parseInt(
+                                                child.totalQuantity
+                                              ) +
+                                              (parseInt(e.target.value) -
+                                                parseInt(row.quantity))
+                                              }`,
+                                        }
+                                        : child;
+                                    })
+                                  );
+                                  setIsChange(true);
+                                }
+                              }}
+                              inputProps={{ maxLength: 2 }}
+                            />
+                            <Button onClick={() => onAdd(row, list)}>+</Button>
                         </TableCell>
                         <TableCell>
                           {parseFloat(row.quantity * row.price).toLocaleString(

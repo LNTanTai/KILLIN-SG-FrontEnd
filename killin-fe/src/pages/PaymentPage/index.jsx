@@ -94,10 +94,7 @@ const Index = () => {
     console.log(params);
     try {
       const response = await axiosUrl.post(POST_CREATE_BILL, params);
-      // const data = [...response.data];
       console.log(response.data);
-      // console.log(data);
-      // localStorage.setItem("ko", response.data);
       navigate(
         `/user/${CHECKOUT_PATH}`,
         { state: response.data },
