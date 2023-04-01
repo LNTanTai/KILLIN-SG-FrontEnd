@@ -74,7 +74,7 @@ const OwnerDashboard = ({
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       {isAddNew === true || isUpdateRow === true ? (
-        <Box>
+        <Box data-aos="fade-right">
           <Grid container justifyContent="center">
             <Card
               sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}
@@ -227,7 +227,7 @@ const OwnerDashboard = ({
       ) : (
         <></>
       )}
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper data-aos="fade-up" sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
           container

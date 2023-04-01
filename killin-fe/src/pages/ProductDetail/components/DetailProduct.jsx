@@ -32,8 +32,8 @@ import {
 } from "@mui/material";
 import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
-import AOS from "aos"
-import 'aos/dist/aos.css'
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { SimpleSnackbar } from "../../../services/utils";
 
 const DetailProduct = () => {
@@ -42,7 +42,7 @@ const DetailProduct = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [comment, setComment] = useState([]);
   const [selectIdComment, setSelectIdComment] = useState("");
-  const [likeProduct, setLikeProduct] = useState(false);
+  let [likeProduct, setLikeProduct] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [editedComment, setEditedComment] = useState(comment.comment);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,7 +50,6 @@ const DetailProduct = () => {
   const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
   const likeproduct = false;
   const wishlistid = "";
-  const navigate = useNavigate();
   let [url, setUrl] = useState();
   let [quantity, setQuantity] = useState(1);
   let token;
@@ -66,23 +65,15 @@ const DetailProduct = () => {
     commentAPI();
   }, [id]);
 
-  const [temp, setTemp] = useState(0);
-
   useEffect(() => {
     if (notify !== "") {
       setOpenSnackbar(true);
       setMessageSnackbar(notify);
       window.history.replaceState({ notify: "" }, document.title);
     }
-    setInterval(() => {
-      setTemp((prevTemp) => prevTemp + 1);
-    }, 2000);
-  }, []);
-
-  useEffect(() => {
     fetchData();
     showWishListByUserId();
-  }, [temp]);
+  }, []);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
@@ -90,10 +81,6 @@ const DetailProduct = () => {
     }
     setOpenSnackbar(false);
   };
-
-  // useEffect(() => {
-
-  // }, []);
 
   useEffect(() => {
     const body = document.querySelector("#root");
@@ -322,7 +309,7 @@ const DetailProduct = () => {
     }
   };
   useEffect(() => {
-    AOS.init({ duration: 900 })
+    AOS.init({ duration: 900 });
   }, []);
 
   return (
@@ -334,12 +321,13 @@ const DetailProduct = () => {
         <Toolbar />
         <Grid container spacing={3}>
           <Grid item xs={8}>
-            <CardMedia data-aos="fade-up"
+            <CardMedia
+              data-aos="fade-up"
               component="img"
               alt={selectedProduct.productName}
               height="100%"
-              width='200px'
-              image={hasSelected == false ? url : selectedProduct.imageUrl}
+              width="200px"
+              image={hasSelected === false ? url : selectedProduct.imageUrl}
               title={selectedProduct.productName}
             ></CardMedia>
           </Grid>
@@ -382,8 +370,7 @@ const DetailProduct = () => {
                     <Typography
                       variant="body3"
                       color="textSecondary"
-                      style={{ mt: 20, }}
-
+                      style={{ mt: 20 }}
                     >
                       {selectedProduct.productQuantity} sản phẩm có sẵn
                     </Typography>
@@ -433,16 +420,22 @@ const DetailProduct = () => {
             </Card>
           </Grid>
         </Grid>
-            <div style={{ display: 'relative' }}>
-              {imageUrls.map((url, index) => (
-                <img
-                  style={{ width: '100px', height: '100px', display: 'inline-block', margin: '10px' }}
-                  src={url}
-                  key={index}
-                  onClick={() => handleImageClick(url)}
-                />
-              ))}
-            </div>
+        <div style={{ display: "relative" }}>
+          {imageUrls.map((url, index) => (
+            <img
+              alt="anh"
+              style={{
+                width: "100px",
+                height: "100px",
+                display: "inline-block",
+                margin: "10px",
+              }}
+              src={url}
+              key={index}
+              onClick={() => handleImageClick(url)}
+            />
+          ))}
+        </div>
         <div
           style={{
             width: "66.2%",

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
 import { POST_BANNER, POST_BESTSELLER } from "../../../services/constants/apiConstants";
 import { axiosUrl } from "../../../services/api/axios";
 import Slider from "react-slick";
@@ -11,7 +10,6 @@ import { SHOP_PATH } from "../../../services/constants/pathConstants";
 import { Typography, Box } from '@mui/material';
 import AOS from "aos"
 import 'aos/dist/aos.css'
-import { duration } from "moment";
 const Banner = () => {
     const [images, setImages] = useState([]);
     const [bestSeller, setBestSeller] = useState([]);

@@ -33,8 +33,8 @@ const CartList = ({
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>Giỏ hàng của bạn</h1>
-      <div className="cart-container">
+      <h1 data-aos="fade-right" style={{ paddingLeft: "40px" }}>Giỏ hàng của bạn</h1>
+      <div data-aos="fade-up" className="cart-container">
         <div className="cart">
           {cartList.length === 0 ? (
             <h2 style={{ margin: "auto%" }}>Chưa có hàng cần thanh toán</h2>
@@ -224,7 +224,7 @@ const CartList = ({
                     variant="contained"
                     style={{ width: "170px" }}
                   >
-                    Thanh toán
+                    Đặt hàng
                   </Button>
                 )}
               </div>

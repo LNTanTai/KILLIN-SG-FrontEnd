@@ -211,7 +211,7 @@ const PaymentList = ({
                         Chọn phương thức
                       </MenuItem>
                       <MenuItem value="cod">Giao hàng tận nơi</MenuItem>
-                      <MenuItem value="zalopay">ZaloPay</MenuItem>
+                      <MenuItem value="zalopay">ZaloPay (Đang phát triển)</MenuItem>
                     </Select>
                   </FormControl>
                 </form>

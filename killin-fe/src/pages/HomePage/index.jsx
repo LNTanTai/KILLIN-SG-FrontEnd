@@ -20,6 +20,17 @@ const HomePage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const body = document.querySelector("#root");
+
+    body.scrollIntoView(
+      {
+        behavior: "auto",
+      },
+      500
+    );
+  }, []);
+
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;

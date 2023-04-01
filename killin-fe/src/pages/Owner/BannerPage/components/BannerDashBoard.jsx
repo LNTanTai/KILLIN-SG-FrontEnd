@@ -38,7 +38,7 @@ const BannerDashBoard = ({
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       {isAddNew === true || isUpdateRow === true ? (
-        <Box>
+        <Box data-aos="fade-right">
           <Grid container justifyContent="center">
             <Card sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}>
               <CardHeader
@@ -80,7 +80,7 @@ const BannerDashBoard = ({
                         type="submit"
                         sx={{ height: "35px", width: "100%" }}
                       >
-                        {isAddNew === true ? "Thêm Banner" : "Cập Nhật Banner"}
+                        {isAddNew === true ? "Thêm Bảng Hiệu" : "Cập Nhật Bảng Hiệu"}
                       </Button>
                     </Grid>
                   </Grid>
@@ -92,7 +92,7 @@ const BannerDashBoard = ({
       ) : (
         <></>
       )}
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper data-aos="fade-up" sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
           container
@@ -103,7 +103,7 @@ const BannerDashBoard = ({
         >
           {/* <Grid item xs={1}></Grid> */}
           <Grid item xs={4}>
-            <h2>Bảng Quảy Lý Banner</h2>
+            <h2>Bảng Quảy Lý Bảng Hiệu</h2>
           </Grid>
           <Grid item xs={5}>
             <Button
@@ -111,7 +111,7 @@ const BannerDashBoard = ({
               sx={{ width: "200px", height: "35px", ml: 4 }}
               onClick={() => showAddForm()}
             >
-              Tạo Sản Phẩm Mới
+              Tạo bảng hiệu Mới
             </Button>
             <IconButton
               size="large"

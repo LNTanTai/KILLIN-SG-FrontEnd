@@ -15,10 +15,10 @@ const CheckOutList = ({ userData, checkOutList }) => {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "40px" }}>HÓA ĐƠN THANH TOÁN</h1>
+      <h1 data-aos="fade-right" style={{ paddingLeft: "40px" }}>HÓA ĐƠN THANH TOÁN</h1>
       <div className="cart-container">
         <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="cart-3-pay">
+          <div data-aos="fade-right" className="cart-3-pay">
             <div className="cart-table">
               <h1>Thông tin người nhận: </h1>
               <p>Tên người dùng : {userData.fullName}</p>
@@ -27,7 +27,7 @@ const CheckOutList = ({ userData, checkOutList }) => {
               <p>Địa chỉ : {checkOutList.address}</p>
             </div>
           </div>
-          <div className="cart-2-pay">
+          <div data-aos="fade-left" className="cart-2-pay">
             <div className="cart-table">
               <h2>Mã đơn hàng: {checkOutList.billId}</h2>
               <p>
@@ -52,7 +52,7 @@ const CheckOutList = ({ userData, checkOutList }) => {
           </div>
         </div>
         <div className="cart">
-          <div className="cart-1">
+          <div data-aos="fade-up" className="cart-1">
             <Table>
               <TableHead>
                 <TableRow>

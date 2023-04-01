@@ -56,9 +56,9 @@ const BillHistory = ({
   return (
     <Box component="main" sx={{ flexGrow: 1, paddingTop: 5 }}>
       <Toolbar />
-      <h1 style={{ paddingLeft: "80px" }}>Lịch sử mua hàng</h1>
+      <h1 data-aos="fade-right" style={{ paddingLeft: "80px" }}>Lịch sử mua hàng</h1>
       {orders.length === 0 && error === null ? (
-        <Typography variant="h6">Lịch sử mua hàng trống</Typography>
+        <Typography data-aos="fade-right" variant="h5" sx={{ml: 10}}>Chưa có đơn hàng</Typography>
       ) : (
         orders.map((bill, index) => (
           <Box
@@ -70,6 +70,7 @@ const BillHistory = ({
               paddingBottom: "10px",
             }}
             key={index}
+            data-aos="fade-right"
           >
             <div
               style={{

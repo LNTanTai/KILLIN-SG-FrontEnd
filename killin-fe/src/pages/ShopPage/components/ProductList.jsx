@@ -25,14 +25,13 @@ import {
   POST_SEARCH_FILTER,
 } from "../../../services/constants/apiConstants";
 import { useLocation } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { LOGIN_PATH } from "../../../services/constants/pathConstants";
 import jwtDecode from "jwt-decode";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import AOS from "aos"
-import 'aos/dist/aos.css'
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { SimpleSnackbar } from "../../../services/utils";
 const initialValues = {
   categoryName: "",
@@ -60,17 +59,13 @@ const ProductList = (props) => {
     token = jwtDecode(loginInfo);
   }
   useEffect(() => {
-    AOS.init({ duration: 900 })
+    AOS.init({ duration: 900 });
   }, []);
   useEffect(() => {
     if (search !== "" || search !== undefined) {
       setvalues({ ...values, productName: search });
     }
   }, [search]);
-
-  // useEffect(() => {
-
-  // }, []);
 
   useEffect(() => {
     if (notify !== "") {
@@ -318,8 +313,8 @@ const ProductList = (props) => {
               .filter((product) =>
                 search
                   ? product.productName
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
                   : true
               )
               .map((product) => (

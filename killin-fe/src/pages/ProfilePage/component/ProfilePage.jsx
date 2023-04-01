@@ -141,7 +141,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Box className="container">
+    <Box data-aos="fade-up" className="container">
       <div
         style={{
           display: "flex",
@@ -163,7 +163,7 @@ const ProfilePage = () => {
                   textAlign="center"
                   style={{ fontWeight: "bold", fontSize: "30px" }}
                 >
-                  Personal Information
+                  Thông tin cá nhân
                 </Typography>
                 {isEditing ? (
                   <div>
