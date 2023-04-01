@@ -38,7 +38,7 @@ const StaffDashboard = ({
   return (
     <Box component="main" sx={{ flexGrow: 2, p: 3 }}>
       <Toolbar />
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper data-aos="fade-up" sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
           container

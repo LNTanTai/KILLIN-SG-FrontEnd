@@ -4,8 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardMedia,
-  CircularProgress,
   FormControl,
   Grid,
   IconButton,
@@ -17,9 +15,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
-  TablePagination,
   TableRow,
   TextField,
   Toolbar,
@@ -74,7 +70,7 @@ const AdminDashboard = ({
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       {isAddNew === true || isUpdateRow === true ? (
-        <Box>
+        <Box data-aos="fade-right">
           <Grid container justifyContent="center">
             <Card
               sx={{ width: "100%", border: "solid 1px", borderRadius: "10px" }}
@@ -215,7 +211,7 @@ const AdminDashboard = ({
       ) : (
         <></>
       )}
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper data-aos="fade-up" sx={{ width: "100%", overflow: "hidden" }}>
         <Grid
           sx={{ flexGrow: 1 }}
           container
